@@ -55,7 +55,7 @@ export interface CatalogueOption {
  * learn what the catalogue was currently showing them.
  *
  * A button per axis is what every catalogue does, and it is what it does for
- * the reason: the button *states its own answer* ("Subject — Gynecology"), so
+ * the reason: the button *states its own answer* ("Subject — Hepatology"), so
  * four buttons say what the shelf is filtered by without the reader reading a
  * single option. The options are one click away, which is the right price for
  * a choice made once.
@@ -69,7 +69,7 @@ export interface CatalogueFilter {
   key: string;
   /** Names the axis: "Stage of care", "Subject", "Language", "Sort by". */
   label: string;
-  /** The current answer, shown on the button itself: "Gynecology", "All". */
+  /** The current answer, shown on the button itself: "Hepatology", "All". */
   value: string;
   /**
    * Whether this axis is *narrowing* the shelf. Sort is never active by this
@@ -93,7 +93,7 @@ export interface CatalogueChip {
   key: string;
   /** The axis, set small: "Subject". */
   axis: string;
-  /** The value: "Gynecology". */
+  /** The value: "Hepatology". */
   value: string;
   /** This same view with only this one filter dropped. */
   href: string;

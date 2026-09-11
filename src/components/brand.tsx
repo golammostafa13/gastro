@@ -14,10 +14,11 @@ import { cn } from "@/lib/utils";
 /**
  * `md` (the header lockup) sets its name fluidly rather than at a fixed size.
  * The wordmark is `whitespace-nowrap` and sits in a bar that also has to hold
- * the language switch and three round controls. "Maternity Book Bank" is three
- * long words: at a flat 1.2rem it overruns a 360px phone and pushes the menu
- * button off the screen, which is what the clamp is for. Already at full size
- * by ~440px, so every viewport with the room is unchanged.
+ * the language switch and three round controls. "Gastroenterology Book Bank"
+ * is sixteen characters in its first word alone: at a flat 1.2rem it overruns a
+ * 360px phone and pushes the menu button off the screen, which is what the
+ * clamp is for. Already at full size by ~440px, so every viewport with the
+ * room is unchanged.
  */
 const sizes = {
   sm: { tile: "size-8 rounded-[9px]", text: "text-[1.05rem]" },

@@ -120,7 +120,7 @@ export function HeroCinematic({
         <h1 id="cinema-title" className={cn("cinema__title", textClass(lang))}>
           {/* Two lines, each masked, rising in turn. The break is in the
               dictionary because where a name divides is a question about the
-              language: "Maternity / Book Bank" and "মাতৃত্ব / বুক ব্যাংক" do not
+              language: "Nine metres / of you" and "নয় মিটার / আপনারই" do not
               break in the same place, and neither would survive CSS choosing. */}
           <span className="cinema__line">
             <span>{copy.titleTop}</span>

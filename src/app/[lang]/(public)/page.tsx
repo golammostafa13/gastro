@@ -119,9 +119,9 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
    * The hero footage: four plates, in the order they play.
    *
    * Hard-coded rather than derived from the categories, because this is a
-   * sequence with an arc (carrying, the birth, the newborn, mother and child),
-   * and a `map` over six categories would give six pictures in alphabetical
-   * order. `scripts/build-hero-art.mjs` writes them, and names them with their
+   * sequence with an arc (the whole tract, the stomach, the abdomen, the
+   * liver behind it), and a `map` over seven categories would give seven
+   * pictures in alphabetical order. `scripts/build-hero-art.mjs` writes them, and names them with their
    * position so the order is visible on disk too.
    */
   const heroPlates: HeroPlate[] = [

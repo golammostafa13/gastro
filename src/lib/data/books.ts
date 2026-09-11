@@ -36,8 +36,9 @@ const DEFAULT_PER_PAGE = 12;
  * The standing order.
  *
  * Three books in this library are the reference the others are guidance from —
- * the *Johns Hopkins Manual*, *Obstetric Decisions* and *Te Linde's* — and they
- * are meant to be met first, on every shelf and under every sort.
+ * *Harrison's Gastroenterology and Hepatology*, *Gastrointestinal and Liver
+ * Secrets* and the *Mayo Clinic Board Review* — and they are meant to be met
+ * first, on every shelf and under every sort.
  * `Book.priority` numbers them; everything without one sorts equal, below all
  * three.
  *
@@ -356,7 +357,7 @@ export interface SearchDoc {
   authorBn: string;
   category: string;
   categoryBn: string;
-  /** The clinical axis, indexed too: "gynecology" has to find the shelf. */
+  /** The clinical axis, indexed too: "hepatology" has to find the shelf. */
   subject: string;
   subjectBn: string;
   year: number;

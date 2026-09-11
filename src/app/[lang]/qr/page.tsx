@@ -27,7 +27,7 @@ import { site } from "@/lib/site";
  *
  * The code is drawn from the request's own origin, so on the deployed site it
  * is right by default. Pass `?base=https://…` for a domain this app is not yet
- * answering on: `/en/qr?base=https://maternitybookbank.org`.
+ * answering on: `/en/qr?base=https://gastroenterologybookbank.org`.
  */
 
 export const metadata: Metadata = {

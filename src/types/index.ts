@@ -1,5 +1,5 @@
 /**
- * Domain types for the Maternity Book Bank catalogue.
+ * Domain types for the Gastroenterology Book Bank catalogue.
  *
  * These shapes are the contract between the data layer and every page.
  * When the mock fixtures are swapped for Postgres, only `lib/data/*`
@@ -38,16 +38,17 @@ export interface Category {
 /**
  * A clinical subject: the second way into the catalogue.
  *
- * `Category` files a book by where the reader is in the pregnancy — antenatal,
- * labour, postnatal — which is the question a mother asks. `Subject` files the
- * same book by the specialty that owns it, which is the question a clinician
- * asks, and the two do not nest: *Managing Complications in Pregnancy and
- * Childbirth* is "Complications & Emergencies" to a mother and "Obstetrics" to
- * a registrar. Neither is a sub-tree of the other, so they are two flat
+ * `Category` files a book by where the reader is standing — at a bedside,
+ * before an exam, in front of a scope — which is the question a clinician asks
+ * about themselves. `Subject` files the same book by the specialty that owns
+ * it, which is the question they ask about the patient, and the two do not
+ * nest: *RadCases Gastrointestinal Imaging* is "Endoscopy & Imaging" to
+ * someone looking for it and "Gastrointestinal Radiology" to someone who
+ * reports it. Neither is a sub-tree of the other, so they are two flat
  * taxonomies over one shelf rather than one hierarchy pretending to serve both.
  *
- * The seven are the standard subspecialty division of obstetrics and
- * gynaecology, and they are fixed: a library does not get to invent an eighth
+ * The seven are the standard subspecialty division of gastroenterology and
+ * hepatology, and they are fixed: a library does not get to invent an eighth
  * branch of the specialty. That is why there is no admin screen to add one,
  * where categories have one.
  */
@@ -113,15 +114,23 @@ export interface Book {
   /**
    * Where this file came from, and on what terms.
    *
-   * Every title in this collection is somebody else's publication, redistributed
-   * under an open licence: WHO's material is CC BY-NC-SA 3.0 IGO, the
-   * government handbooks are Crown or provincial copyright with permission to
-   * reproduce. Those licences allow this and *require* attribution, so the
-   * attribution is a field on the record rather than a line in a footer: a book
-   * that arrives without one is a book that cannot be shown, which is the
-   * behaviour we want.
+   * **Read this differently than the library this was forked from.** There,
+   * every title was redistributed under an open licence — WHO's CC BY-NC-SA
+   * 3.0 IGO, Crown copyright with permission to reproduce — and `license` was
+   * a credit those licences *required*, which is why it is a field on the
+   * record rather than a line in a footer.
    *
-   * Optional only because the admin form can catalogue a book before its
+   * Not one title here is like that. All thirteen are commercially copyrighted
+   * medical textbooks, and every value is the notice as printed: all rights
+   * reserved. The field does the same job in the opposite direction — it states
+   * the position on every record instead of leaving it unsaid — but it is no
+   * longer a permission, and nothing about its presence should be read as one.
+   *
+   * `sourceUrl` is absent on all thirteen for the matching reason: there is no
+   * legitimate public source to point at, and a link to a mirror would be a
+   * worse answer than a blank.
+   *
+   * Both are optional because the admin form can catalogue a book before its
    * paperwork is known. The detail page hides the row when absent.
    */
   sourceUrl?: string;

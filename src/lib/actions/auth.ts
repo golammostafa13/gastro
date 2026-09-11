@@ -175,11 +175,14 @@ export async function enterAction(
 
   const typed = String(formData.get("password") ?? "");
 
-  // The two printed words first, unchanged. `doorRole` is pure and touches
-  // nothing over the network, so the ordinary reader with a book in their hand
-  // gets in without this action ever reaching for the shared store — which is
-  // also why an outage over there cannot close this door.
-  let role = doorRole(email, typed);
+  // The whole door, in one pure call. `doorRole` touches nothing over the
+  // network, so a reader with a book in their hand gets in without this action
+  // reaching for any store at all — which is also why no outage anywhere can
+  // close this door. It is `const` because there is nothing left that could
+  // reassign it; the library this was forked from had a second path here that
+  // could promote a rejected address to a reader, and removing that is what
+  // makes this a constant.
+  const role = doorRole(email, typed);
 
   // One sentence for every kind of failure. Not whether the word was close,
   // not which of the two comparisons was being made, and — the one that would
