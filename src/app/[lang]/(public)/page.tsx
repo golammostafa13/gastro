@@ -125,10 +125,10 @@ export default async function HomePage(props: PageProps<"/[lang]">) {
    * position so the order is visible on disk too.
    */
   const heroPlates: HeroPlate[] = [
-    { src: "/hero/1-pregnancy-antenatal.webp" },
-    { src: "/hero/2-labour-birth.webp" },
-    { src: "/hero/3-newborn-care.webp" },
-    { src: "/hero/4-postnatal-quality.webp" },
+    { src: "/hero/1-gi-tract.webp" },
+    { src: "/hero/2-stomach.webp" },
+    { src: "/hero/3-abdomen.webp" },
+    { src: "/hero/4-liver.webp" },
   ];
 
   /**

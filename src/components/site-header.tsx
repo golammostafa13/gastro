@@ -155,8 +155,13 @@ export function SiteHeader({ lang }: { lang: Locale }) {
               className={cn("topbar__brand-name", textClass(lang))}
               aria-hidden="true"
             >
+              {/* "Gastroenterology" is nearly twice the length of the word
+                  this lockup was set for, and the Bengali is longer again, so
+                  the size is clamped in `.topbar__brand-line` rather than
+                  fixed. Where the name breaks is a question about the
+                  language, which is why the break is here and not in CSS. */}
               <span className="topbar__brand-line">
-                {lang === "bn" ? "মাতৃত্ব" : "Maternity"}
+                {lang === "bn" ? "গ্যাস্ট্রোএন্টেরলজি" : "Gastroenterology"}
               </span>
               <span className="topbar__brand-sub">
                 {lang === "bn" ? "বুক ব্যাংক" : "Book Bank"}

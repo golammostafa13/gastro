@@ -6471,7 +6471,12 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
    two-word label. */
 .topbar__brand-line {
   font-family: var(--serif);
-  font-size: 1.02rem;
+  /* Clamped rather than fixed. "GASTROENTEROLOGY" is sixteen characters where
+     this lockup was drawn for nine, and at 1.02rem with 0.13em of tracking it
+     is about a hundred pixels wider — enough to push the menu button off a
+     360px phone, in a bar that also carries four round controls. Full size by
+     about 430px, so every viewport with the room is unchanged. */
+  font-size: clamp(0.72rem, 3.1vw, 1.02rem);
   font-weight: 400;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -6495,7 +6500,9 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
 }
 
 .bn .topbar__brand-line {
-  font-size: 1.06rem;
+  /* Longer again than the Latin, and it cannot lose tracking to compensate
+     because it has none to lose. */
+  font-size: clamp(0.74rem, 3.2vw, 1.06rem);
   line-height: 1.3;
 }
 

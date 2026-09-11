@@ -19,53 +19,53 @@ export interface ChapterArt {
 
 export const chapterArt: readonly ChapterArt[] = [
   {
-    slug: "pregnancy-antenatal",
-    title: "Autumn baby to be (Unsplash)",
-    artist: "Arteida MjESHTRI arteidamjeshtri",
-    license: "CC0",
-    sourceUrl: "https://commons.wikimedia.org/wiki/File:Autumn_baby_to_be_(Unsplash).jpg"
-  },
-  {
-    slug: "labour-birth",
-    title: "A HUSBAND HOLDS HIS WIFE'S HAND DURING DELIVERY OF THEIR BABY IN LORETTO HOSPITAL IN NEW ULM, MINNESOTA. THERE ARE... - NARA - 558167",
-    artist: "Phillips, Kathy, Photographer (NARA record: 8467756)",
-    license: "Public domain",
-    sourceUrl: "https://commons.wikimedia.org/wiki/File:A_HUSBAND_HOLDS_HIS_WIFE%27S_HAND_DURING_DELIVERY_OF_THEIR_BABY_IN_LORETTO_HOSPITAL_IN_NEW_ULM,_MINNESOTA._THERE_ARE..._-_NARA_-_558167.jpg"
-  },
-  {
-    slug: "newborn-care",
-    title: "Newborn baby sleeps in a basket",
-    artist: "Elizabeth",
-    license: "CC0",
-    sourceUrl: "https://commons.wikimedia.org/wiki/File:Newborn_baby_sleeps_in_a_basket.jpg"
-  },
-  {
-    slug: "feeding-nutrition",
-    title: "Breastfeeding a newborn baby, Moscow, Russia",
-    artist: "Vyacheslav Argenberg",
-    license: "CC BY 4.0",
-    sourceUrl: "https://commons.wikimedia.org/wiki/File:Breastfeeding_a_newborn_baby,_Moscow,_Russia.jpg"
-  },
-  {
-    slug: "complications",
-    title: "MODULAR NICU WITH HEPAFILTERS",
-    artist: "Kaveri appala",
+    slug: "bedside-reference",
+    title: "Mesentery extending from the duodenojejunal flexure to the ileocecal junction.",
+    artist: "https://www.scientificanimations.com/",
     license: "CC BY-SA 4.0",
-    sourceUrl: "https://commons.wikimedia.org/wiki/File:MODULAR_NICU_WITH_HEPAFILTERS.jpg"
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Mesentery_extending_from_the_duodenojejunal_flexure_to_the_ileocecal_junction..jpg"
   },
   {
-    slug: "postnatal-quality",
-    title: "A Syrian refugee and her newborn baby at a clinic in Ramtha, Jordan (9613483141)",
-    artist: "DFID - UK Department for International Development",
-    license: "CC BY 2.0",
-    sourceUrl: "https://commons.wikimedia.org/wiki/File:A_Syrian_refugee_and_her_newborn_baby_at_a_clinic_in_Ramtha,_Jordan_(9613483141).jpg"
+    slug: "exam-revision",
+    title: "Salivary Gland",
+    artist: "http://www.scientificanimations.com/",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Salivary_Gland.jpg"
   },
   {
-    slug: "womens-health-family-planning",
-    title: "Future families - Hope, a Community Health Worker (7497778302)",
-    artist: "DFID - UK Department for International Development",
-    license: "CC BY 2.0",
-    sourceUrl: "https://commons.wikimedia.org/wiki/File:Future_families_-_Hope,_a_Community_Health_Worker_(7497778302).jpg"
+    slug: "reflux-upper-gut",
+    title: "3D Medical Animation Stomach Structure",
+    artist: "https://www.scientificanimations.com",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:3D_Medical_Animation_Stomach_Structure.jpg"
+  },
+  {
+    slug: "liver-bile-pancreas",
+    title: "Gallbladder stones",
+    artist: "www.scientificanimations.com",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Gallbladder_stones.jpg"
+  },
+  {
+    slug: "endoscopy-imaging",
+    title: "Irritable bowel syndrome",
+    artist: "http://www.scientificanimations.com",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Irritable_bowel_syndrome.jpg"
+  },
+  {
+    slug: "gut-cancer",
+    title: "3D Medical Animation Acute Pancreatitis",
+    artist: "https://www.scientificanimations.com",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:3D_Medical_Animation_Acute_Pancreatitis.jpg"
+  },
+  {
+    slug: "children-digestive-health",
+    title: "Inflammed mucous layer of the intestinal villi depicting Celiac disease",
+    artist: "www.scientificanimations.com",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Inflammed_mucous_layer_of_the_intestinal_villi_depicting_Celiac_disease.jpg"
   }
 ];
 

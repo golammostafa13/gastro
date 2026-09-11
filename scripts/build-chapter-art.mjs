@@ -45,82 +45,101 @@ const cacheDir = join(root, ".cache", "chapter-art");
 mkdirSync(outDir, { recursive: true });
 mkdirSync(cacheDir, { recursive: true });
 
-const UA = "maternity-book-bank/1.0 (an educational library; one-off asset build)";
+const UA = "gastroenterology-book-bank/1.0 (an educational library; one-off asset build)";
 const API = "https://commons.wikimedia.org/w/api.php";
 
 /**
- * One photograph per chapter, chosen by hand.
+ * One plate per chapter, chosen by hand.
  *
- * Chosen by hand because searching Commons for this subject and taking the top
- * result gives you sea otters, rhesus macaques and a clinical photograph of a
- * congenital defect: all correctly matching "mother and baby" and none of them
- * something to put behind a chapter heading. The search is useful for finding
- * candidates and useless for choosing between them.
+ * Chosen by hand for the same reason the library this was forked from chose
+ * its photographs by hand: searching Commons for "stomach" and taking the top
+ * result gives you a diagram from 1918, a photograph of a cow's abomasum and a
+ * surgical specimen in a tray. The search finds candidates and is useless for
+ * choosing between them.
+ *
+ * All seven are Scientific Animations renders, CC BY-SA 4.0, natively
+ * 1920x1080 — a 1:1 match for the output with no resampling at all, which is
+ * better than upstream managed, where 3840px photographs were thrown away in a
+ * downsample.
+ *
+ * **The selection rule that did most of the work here: no burnt-in labels.**
+ * Most medical renders on Commons are teaching illustrations and carry their
+ * own type — "Esophagus", "Hepatic Hilum", "ASCENDING COLON" — with leader
+ * lines reaching into the organ. Behind a chapter heading that is a second
+ * typeface arguing with the site's own, and it does not blur away: it stays
+ * legible and reads as a mistake. Blausen's library is larger and higher
+ * resolution and was ruled out almost entirely for this reason. Where a plate
+ * is otherwise right and its labels are confined to one edge, `box` crops past
+ * them; where they are scattered, the plate was replaced rather than cropped
+ * tighter and tighter, which is a game you lose.
+ *
+ * `invert` remains for a source on a white ground: mapped through the same ramp
+ * such a plate comes out pale with a dark organ on it, the opposite of the set
+ * it is meant to join, so the luminance is flipped before the duotone. Nothing
+ * in the current seven needs it; it is kept because the next addition might.
+ *
+ * **Share-alike.** Most of these are CC BY-SA 4.0, so the duotoned derivative
+ * inherits it: `public/bg/*.webp` built from those sources are themselves
+ * CC BY-SA 4.0. The credits this script generates are a licence condition and
+ * not a courtesy, which is why `src/lib/data/chapter-art.ts` is generated here
+ * rather than written by hand — and why the About page now renders it.
  */
 const CHAPTERS = [
   {
-    slug: "pregnancy-antenatal",
-    file: "File:Autumn baby to be (Unsplash).jpg",
-    /** Focus point, as a fraction: where the crop should keep its centre. */
-    focus: { x: 0.5, y: 0.42 },
-    /** >1 crops tighter than the largest 16:9 window. Default 1. */
+    /* The whole small bowel with its mesentery: the one plate in the set that
+       reads as "the tract" rather than as a single organ, which is what a
+       general reference shelf wants behind it. */
+    slug: "bedside-reference",
+    file:
+      "File:Mesentery extending from the duodenojejunal flexure to the " +
+      "ileocecal junction..jpg", // the doubled period is in the real title
+    focus: { x: 0.5, y: 0.48 },
     zoom: 1,
   },
   {
-    /**
-     * Two hands clasped through a delivery. Chosen over every actual
-     * delivery-room photograph on Commons, which are almost all either
-     * clinical, graphic, or a picture of a building: the "maternity ward" that
-     * stood here first turned out to be the hospital's car park and facade.
-     */
-    slug: "labour-birth",
-    file:
-      "File:A HUSBAND HOLDS HIS WIFE'S HAND DURING DELIVERY OF THEIR BABY IN " +
-      "LORETTO HOSPITAL IN NEW ULM, MINNESOTA. THERE ARE... - NARA - 558167.jpg",
+    /* Digestion begins at the mouth, and a revision shelf is not organ-specific
+       anyway. Chosen for being the most abstract plate available once the
+       labelled ones were ruled out. */
+    slug: "exam-revision",
+    file: "File:Salivary Gland.jpg",
+    focus: { x: 0.42, y: 0.48 },
+    zoom: 1.05,
+  },
+  {
+    slug: "reflux-upper-gut",
+    file: "File:3D Medical Animation Stomach Structure.jpg",
+    focus: { x: 0.4, y: 0.5 },
+    zoom: 1,
+    // The leader lines and their labels run down the right third.
+    box: { left: 0.0, top: 0.04, width: 0.58, height: 0.92 },
+  },
+  {
+    slug: "liver-bile-pancreas",
+    file: "File:Gallbladder stones.jpg",
     focus: { x: 0.46, y: 0.5 },
+    zoom: 1.02,
   },
   {
-    slug: "newborn-care",
-    file: "File:Newborn baby sleeps in a basket.jpg",
-    focus: { x: 0.5, y: 0.5 },
+    slug: "endoscopy-imaging",
+    file: "File:Irritable bowel syndrome.jpg",
+    focus: { x: 0.5, y: 0.46 },
+    zoom: 1.08,
   },
   {
-    /**
-     * Framed on the baby's head, not wide. Breastfeeding photographs are the
-     * right subject for this chapter and WHO's own guidance is illustrated with
-     * them, but a full-bleed panel behind a heading is not the place for an
-     * anatomical close-up, so the crop pulls in on the child and the `zoom`
-     * knob exists for precisely this.
-     */
-    slug: "feeding-nutrition",
-    file: "File:Breastfeeding a newborn baby, Moscow, Russia.jpg",
-    focus: { x: 0.4, y: 0.34 },
-    zoom: 1.5,
+    slug: "gut-cancer",
+    file: "File:3D Medical Animation Acute Pancreatitis.jpg",
+    focus: { x: 0.44, y: 0.5 },
+    zoom: 1.04,
   },
   {
-    slug: "complications",
-    file: "File:MODULAR NICU WITH HEPAFILTERS.jpg",
-    focus: { x: 0.5, y: 0.5 },
-  },
-  {
-    slug: "postnatal-quality",
-    file: "File:A Syrian refugee and her newborn baby at a clinic in Ramtha, Jordan (9613483141).jpg",
-    focus: { x: 0.5, y: 0.42 },
-  },
-  {
-    /**
-     * A Banja La Mtsogolo community health worker — Malawi's family planning
-     * service, and the logo on her shirt reads "providing choices in
-     * reproductive health", which is the chapter in four words.
-     *
-     * A person rather than a tray of contraceptives, which is what a search for
-     * this subject mostly returns. The shelf is about counselling as much as
-     * method, and a photograph of the counsellor says so; a flat-lay of pill
-     * packets would have made it a chapter about products.
-     */
-    slug: "womens-health-family-planning",
-    file: "File:Future families - Hope, a Community Health Worker (7497778302).jpg",
-    focus: { x: 0.62, y: 0.42 },
+    /* Coeliac disease, and the villus surface it flattens — the paediatric
+       malabsorption diagnosis, behind the paediatric shelf. */
+    slug: "children-digestive-health",
+    file:
+      "File:Inflammed mucous layer of the intestinal villi depicting " +
+      "Celiac disease.jpg", // "Inflammed" is the uploader's spelling
+    focus: { x: 0.46, y: 0.52 },
+    zoom: 1.16,
   },
 ];
 
@@ -161,8 +180,18 @@ async function commons(params) {
   throw new Error("Commons would not answer (rate limit?)");
 }
 
+/**
+ * Downloads an original, or returns the copy already on disk.
+ *
+ * **Keyed on the Commons file name, not on the chapter slug.** Keying it on the
+ * slug — which is what this did originally — means that reassigning a chapter
+ * to a different photograph silently re-treats the old one: the script reports
+ * seven successes, the credits file updates to name the new source, and the
+ * seven images on disk are the previous set. That failure is invisible unless
+ * you happen to look at the pictures, and it cost an iteration to find.
+ */
 async function fetchImage(url, cacheKey) {
-  const cached = join(cacheDir, `${cacheKey}.bin`);
+  const cached = join(cacheDir, `${cacheKey.replace(/[^a-z0-9]+/gi, "-").slice(0, 120)}.bin`);
   if (existsSync(cached)) return readFileSync(cached);
 
   for (let attempt = 0; attempt < 5; attempt++) {
@@ -205,7 +234,7 @@ for (const chapter of CHAPTERS) {
   const strip = (value) =>
     (value ?? "").replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 
-  const source = await fetchImage(info.thumburl ?? info.url, chapter.slug);
+  const source = await fetchImage(info.thumburl ?? info.url, chapter.file);
 
   /* --- The treatment ---------------------------------------------------- *
    * 1. Cover-crop to 16:9 around the focus point.
@@ -225,6 +254,21 @@ for (const chapter of CHAPTERS) {
   // crop is computed here: take the largest 16:9 window that fits, then slide
   // it so the focus point sits at its centre, clamped to the frame.
   const meta0 = await sharp(source).metadata();
+
+  // `box` short-circuits the focus arithmetic below. It exists because several
+  // of these renders carry burnt-in labels and leader lines in a band that a
+  // 16:9 window centred on a focus point will happily include: the crop has to
+  // be stated, not inferred. Fractions of the source, so it survives a
+  // different thumbnail width.
+  const window = chapter.box
+    ? {
+        left: Math.round(chapter.box.left * meta0.width),
+        top: Math.round(chapter.box.top * meta0.height),
+        width: Math.round(chapter.box.width * meta0.width),
+        height: Math.round(chapter.box.height * meta0.height),
+      }
+    : null;
+
   const targetRatio = WIDTH / HEIGHT;
   const sourceRatio = meta0.width / meta0.height;
   const zoom = Math.max(1, chapter.zoom ?? 1);
@@ -243,10 +287,19 @@ for (const chapter of CHAPTERS) {
     Math.min(meta0.height - cropHeight, Math.round(chapter.focus.y * meta0.height - cropHeight / 2)),
   );
 
-  const luminance = await sharp(source)
-    .extract({ left, top, width: cropWidth, height: cropHeight })
-    .resize(WIDTH, HEIGHT)
-    .greyscale()
+  let pipeline = sharp(source)
+    .extract(window ?? { left, top, width: cropWidth, height: cropHeight })
+    .resize(WIDTH, HEIGHT, { kernel: "lanczos3" })
+    .greyscale();
+
+  // A render on a white ground and a render on a black one are the same
+  // drawing with the ramp applied at opposite ends. Flipping the luminance
+  // here, rather than giving the source its own ramp, is what keeps them one
+  // set: the ramp stays a property of the site and the ground stays a property
+  // of the file.
+  if (chapter.invert) pipeline = pipeline.negate({ alpha: false });
+
+  const luminance = await pipeline
     .blur(1.6)
     .png({ compressionLevel: 0 })
     .toBuffer();

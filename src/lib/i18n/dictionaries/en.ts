@@ -119,26 +119,26 @@ export const en = {
     categoriesTitle: "Browse by category",
     categoriesLead: "Seven shelves. Every spine is a book you can open right now.",
     cinema: {
-      eyebrow: "Sponsored by Exium MUPS 20 · Radiant Pharmaceuticals",
+      eyebrow: "Sponsored by Lanso D 30 · Square Pharmaceuticals",
       /* Not the site's name. The header carries that, two hundred pixels
          above this, and printing it twice inside one screen is the sort of
          repetition that makes a page look assembled rather than designed.
-         What a hero should say is why the shelf exists, and "the first
-         thousand days", conception to a child's second birthday, is the
-         term maternal health actually uses for it. */
-      titleTop: "The first",
-      titleBottom: "thousand days",
+         What a hero should say is why the shelf exists. Nine metres is the
+         length of the adult gastrointestinal tract, and it is the one fact
+         about this subject that surprises people who have not met it. */
+      titleTop: "Nine metres",
+      titleBottom: "of you",
       lead:
-        "Pregnancy, birth and the first weeks: a shelf of trusted guides in Bangla and English, free to read in your browser or to keep as a file.",
+        "The gut, the liver and the biliary tract: the reference books, revision titles and monographs a clinician actually reaches for, free to read in your browser or to keep as a file.",
       enter: "Enter the library",
       browse: "Browse the chapters",
       scrollHint: "Scroll",
     },
     collection: {
       eyebrow: "The collection",
-      title: "Six chapters, from the first weeks to the last visit",
+      title: "Seven shelves, from the bedside to the scope",
       lead:
-        "Pregnancy, labour, the newborn, feeding, the emergencies and the weeks after. Keep scrolling, and the collection moves through each of them in turn.",
+        "The ward round, the examination, reflux, the liver, the endoscopy suite, cancer and the children's clinic. Keep scrolling, and the collection moves through each of them in turn.",
       chapterLabel: "Chapter",
       viewShelf: "Open this shelf",
       railLabel: "Chapters in the collection",
@@ -173,10 +173,12 @@ export const en = {
     searchPlaceholder: "Search a book, author or ISBN…",
     filter: "Filter the catalogue",
     all: "All",
-    /* Names the two pill rows. "Stage of care" rather than "Category" because
-       the word has to say what the axis *is* the moment a reader sees it
-       sitting above a second row that is also a category of something. */
-    byCategory: "Stage of care",
+    /* Names the two pill rows. "Shelf" rather than "Category" because the word
+       has to say what the axis *is* the moment a reader sees it sitting above a
+       second row that is also a category of something. The upstream library
+       said "Stage of care", which worked when the shelves were the stages of a
+       pregnancy; these are places a clinician stands, not a sequence. */
+    byCategory: "Shelf",
     bySubject: "Subject",
     /* --- What is currently in force ------------------------------------
        Introduces the chip row, so it has to read as the start of a sentence
@@ -286,29 +288,29 @@ export const en = {
   categories: {
     eyebrow: "Browse",
     title: "Categories",
-    lead: "Seven shelves covering the whole collection, in the order a pregnancy happens.",
+    lead: "Seven shelves covering the whole collection, ordered by where you are standing when you need one.",
     notFound: "Category not found",
     /* Was a line about fiction, poetry and children's books, inherited from the
        general-library project this catalogue grew out of. It described a
        collection that has never been on this site. */
     metaDescription:
-      "Browse the collection by stage of care: pregnancy and antenatal care, labour and birth, newborn care, breastfeeding and nutrition, complications, postnatal care, and women's health and family planning.",
+      "Browse the collection shelf by shelf: bedside reference, exams and revision, reflux and the upper gut, liver, bile and pancreas, endoscopy and imaging, cancer of the gut, and children's digestive health.",
   },
 
   subjects: {
     eyebrow: "Browse by specialty",
     title: "Subjects",
-    lead: "The collection as a clinician asks for it: seven subjects, the standard division of obstetrics and gynaecology.",
+    lead: "The collection as a clinician asks for it: seven subjects, the standard division of gastroenterology and hepatology.",
     notFound: "Subject not found",
     /** Shown on a subject that has been created but has nothing filed under it. */
     empty: "No titles under this subject yet.",
     /** Under the plate on a subject page, above the grid. */
     onThisShelf: "On this shelf",
     /** The cross-link each page carries to the other way of browsing. */
-    alsoByCategory: "Or browse by stage of care",
+    alsoByCategory: "Or browse by shelf",
     alsoBySubject: "Or browse by clinical subject",
     metaDescription:
-      "Browse the collection by clinical subject: obstetrics, gynecology, maternal-fetal medicine, reproductive endocrinology and infertility, gynecologic oncology, urogynecology and family planning.",
+      "Browse the collection by clinical subject: luminal gastroenterology, hepatology, neurogastroenterology and motility, gastrointestinal endoscopy, gastrointestinal radiology, gastrointestinal oncology and paediatric gastroenterology.",
   },
 
   search: {
@@ -324,6 +326,9 @@ export const en = {
   },
 
   about: {
+    creditsTitle: "Picture credits",
+    creditsLead:
+      "The plate behind each shelf is a 3D medical render published on Wikimedia Commons under a Creative Commons licence. They are collapsed to luminance and mapped through this site\u2019s own two colours, but the composition is the artist\u2019s and the attribution is a condition of the licence rather than a courtesy.",
     eyebrow: "About",
     title: "A library should be open to everyone.",
     lead: "{name} exists for one reason: a catalogue of {books} books should be as easy to reach as a search box. No paywall. No adverts. No ten-step download that ends in one.",
@@ -416,16 +421,16 @@ export const en = {
     /* The product line, as printed on the pack. Not translated, because a medicine's
        brand name is the same word in every language, and a reader matching what
        is on the page against what is in their hand needs it to be. */
-    product: "Exium MUPS 20",
-    generic: "Esomeprazole 20 mg",
-    company: "Radiant Pharmaceuticals Ltd.",
-    alt: "Two Exium MUPS cartons, 20 mg and 40 mg, with their blister strips.",
+    product: "Lanso D 30",
+    generic: "Dexlansoprazole 30 mg",
+    company: "Square Pharmaceuticals PLC.",
+    alt: "A Lanso D 30 carton with its blister strip of capsules.",
     hint: "Drag to turn the pack",
     note: "A prescription medicine. This is an advertisement, not medical advice.",
     /* The About page's explanation of why an advert is here at all. */
     aboutTitle: "Who paid for this",
     aboutLead:
-      "This library was given away with a print run funded by Radiant Pharmaceuticals, and the Exium MUPS pack on these pages is the whole of what they get for it. There is no advertising network, no third-party script and no record of what you read. The one advert on the site is a picture of a box, served from this domain, and it does not know you are there.",
+      "This library was given away with a print run funded by Square Pharmaceuticals, and the Lanso D pack on these pages is the whole of what they get for it. There is no advertising network, no third-party script and no record of what you read. The one advert on the site is a drawing of a box, rendered in your own browser, and it does not know you are there.",
   },
   auth: {
     /* --- The door ------------------------------------------------------- */
@@ -480,9 +485,9 @@ export const en = {
     errorEmailInvalid: "That does not look like an email address.",
 
     /* --- The aside ------------------------------------------------------ */
-    sideEyebrow: "For mothers, midwives and health workers",
+    sideEyebrow: "For doctors, trainees and medical students",
     sideLead:
-      "Pregnancy, birth and the first weeks: every title in the collection, in Bangla and English, free in your browser.",
+      "The gut, the liver and the biliary tract: every title in the collection, in Bangla and English, free in your browser.",
     sideLeadSignUp:
       "Tell us where your copy landed. It takes a moment and it is entirely optional.",
   },
