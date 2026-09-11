@@ -28,12 +28,14 @@ export function CategoryForm({
 
   /** The icon set the public category cards can render. */
   const icons = [
-    { value: "BookOpen", label: f.iconBookOpen },
-    { value: "Feather", label: f.iconFeather },
-    { value: "Landmark", label: f.iconLandmark },
-    { value: "Atom", label: f.iconAtom },
+    { value: "Stethoscope", label: f.iconStethoscope },
+    { value: "GraduationCap", label: f.iconGraduationCap },
+    { value: "Flame", label: f.iconFlame },
+    { value: "Droplets", label: f.iconDroplets },
+    { value: "ScanLine", label: f.iconScanLine },
+    { value: "Ribbon", label: f.iconRibbon },
     { value: "Baby", label: f.iconBaby },
-    { value: "Library", label: f.iconLibrary },
+    { value: "BookOpen", label: f.iconBookOpen },
   ];
 
   return (

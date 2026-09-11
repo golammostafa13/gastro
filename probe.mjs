@@ -1,11 +1,25 @@
 /**
  * Loads a page in headless Chrome and reports console output, page errors,
  * failed requests, and (optionally) a screenshot.
- *   node probe.js <url> [screenshot.png] [waitMs]
+ *   node probe.mjs <url> [screenshot.png] [waitMs]
+ *
+ * Every page but the two door pages is behind a session cookie, so without one
+ * this reports on a redirect to /signin rather than on the page you asked for
+ * — which looks like a pass and tells you nothing. Set `PROBE_SESSION` to a
+ * `gbb_session` value copied out of DevTools after signing in:
+ *
+ *   PROBE_SESSION=$(…) node probe.mjs http://localhost:3000/en/books shot.png
+ *
+ * It is read from the environment rather than minted here on purpose. A script
+ * in the repository that can forge a session from `AUTH_SECRET` is a script
+ * that will eventually be run somewhere it should not be; copying a cookie you
+ * already earned by typing the password is the same convenience with none of
+ * that.
  */
 import puppeteer from "puppeteer-core";
 
 const [, , url, shot, waitMs = "9000"] = process.argv;
+const session = process.env.PROBE_SESSION;
 
 (async () => {
   const browser = await puppeteer.launch({
@@ -15,6 +29,18 @@ const [, , url, shot, waitMs = "9000"] = process.argv;
   });
   const page = await browser.newPage();
   await page.setViewport({ width: 1440, height: 1000, deviceScaleFactor: 1 });
+
+  if (session) {
+    const { hostname } = new URL(url);
+    await browser.setCookie({
+      name: "gbb_session",
+      value: session,
+      domain: hostname,
+      path: "/",
+    });
+  } else {
+    console.log("[note] no PROBE_SESSION — expect a redirect to /signin");
+  }
 
   page.on("console", (m) => console.log(`[console.${m.type()}] ${m.text()}`));
   page.on("pageerror", (e) => console.log(`[pageerror] ${e.message}`));

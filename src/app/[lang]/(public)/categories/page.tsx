@@ -3,12 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   ArrowRight,
-  Atom,
+  Stethoscope,
+  GraduationCap,
+  Flame,
+  Droplets,
+  ScanLine,
+  Ribbon,
   Baby,
   BookOpen,
-  Feather,
-  Landmark,
-  Library,
 } from "lucide-react";
 import { Shelf3D } from "@/components/shelf-3d";
 import { getCategoryShelves } from "@/lib/data/books";
@@ -42,12 +44,14 @@ export async function generateMetadata(
 }
 
 const icons: Record<string, typeof BookOpen> = {
-  BookOpen,
-  Feather,
-  Landmark,
-  Atom,
+  Stethoscope,
+  GraduationCap,
+  Flame,
+  Droplets,
+  ScanLine,
+  Ribbon,
   Baby,
-  Library,
+  BookOpen,
 };
 
 export default async function CategoriesPage(

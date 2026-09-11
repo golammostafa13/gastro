@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  Atom,
+  ExternalLink,
+  Stethoscope,
+  GraduationCap,
+  Flame,
+  Droplets,
+  ScanLine,
+  Ribbon,
   Baby,
   BookOpen,
-  ExternalLink,
-  Feather,
-  Landmark,
-  Library,
 } from "lucide-react";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { CategoryForm } from "@/components/admin/category-form";
@@ -31,12 +33,14 @@ export async function generateMetadata(
 }
 
 const icons: Record<string, typeof BookOpen> = {
-  BookOpen,
-  Feather,
-  Landmark,
-  Atom,
+  Stethoscope,
+  GraduationCap,
+  Flame,
+  Droplets,
+  ScanLine,
+  Ribbon,
   Baby,
-  Library,
+  BookOpen,
 };
 
 export default async function AdminCategoriesPage(

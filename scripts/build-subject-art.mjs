@@ -39,9 +39,24 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = join(root, "public", "subjects");
 mkdirSync(outDir, { recursive: true });
 
-/** 16:9. Used full-bleed as a hero and cropped as a tile, so it wants headroom. */
+/**
+ * The drawing space. Every coordinate in `motifs` below is in these units, so
+ * this is a design grid rather than an output size — leave it alone.
+ */
 const WIDTH = 1600;
 const HEIGHT = 900;
+
+/**
+ * The raster size, which is a different question.
+ *
+ * These plates are used full-bleed behind a subject heading, and the source is
+ * an SVG: there is no original to run out of, so resolution here costs nothing
+ * but a few kilobytes of WebP. Rendering above the drawing grid is why a drawn
+ * plate can sit beside a photographed one on the same page without being the
+ * soft one.
+ */
+const OUT_WIDTH = 2048;
+const OUT_HEIGHT = 1152;
 
 /**
  * The duotone ramp, copied deliberately from `build-chapter-art.mjs`.
@@ -86,126 +101,171 @@ function rng(slug) {
  *
  * Each is a greyscale SVG fragment: light means highlight once the duotone is
  * applied, dark means ink. They are abstractions of the subject rather than
- * pictures of it — a fetal heart trace, a pelvic ring, a helix — because a
- * literal illustration at this size becomes clip-art, and clip-art is worse
- * than a gradient.
+ * pictures of it — a lumen receding, hepatic lobules, a peristaltic wave —
+ * because a literal illustration at this size becomes clip-art, and clip-art
+ * is worse than a gradient.
  *
  * `next` is the seeded RNG, so a motif can vary without becoming random.
  */
 const motifs = {
-  /** Nested arcs: the curve of a term abdomen, drawn as contour lines. */
-  obstetrics(next) {
+  /**
+   * The lumen, seen down a scope: concentric rings receding to a point, each
+   * one smaller and fainter than the last. The centre is left dark because
+   * that is what you are looking at when you look down a bowel — not a wall,
+   * a hole.
+   */
+  "luminal-gastroenterology"(next) {
     let d = "";
-    for (let i = 0; i < 7; i++) {
-      const r = 190 + i * 62 + next() * 14;
-      d += `<circle cx="1180" cy="470" r="${r.toFixed(1)}" fill="none" stroke="#fff" stroke-opacity="${(0.5 - i * 0.055).toFixed(3)}" stroke-width="${(3.5 - i * 0.3).toFixed(2)}"/>`;
+    const cx = 1140;
+    const cy = 460;
+    for (let i = 0; i < 11; i++) {
+      const r = 44 + i * i * 5.4 + next() * 10;
+      // Each ring drifts a little off the last, so the tube bends away rather
+      // than pointing straight at the reader.
+      const ox = cx + i * 9 * (next() - 0.3);
+      const oy = cy + i * 6 * (next() - 0.5);
+      d += `<ellipse cx="${ox.toFixed(1)}" cy="${oy.toFixed(1)}" rx="${r.toFixed(1)}" ry="${(r * 0.86).toFixed(1)}" fill="none" stroke="#fff" stroke-opacity="${(0.5 - i * 0.038).toFixed(3)}" stroke-width="${(3.6 - i * 0.22).toFixed(2)}"/>`;
     }
     return d;
   },
 
-  /** Overlapping petal forms: the vesica shape a bimanual exam diagram uses. */
-  gynecology(next) {
+  /** Hepatic lobules: tessellated hexagons at three scales, as in a section. */
+  hepatology(next) {
     let d = "";
-    for (let i = 0; i < 5; i++) {
-      const rot = -28 + i * 14 + next() * 5;
-      const rx = 120 + i * 26;
-      const ry = 300 + i * 34;
-      d += `<ellipse cx="1150" cy="450" rx="${rx}" ry="${ry}" fill="none" stroke="#fff" stroke-opacity="${(0.46 - i * 0.07).toFixed(3)}" stroke-width="2.6" transform="rotate(${rot.toFixed(1)} 1150 450)"/>`;
+    const hex = (cx, cy, r, o, w) => {
+      const pts = [];
+      for (let k = 0; k < 6; k++) {
+        const a = (Math.PI / 3) * k - Math.PI / 6;
+        pts.push(`${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`);
+      }
+      return `<polygon points="${pts.join(" ")}" fill="none" stroke="#fff" stroke-opacity="${o}" stroke-width="${w}"/>`;
+    };
+    for (let row = 0; row < 5; row++) {
+      for (let col = 0; col < 6; col++) {
+        const r = 66 + next() * 10;
+        const cx = 880 + col * r * 1.72 + (row % 2 ? r * 0.86 : 0);
+        const cy = 200 + row * r * 1.5;
+        if (cx > 1560) continue;
+        d += hex(cx, cy, r, (0.42 - row * 0.045).toFixed(3), 2.4);
+        // The central vein each lobule drains into.
+        d += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${(r * 0.17).toFixed(1)}" fill="#fff" fill-opacity="${(0.3 - row * 0.04).toFixed(3)}"/>`;
+      }
     }
     return d;
   },
 
-  /** A cardiotocograph trace: the one line every MFM clinic is reading. */
-  "maternal-fetal-medicine"(next) {
+  /**
+   * A peristaltic wave train: a sine under a travelling envelope, so the
+   * contraction reads as moving down the tube rather than as a graph. The same
+   * construction the obstetric version of this file used for a CTG trace, for
+   * the same reason — one line that is obviously a recording.
+   */
+  "neurogastroenterology-motility"(next) {
     const baseline = 470;
     let d = "";
     for (let pass = 0; pass < 3; pass++) {
       let path = `M 240 ${baseline}`;
-      for (let x = 240; x <= 1460; x += 20) {
+      for (let x = 240; x <= 1500; x += 16) {
+        const t = (x - 240) / 1260;
+        const envelope = Math.exp(-(((t - (0.3 + pass * 0.2)) / 0.26) ** 2));
         const y =
           baseline +
-          Math.sin((x + pass * 90) / 62) * (34 + pass * 12) +
-          Math.sin(x / 17) * 9 * next();
-      path += ` L ${x} ${y.toFixed(1)}`;
+          Math.sin((x + pass * 110) / 54) * (26 + 78 * envelope) +
+          Math.sin(x / 19) * 6 * next();
+        path += ` L ${x} ${y.toFixed(1)}`;
       }
-      d += `<path d="${path}" fill="none" stroke="#fff" stroke-opacity="${(0.5 - pass * 0.14).toFixed(3)}" stroke-width="${(3 - pass * 0.7).toFixed(2)}" stroke-linecap="round"/>`;
+      d += `<path d="${path}" fill="none" stroke="#fff" stroke-opacity="${(0.5 - pass * 0.13).toFixed(3)}" stroke-width="${(3.2 - pass * 0.7).toFixed(2)}" stroke-linecap="round"/>`;
     }
     return d;
   },
 
-  /** A double helix, dotted: endocrinology's own shorthand. */
-  "reproductive-endocrinology-infertility"(next) {
+  /** Haustral folds: the sacculations that make a colon look like a colon. */
+  "gastrointestinal-endoscopy"(next) {
     let d = "";
-    for (let i = 0; i <= 74; i++) {
-      const t = i / 74;
-      const x = 300 + t * 1050;
-      const spread = Math.sin(t * Math.PI * 3.1) * 150;
-      const y1 = 450 + spread;
-      const y2 = 450 - spread;
-      const o = 0.16 + Math.abs(Math.cos(t * Math.PI * 3.1)) * 0.34;
-      if (i % 6 === 0) {
-        d += `<line x1="${x.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#fff" stroke-opacity="${(o * 0.5).toFixed(3)}" stroke-width="1.8"/>`;
+    // One spine, drawn as a bezier, with folds stepped off its normal.
+    const pts = [];
+    for (let i = 0; i <= 40; i++) {
+      const t = i / 40;
+      const x = 300 + t * 1180;
+      const y = 460 + Math.sin(t * Math.PI * 1.6) * 190 + Math.sin(t * 9) * 12;
+      pts.push([x, y]);
+    }
+    d += `<path d="M ${pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(" L ")}" fill="none" stroke="#fff" stroke-opacity="0.34" stroke-width="3"/>`;
+    for (let i = 2; i < pts.length - 2; i += 2) {
+      const [x, y] = pts[i];
+      const [px, py] = pts[i - 1];
+      const [nx, ny] = pts[i + 1];
+      const dx = nx - px;
+      const dy = ny - py;
+      const len = Math.hypot(dx, dy) || 1;
+      const h = 62 + next() * 28;
+      const ux = (-dy / len) * h;
+      const uy = (dx / len) * h;
+      d += `<path d="M ${(x - ux).toFixed(1)} ${(y - uy).toFixed(1)} Q ${x.toFixed(1)} ${y.toFixed(1)} ${(x + ux).toFixed(1)} ${(y + uy).toFixed(1)}" fill="none" stroke="#fff" stroke-opacity="${(0.44 - i * 0.006).toFixed(3)}" stroke-width="2.4" stroke-linecap="round"/>`;
+    }
+    return d;
+  },
+
+  /** A film grid: the light box a reporting list used to arrive on. */
+  "gastrointestinal-radiology"(next) {
+    let d = "";
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 4; col++) {
+        const x = 820 + col * 190;
+        const y = 175 + row * 208;
+        const w = 168;
+        const h = 186;
+        d += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="#fff" stroke-opacity="${(0.4 - row * 0.06).toFixed(3)}" stroke-width="2.2"/>`;
+        // A soft form inside each frame: something is on every film.
+        const r = 28 + next() * 34;
+        d += `<circle cx="${(x + w / 2 + (next() - 0.5) * 40).toFixed(1)}" cy="${(y + h / 2 + (next() - 0.5) * 46).toFixed(1)}" r="${r.toFixed(1)}" fill="#fff" fill-opacity="${(0.16 + next() * 0.12).toFixed(3)}"/>`;
       }
-      const r = 4.5 + next() * 2;
-      d += `<circle cx="${x.toFixed(1)}" cy="${y1.toFixed(1)}" r="${r.toFixed(2)}" fill="#fff" fill-opacity="${o.toFixed(3)}"/>`;
-      d += `<circle cx="${x.toFixed(1)}" cy="${y2.toFixed(1)}" r="${r.toFixed(2)}" fill="#fff" fill-opacity="${o.toFixed(3)}"/>`;
     }
     return d;
   },
 
-  /** Concentric cell rings: what a colposcope and a slide both look like. */
-  "gynecologic-oncology"(next) {
+  /**
+   * A polyp as a contour map: stacked irregular closed forms, each inside the
+   * last. Staging is depth, and a topographic section is the one abstraction
+   * that says depth without drawing a tumour.
+   */
+  "gastrointestinal-oncology"(next) {
     let d = "";
-    const cells = [
-      [1170, 400, 210],
-      [860, 610, 130],
-      [1400, 660, 95],
-      [1010, 235, 78],
-    ];
-    for (const [cx, cy, r] of cells) {
-      for (let i = 0; i < 4; i++) {
-        const rr = r * (1 - i * 0.19) + next() * 6;
-        d += `<circle cx="${cx}" cy="${cy}" r="${rr.toFixed(1)}" fill="none" stroke="#fff" stroke-opacity="${(0.44 - i * 0.08).toFixed(3)}" stroke-width="2.4"/>`;
+    const cx = 1150;
+    const cy = 470;
+    for (let i = 0; i < 8; i++) {
+      const base = 300 - i * 34;
+      const pts = [];
+      for (let k = 0; k < 26; k++) {
+        const a = (Math.PI * 2 * k) / 26;
+        const r = base * (0.82 + 0.3 * Math.sin(a * 3 + i * 0.7) + next() * 0.06);
+        pts.push(`${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a) * 0.86).toFixed(1)}`);
       }
-      d += `<circle cx="${cx}" cy="${cy}" r="${(r * 0.14).toFixed(1)}" fill="#fff" fill-opacity="0.34"/>`;
+      d += `<polygon points="${pts.join(" ")}" fill="none" stroke="#fff" stroke-opacity="${(0.46 - i * 0.045).toFixed(3)}" stroke-width="${(2.8 - i * 0.16).toFixed(2)}"/>`;
     }
     return d;
   },
 
-  /** The pelvic ring: interlocking arcs around an open centre. */
-  "urogynecology-pelvic-reconstructive-surgery"(next) {
+  /**
+   * A villus field: rows of soft finger-forms at varying phase. It is the
+   * surface absorption actually happens across, which is the thing paediatric
+   * gastroenterology spends most of its time worrying about.
+   */
+  "paediatric-gastroenterology"(next) {
     let d = "";
-    for (let i = 0; i < 5; i++) {
-      const r = 150 + i * 66;
-      const sweep = 150 + next() * 30;
-      const start = -sweep / 2 - 90;
-      const end = sweep / 2 - 90;
-      const rad = (deg) => (deg * Math.PI) / 180;
-      const x1 = 1160 + r * Math.cos(rad(start));
-      const y1 = 470 + r * Math.sin(rad(start));
-      const x2 = 1160 + r * Math.cos(rad(end));
-      const y2 = 470 + r * Math.sin(rad(end));
-      const o = (0.48 - i * 0.07).toFixed(3);
-      d += `<path d="M ${x1.toFixed(1)} ${y1.toFixed(1)} A ${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" fill="none" stroke="#fff" stroke-opacity="${o}" stroke-width="3" stroke-linecap="round"/>`;
-      d += `<path d="M ${(2320 - x1).toFixed(1)} ${(940 - y1).toFixed(1)} A ${r} ${r} 0 0 1 ${(2320 - x2).toFixed(1)} ${(940 - y2).toFixed(1)}" fill="none" stroke="#fff" stroke-opacity="${o}" stroke-width="3" stroke-linecap="round"/>`;
-    }
-    return d;
-  },
-
-  /** A calendar field: family planning is, at bottom, a chart of days. */
-  "family-planning"(next) {
-    let d = "";
-    for (let row = 0; row < 6; row++) {
-      for (let col = 0; col < 9; col++) {
-        const cx = 840 + col * 78;
-        const cy = 250 + row * 78;
-        const on = next();
-        const r = on > 0.62 ? 15 + next() * 6 : 6.5;
-        const o = on > 0.62 ? 0.42 : 0.2;
+    for (let row = 0; row < 3; row++) {
+      const baseY = 700 - row * 120;
+      const o = (0.44 - row * 0.1).toFixed(3);
+      for (let i = 0; i < 16; i++) {
+        const x = 790 + i * 52 + next() * 14;
+        const h = 150 + next() * 110 - row * 18;
+        const w = 17 + next() * 8;
         d +=
-          on > 0.62
-            ? `<circle cx="${cx}" cy="${cy}" r="${r.toFixed(1)}" fill="none" stroke="#fff" stroke-opacity="${o}" stroke-width="2.6"/>`
-            : `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" fill-opacity="${o}"/>`;
+          `<path d="M ${(x - w).toFixed(1)} ${baseY} ` +
+          `C ${(x - w).toFixed(1)} ${(baseY - h).toFixed(1)} ` +
+          `${(x + w).toFixed(1)} ${(baseY - h).toFixed(1)} ` +
+          `${(x + w).toFixed(1)} ${baseY} Z" ` +
+          `fill="none" stroke="#fff" stroke-opacity="${o}" stroke-width="2.3"/>`;
       }
     }
     return d;
@@ -243,7 +303,7 @@ function svg(slug, next) {
   if (!motif) throw new Error(`No motif for subject: ${slug}`);
   const tilt = (next() * 24 - 12).toFixed(1);
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${OUT_WIDTH}" height="${OUT_HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#6f6f6f"/>
@@ -274,7 +334,7 @@ for (const slug of targets) {
   // appears, so the duotone has to happen to an already-rendered buffer.
   const grey = await sharp(Buffer.from(svg(slug, next)))
     .greyscale()
-    .blur(2.2)
+    .blur((2.2 * OUT_WIDTH) / WIDTH)
     .png({ compressionLevel: 0 })
     .toBuffer();
 

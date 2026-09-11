@@ -287,7 +287,20 @@ function categorySchema(dict: Dictionary) {
     nameBn: z.string().trim().min(1, e.nameBnRequired),
     description: z.string().trim().min(20, e.shelfDescription),
     descriptionBn: z.string().trim().max(2000).optional(),
-    icon: z.enum(["BookOpen", "Feather", "Landmark", "Atom", "Baby", "Library"]),
+    // The allow-list, the two icon maps in the category pages and the six
+    // labels in each dictionary are four places that have to agree. They did
+    // not upstream: this enum held six icons the fixtures never used, so six
+    // of seven shelves silently fell back to BookOpen.
+    icon: z.enum([
+      "Stethoscope",
+      "GraduationCap",
+      "Flame",
+      "Droplets",
+      "ScanLine",
+      "Ribbon",
+      "Baby",
+      "BookOpen",
+    ]),
   });
 }
 
