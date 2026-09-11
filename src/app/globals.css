@@ -40,7 +40,7 @@
 
   /* The same brand pink for things that emit light rather than fill a shape:
      the hero's rim light and its dust motes, the glow behind a panel, the
-     lamp on the Exium pack. A colour dark enough to carry white text is by
+     lamp on the Lanso D pack. A colour dark enough to carry white text is by
      definition too dark to work as a light source: `--accent` as a PointLight
      barely registers. */
   --accent-lit: #f9a8d4;
@@ -1393,7 +1393,7 @@ body {
    `--dur-*` and `--ease-*` come from the motion tokens at the top
    of this file. Nothing here invents its own timing.
 --------------------------------------------------------------- */
-.exium-ad {
+.lansod-ad {
   display: flex;
   flex-direction: column;
   border-radius: var(--radius-2xl, 1.25rem);
@@ -1406,7 +1406,7 @@ body {
   box-shadow: var(--shadow-1);
 }
 
-.exium-ad__eyebrow {
+.lansod-ad__eyebrow {
   color: var(--ink-faint);
 }
 
@@ -1414,15 +1414,15 @@ body {
    each other. `aspect-ratio` rather than a height, so the canvas has a size to
    observe before the scene ever asks for one: a ResizeObserver on a
    zero-height box reports zero and the camera divides by it. */
-.exium-ad__stage {
+.lansod-ad__stage {
   position: relative;
   margin: 0.75rem 0 0.25rem;
   aspect-ratio: 4 / 3;
   width: 100%;
 }
 
-.exium-ad__still,
-.exium-ad__canvas {
+.lansod-ad__still,
+.lansod-ad__canvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1432,24 +1432,24 @@ body {
 
 /* The still fades out as the canvas fades in, over the same beat, so there is
    one crossfade rather than a flicker of both or a gap between them. */
-.exium-ad__still {
+.lansod-ad__still {
   transition: opacity var(--dur-slow) var(--ease-out);
 }
 
-.exium-ad[data-live="true"] .exium-ad__still {
+.lansod-ad[data-live="true"] .lansod-ad__still {
   opacity: 0;
 }
 
-.exium-ad__canvas {
+.lansod-ad__canvas {
   opacity: 0;
   transition: opacity var(--dur-slow) var(--ease-out);
 }
 
-.exium-ad[data-live="true"] .exium-ad__canvas {
+.lansod-ad[data-live="true"] .lansod-ad__canvas {
   opacity: 1;
 }
 
-.exium-ad__product {
+.lansod-ad__product {
   margin-top: 0.5rem;
   font-weight: 700;
   font-size: 1.05rem;
@@ -1457,7 +1457,7 @@ body {
   color: var(--ink);
 }
 
-.exium-ad__generic {
+.lansod-ad__generic {
   font-size: 0.85rem;
   color: var(--ink-mute);
 }
@@ -1465,14 +1465,14 @@ body {
 /* Present from the first paint so the block below it never shifts, and given
    its text only once the canvas is live. An empty line that reserves its own
    height is cheaper than a layout jump. */
-.exium-ad__hint {
+.lansod-ad__hint {
   min-height: 1.4em;
   margin-top: 0.5rem;
   font-size: 0.76rem;
   color: var(--accent);
 }
 
-.exium-ad__company {
+.lansod-ad__company {
   margin-top: 0.5rem;
   padding-top: 0.75rem;
   border-top: 1px solid var(--line-soft);
@@ -1481,16 +1481,16 @@ body {
   color: var(--ink-mute);
 }
 
-.exium-ad__note {
+.lansod-ad__note {
   margin-top: 0.25rem;
   font-size: 0.7rem;
   line-height: 1.5;
   color: var(--ink-faint);
 }
 
-/* The footer strip. Flat by design: see the note in `components/exium-ad.tsx`
+/* The footer strip. Flat by design: see the note in `components/lansod-ad.tsx`
    about not spending a WebGL context on a slot this size. */
-.exium-strip {
+.lansod-strip {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -1500,14 +1500,14 @@ body {
   padding: 0.875rem 1.125rem;
 }
 
-.exium-strip__pack {
+.lansod-strip__pack {
   width: 5.5rem;
   height: auto;
   flex-shrink: 0;
 }
 
 @media (min-width: 640px) {
-  .exium-strip__pack {
+  .lansod-strip__pack {
     width: 7rem;
   }
 }
@@ -1517,12 +1517,12 @@ body {
    same question from script), and this rule is what makes that safe to rely on
    if it ever is. */
 @media (prefers-reduced-motion: reduce) {
-  .exium-ad__still {
+  .lansod-ad__still {
     opacity: 1 !important;
     transition: none;
   }
 
-  .exium-ad__canvas {
+  .lansod-ad__canvas {
     display: none;
   }
 }

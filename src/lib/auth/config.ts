@@ -62,7 +62,7 @@ export { adminUsername } from "@/lib/auth/username";
  */
 export const SITE_PASSWORD = process.env.SITE_PASSWORD?.trim()
   ? process.env.SITE_PASSWORD
-  : "Exium";
+  : "LansoD";
 
 /**
  * The administrator's password.
@@ -72,7 +72,7 @@ export const SITE_PASSWORD = process.env.SITE_PASSWORD?.trim()
  * are a trap, and the trap is not in `===`: it is in every plausible edit
  * *around* it. A `startsWith`, a `includes`, a "be forgiving about trailing
  * characters" tweak, a fuzzy compare copied from the printed-code handling in
- * some other project: any of those matches `Exiumm` against the reader
+ * some other project: any of those matches `LansoDD` against the reader
  * password and hands /admin to whoever asks.
  *
  * So `passwordRole` below tests this one first and compares it exactly, and
@@ -86,7 +86,7 @@ export const SITE_PASSWORD = process.env.SITE_PASSWORD?.trim()
  * emptied admin password. Do not "fix" this to match the line above — that
  * would hand /admin back to a default printed in a committed file.
  */
-export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "Exiumm";
+export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "LansoDD";
 
 /**
  * The addresses that administer this library.
@@ -112,7 +112,7 @@ export const adminEmails: readonly string[] = parseEmailList(
 /** Cookie signing secret. Any long random string; rotate to log everyone out. */
 export const authSecret = process.env.AUTH_SECRET ?? "";
 
-export const sessionCookieName = "mbb_session";
+export const sessionCookieName = "gbb_session";
 
 /** Eight hours: one working day at the desk, then type the word again. */
 export const sessionTtlSeconds = 8 * 60 * 60;
@@ -203,7 +203,7 @@ export type Role = "reader" | "admin";
  * The whole authorisation decision, in one function.
  *
  * Compared against what was typed, untrimmed on the right-hand side only:
- * `Exium ` with a trailing space is a typo rather than a different password, so
+ * `LansoD ` with a trailing space is a typo rather than a different password, so
  * the input is trimmed, but the configured value is used exactly as set, so a
  * deployment that deliberately puts a space in its password still works.
  *
@@ -226,12 +226,9 @@ export function passwordRole(typed: string): Role | null {
  * `passwordRole` above says which of the two printed words was typed;
  * this says what the pair of (address, word) actually opens.
  *
- * No longer the *whole* door, and the rename is the warning. `enterAction` has
- * a third path: an address and password belonging to the other library sharing
- * this database (`lib/auth/shared-users`). It runs only after this returns
- * `null`, and it can only ever produce a reader. So this function remains the
- * only thing that decides `"admin"`, and it stays pure and offline — which is
- * what lets the ordinary reader in without a network round trip.
+ * This is the whole door. There is no second path and no store to consult:
+ * the function is pure and offline, which is what lets an ordinary reader in
+ * without a network round trip.
  *
  * The case worth reading twice is the admin password typed by an address that
  * is not on the list. It returns `null` — turned away — rather than falling

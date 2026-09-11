@@ -24,7 +24,7 @@ import type Lenis from "lenis";
  *
  * The module is imported dynamically by the caller's effect, so neither Lenis
  * nor this file's cost lands in the initial bundle: the same rule three.js
- * follows in `lib/exium-scene.ts`.
+ * follows in `lib/lansod-scene.ts`.
  */
 
 let instance: Lenis | null = null;

@@ -1,5 +1,5 @@
 /**
- * The Exium MUPS 20 carton's artwork, drawn onto 2D canvases.
+ * The Lanso D 30 carton's artwork, drawn onto 2D canvases.
  *
  * Six faces of a medicine box, painted rather than photographed, for the same
  * reason `lib/cover-canvas.ts` paints book covers rather than loading images:
@@ -7,7 +7,7 @@
  * supplied photograph is a three-quarter studio shot. Its perspective is baked
  * into every pixel, so mapping it onto a `BoxGeometry` face applies the
  * perspective twice and the box reads as a photograph of a box rather than as a
- * box. The `public/exium-mups-20.png` cutout is still used, as the flat, static
+ * box. The `public/lanso-d-30.png` cutout is still used, as the flat, static
  * composition behind the canvas and in the small footer slot, where a WebGL
  * context would be waste.
  *

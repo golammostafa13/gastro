@@ -1,5 +1,5 @@
 import { CourtesyBy } from "@/components/courtesy-by";
-import { ExiumAd } from "@/components/exium-ad";
+import { LansodAd } from "@/components/lansod-ad";
 import { getDictionary } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n/config";
 import { textClass } from "@/lib/i18n/content";
@@ -86,7 +86,7 @@ export function AuthAside({
         className="door__rise mt-9 flex max-w-lg items-end gap-8"
         style={{ "--lag": "0.48s" } as React.CSSProperties}
       >
-        <ExiumAd
+        <LansodAd
           copy={dict.sponsor}
           className="w-[17rem] shrink-0"
           bnClass={bn}

@@ -11,7 +11,7 @@
  */
 
 /** Shown wherever the administrator's own session appears. */
-export const adminUsername = "maternity-book-bank";
+export const adminUsername = "gastroenterology-book-bank";
 
 /**
  * Shown for a reader whose address gave nothing to show.

@@ -4,7 +4,7 @@
  *   node scripts/build-brand-assets.mjs
  *
  * Writes, both committed:
- *   public/exium-mups-20.png  the pack shot with the studio ground removed
+ *   public/lanso-d-30.png  the pack shot with the studio ground removed
  *   public/courtesy-by.png    the Radiant mark, trimmed
  *
  * The pack shot is used flat: the static composition behind the 3D advert, and
@@ -12,7 +12,7 @@
  * the texture on the 3D carton: the photograph is a three-quarter view, so its
  * own perspective is baked into every pixel, and wrapping that onto a box face
  * gives you the perspective twice. The 3D pack draws its label instead; see
- * `src/lib/exium-canvas.ts`, which is the same approach `lib/cover-canvas.ts`
+ * `src/lib/lansod-canvas.ts`, which is the same approach `lib/cover-canvas.ts`
  * takes for book covers and for the same reason.
  *
  * The interesting part is the alpha cut, and the obvious way to do it is wrong.

@@ -9,7 +9,7 @@ import {
   type BookSpecRow,
 } from "@/components/book-cinema";
 import { CourtesyBy } from "@/components/courtesy-by";
-import { ExiumAd } from "@/components/exium-ad";
+import { LansodAd } from "@/components/lansod-ad";
 import { artFor } from "@/lib/data/chapter-art";
 import {
   getAllBooks,
@@ -371,7 +371,7 @@ export default async function BookDetailPage(
         title={dict.sponsor.aboutTitle}
         lead={dict.sponsor.aboutLead}
       >
-        <ExiumAd
+        <LansodAd
           copy={dict.sponsor}
           className="tome__ad"
           bnClass={textClass(lang)}

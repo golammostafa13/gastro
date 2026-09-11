@@ -128,7 +128,7 @@ async function serveFromRelease(
     headers: {
       ...(rangeHeader ? { Range: rangeHeader } : {}),
       // GitHub refuses release asset requests without one.
-      "User-Agent": "maternity-book-bank/1.0",
+      "User-Agent": "gastroenterology-book-bank/1.0",
     },
     redirect: "follow",
   });

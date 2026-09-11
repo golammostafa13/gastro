@@ -5,7 +5,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 // Type-only. The module itself is imported inside the effect below: see the
 // note there; a value import here would put three.js in the initial bundle.
-import type { ExiumScene } from "@/lib/exium-scene";
+import type { LansodScene } from "@/lib/lansod-scene";
 
 /**
  * The sponsor's advertisement.
@@ -17,7 +17,7 @@ import type { ExiumScene } from "@/lib/exium-scene";
  * the visual language of a banner ad, which readers have spent twenty years
  * learning to ignore; a carton you can pick up and turn over is the visual
  * language of a shop. So the pack is real geometry with its own artwork drawn
- * onto it (`lib/exium-scene`, `lib/exium-canvas`) and it accepts a drag.
+ * onto it (`lib/lansod-scene`, `lib/lansod-canvas`) and it accepts a drag.
  *
  * The second is that it should be *honest*, and that is mostly about what is
  * DOM and what is canvas. The product name, the strength, the generic name and
@@ -36,7 +36,7 @@ import type { ExiumScene } from "@/lib/exium-scene";
  *     the still image, which is a complete advert on its own.
  */
 
-export interface ExiumAdCopy {
+export interface LansodAdCopy {
   /** "Courtesy by" / "সৌজন্যে": the label above the company. */
   courtesy: string;
   product: string;
@@ -50,13 +50,13 @@ export interface ExiumAdCopy {
   note: string;
 }
 
-export function ExiumAd({
+export function LansodAd({
   copy,
   variant = "panel",
   className,
   bnClass,
 }: {
-  copy: ExiumAdCopy;
+  copy: LansodAdCopy;
   /**
    * `panel`: the tall card for a sidebar or the sign-in aside.
    * `strip`: the wide, short version for the footer, still image only.
@@ -67,7 +67,7 @@ export function ExiumAd({
 }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sceneRef = useRef<ExiumScene | null>(null);
+  const sceneRef = useRef<LansodScene | null>(null);
   const [live, setLive] = useState(false);
 
   useEffect(() => {
@@ -85,12 +85,12 @@ export function ExiumAd({
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let cancelled = false;
-    let scene: ExiumScene | null = null;
+    let scene: LansodScene | null = null;
 
     (async () => {
       try {
-        const [{ createExiumScene }] = await Promise.all([
-          import("@/lib/exium-scene"),
+        const [{ createLansodScene }] = await Promise.all([
+          import("@/lib/lansod-scene"),
           // The pack's wordmark is typeset onto the texture, so the faces have
           // to be drawn with real fonts loaded or the label bakes in the
           // fallback face. Fetched alongside the module; neither waits on the
@@ -99,7 +99,7 @@ export function ExiumAd({
         ]);
         if (cancelled) return;
 
-        scene = createExiumScene({
+        scene = createLansodScene({
           canvas,
           container: stage,
           onReady: () => !cancelled && setLive(true),
@@ -135,14 +135,14 @@ export function ExiumAd({
     return (
       <aside
         aria-label={copy.courtesy}
-        className={cn("exium-strip", className)}
+        className={cn("lansod-strip", className)}
       >
         <Image
-          src="/exium-mups-20.png"
+          src="/lanso-d-30.png"
           alt={copy.alt}
           width={508}
           height={239}
-          className="exium-strip__pack"
+          className="lansod-strip__pack"
         />
         <div className="min-w-0">
           <p
@@ -166,44 +166,44 @@ export function ExiumAd({
     <aside
       aria-label={copy.courtesy}
       data-live={live ? "true" : "false"}
-      className={cn("exium-ad", className)}
+      className={cn("lansod-ad", className)}
     >
       <p
         className={cn(
-          "exium-ad__eyebrow text-[0.68rem] font-semibold uppercase tracking-[0.2em]",
+          "lansod-ad__eyebrow text-[0.68rem] font-semibold uppercase tracking-[0.2em]",
           bnClass,
         )}
       >
         {copy.courtesy}
       </p>
 
-      <div ref={stageRef} className="exium-ad__stage">
+      <div ref={stageRef} className="lansod-ad__stage">
         {/* The still is the advert. The canvas is an improvement on it, laid
             over the top, and the still stays in the DOM underneath rather than
             being swapped out, so there is no reflow when the scene lands and
             no empty box if it never does. */}
         <Image
-          src="/exium-mups-20.png"
+          src="/lanso-d-30.png"
           alt={copy.alt}
           width={508}
           height={239}
           priority={false}
-          className="exium-ad__still"
+          className="lansod-ad__still"
         />
-        <canvas ref={canvasRef} className="exium-ad__canvas" aria-hidden="true" />
+        <canvas ref={canvasRef} className="lansod-ad__canvas" aria-hidden="true" />
       </div>
 
-      <p className={cn("exium-ad__product", bnClass)}>{copy.product}</p>
-      <p className={cn("exium-ad__generic", bnClass)}>{copy.generic}</p>
+      <p className={cn("lansod-ad__product", bnClass)}>{copy.product}</p>
+      <p className={cn("lansod-ad__generic", bnClass)}>{copy.generic}</p>
 
       {/* Only claimed once the canvas is actually running. Telling a reader to
           drag something that is a static image is worse than saying nothing. */}
-      <p className={cn("exium-ad__hint", bnClass)} aria-hidden={!live}>
+      <p className={cn("lansod-ad__hint", bnClass)} aria-hidden={!live}>
         {live ? copy.hint : ""}
       </p>
 
-      <p className={cn("exium-ad__company", bnClass)}>{copy.company}</p>
-      <p className={cn("exium-ad__note", bnClass)}>{copy.note}</p>
+      <p className={cn("lansod-ad__company", bnClass)}>{copy.company}</p>
+      <p className={cn("lansod-ad__note", bnClass)}>{copy.note}</p>
     </aside>
   );
 }

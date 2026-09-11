@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 /**
  * The sponsor's mark, under the words "Courtesy by".
  *
- * Separate from `ExiumAd` because it answers a different question. The advert
+ * Separate from `LansodAd` because it answers a different question. The advert
  * says *here is a product*; this says *here is who paid for the book in your
  * hands*, which belongs in the quiet furniture of the site (the footer, the
  * foot of the sign-in card, the About page), and should never animate, never

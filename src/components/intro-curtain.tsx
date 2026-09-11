@@ -42,7 +42,7 @@ const MAX_MS = 4500;
 /** How long the zoom-through takes once progress reaches the end. */
 const ZOOM_MS = 1500;
 
-const SEEN_KEY = "mbb:intro-seen";
+const SEEN_KEY = "gbb:intro-seen";
 
 export function IntroCurtain({
   name,

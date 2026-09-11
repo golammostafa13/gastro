@@ -43,9 +43,9 @@ export interface ReaderRecord {
 /**
  * The sorted set that makes the register listable; score is `createdAt`.
  *
- * `appKey`, not `sharedKey`: this register is keyed on a phone number and
- * carries District and Thana, which is a shape no other project writes. See
- * `lib/redis` for why the distinction is spelled out at every call site.
+ * `appKey`, like every key in this codebase: the register is keyed on a phone
+ * number and carries District and Thana, and it belongs to this library alone.
+ * See `lib/redis` for why prefixing is not optional here.
  */
 const INDEX_KEY = appKey("readers:index");
 const recordKey = (phone: string) => appKey(`reader:${phone}`);

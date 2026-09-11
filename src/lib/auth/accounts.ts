@@ -56,11 +56,11 @@ export interface AccountRecord {
 /**
  * The sorted set that makes the store listable; score is `lastSeenAt`.
  *
- * `appKey`, not `sharedKey`, and that is the load-bearing choice in this file
- * now that the database is shared. "Who has opened *this* library" is the whole
- * meaning of a row here; merged with a neighbouring site's visitors it becomes
- * "who has opened something", which is not a question the admin screen is
- * asking and not a number the sponsor was promised.
+ * `appKey`, and the prefix is load-bearing rather than tidy. "Who has opened
+ * *this* library" is the whole meaning of a row here; merged with a
+ * neighbouring site's visitors under an unset `KV_PREFIX` it becomes "who has
+ * opened something", which is not a question the admin screen is asking and not
+ * a number the sponsor was promised.
  */
 const INDEX_KEY = appKey("accounts:index");
 const recordKey = (email: string) => appKey(`account:${email}`);

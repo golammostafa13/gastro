@@ -1,5 +1,5 @@
 /**
- * The Exium MUPS 20 advertisement, in WebGL.
+ * The Lanso D 30 advertisement, in WebGL.
  *
  * A carton and a blister strip, lit like a product shot, that tumbles in once
  * and then idles, and that the reader can take hold of and spin. It is an
@@ -11,7 +11,7 @@
  * Built to the rules this project applies to every WebGL module:
  *
  *   • No downloaded model and no image texture. The carton is a `BoxGeometry`
- *     with six materials, and every face is `lib/exium-canvas` drawing the
+ *     with six materials, and every face is `lib/lansod-canvas` drawing the
  *     pack's own artwork. See the note at the top of that file for why the
  *     supplied photograph is not the texture.
  *   • three.js is imported by the component that loads *this* module, inside an
@@ -29,16 +29,16 @@ import {
   drawPackFlap,
   drawPackFront,
   PACK_SIZE,
-} from "@/lib/exium-canvas";
+} from "@/lib/lansod-canvas";
 
-export interface ExiumSceneOptions {
+export interface LansodSceneOptions {
   canvas: HTMLCanvasElement;
   container: HTMLElement;
   /** Fired once the first frame is on screen, so the fallback can fade out. */
   onReady?: () => void;
 }
 
-export interface ExiumScene {
+export interface LansodScene {
   /** Re-read the design tokens after a light/dark switch. */
   refreshTheme(): void;
   dispose(): void;
@@ -72,7 +72,7 @@ function readAccent(): THREE.Color {
   return new THREE.Color(value || "#f9a8d4");
 }
 
-export function createExiumScene(options: ExiumSceneOptions): ExiumScene {
+export function createLansodScene(options: LansodSceneOptions): LansodScene {
   const { canvas, container, onReady } = options;
 
   const renderer = new THREE.WebGLRenderer({

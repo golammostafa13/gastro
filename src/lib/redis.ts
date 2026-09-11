@@ -8,22 +8,18 @@
  * convention, and a convention nobody wrote down is a convention that lasts
  * until the next person picks an obvious name that was already taken.
  *
- * Hence two functions, and the distinction between them is the interesting
- * part:
+ * Hence exactly one function, `appKey`, and no way around it. Every key this
+ * codebase writes is prefixed with `KV_PREFIX`, so the same database can hold
+ * another project's rows without either one seeing the other's. The door's
+ * rate limiter is the sharp example: `door:1.2.3.4` unprefixed means a reader
+ * failing sign-ins on the *other* site spends this site's ten-attempt budget
+ * for that address, and nothing anywhere reports that as the cause.
  *
- *   • `appKey` — **this site's own.** Prefixed with `KV_PREFIX`, so the same
- *     database can hold another project's rows without either one seeing the
- *     other's. The door's rate limiter is the sharp example: `door:1.2.3.4`
- *     unprefixed means a reader failing sign-ins on the *other* site spends
- *     this site's ten-attempt budget for that address, and nothing anywhere
- *     reports that as the cause.
- *   • `sharedKey` — **deliberately common.** No prefix, because the point is
- *     for both sites to land on the same row. Anything passed here is a
- *     contract with another codebase: changing its name or its record shape
- *     breaks a project this one cannot see and does not build.
- *
- * The asymmetry is intentional. Sharing is the exception and it should be
- * spelled out at the call site; isolation is the default and costs nothing.
+ * There was a second function here, `sharedKey`, which returned the name
+ * unprefixed so two sites could land on the same row. It is gone, and its
+ * absence is the point: this library is standalone, and an unprefixed key is
+ * the one way a neighbour's rows could reach back into it. Isolation is not
+ * the default here, it is the only option.
  */
 
 /**
@@ -39,18 +35,20 @@ const redisToken =
 /**
  * This site's namespace inside a possibly shared database.
  *
- * Defaults to `mbb` so a deployment that sets nothing is still separated from
- * a neighbour that also sets nothing under a different default. The trailing
- * colon is added here rather than being expected in the value, because a
- * variable set in a hosting dashboard will be `mbb` about as often as `mbb:`
- * and the difference should not silently produce a second namespace.
+ * Defaults to `gbb` so a deployment that sets nothing is still separated from
+ * the maternity library, which defaults to `mbb`. That default is load-bearing
+ * rather than cosmetic: an unset variable must not silently rejoin a
+ * neighbour's namespace, least of all the rate limiter's. The trailing colon is
+ * added here rather than being expected in the value, because a variable set in
+ * a hosting dashboard will be `gbb` about as often as `gbb:` and the difference
+ * should not silently produce a second namespace.
  *
  * Changing it after rows exist orphans them: the old keys are still in the
  * database and nothing will look for them again. It is a name, not a setting
  * to tune.
  */
 const prefix = (() => {
-  const configured = (process.env.KV_PREFIX ?? "mbb").trim();
+  const configured = (process.env.KV_PREFIX ?? "gbb").trim();
   if (!configured) return "";
   return configured.endsWith(":") ? configured : `${configured}:`;
 })();
@@ -96,17 +94,6 @@ export function appKey(name: string): string {
   return `${prefix}${name}`;
 }
 
-/**
- * A key shared with another project pointed at this same database.
- *
- * Unprefixed on purpose: the name *is* the interface. Callers should say in a
- * comment which other codebase writes the same key and what it expects to find
- * there, because nothing in this repository will fail to build when that
- * expectation stops being true.
- */
-export function sharedKey(name: string): string {
-  return name;
-}
 
 /**
  * Whether a durable store is configured at all.

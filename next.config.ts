@@ -40,7 +40,7 @@ const csp = [
   // Fonts are self-hosted by next/font, so no font CDN needs allowing.
   "font-src 'self'",
   // data:/blob: cover PDF.js canvas rendering, the drawn cover art and the
-  // drawn Exium pack faces. No remote host: the sponsor's own logo and pack
+  // drawn Lanso D pack faces. No remote host: the sponsor's own logo and pack
   // shot are in public/ precisely so this line can stay 'self'.
   "img-src 'self' data: blob:",
   // PDF.js runs its parser in a worker created from a blob URL.
