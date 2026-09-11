@@ -36,31 +36,30 @@ const tile = (inner, rx) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 
 const mark = (scale, cy) => `<g transform="translate(24 ${cy}) scale(${scale}) translate(-24 -24)">
   <path d="M22.6 24.6c-1.9-2.7-5-4.3-8.5-4.3H9.2A2.2 2.2 0 0 0 7 22.5v12.2c0 1.2 1 2.2 2.2 2.2h5c3.4 0 6.5 1.6 8.4 4.3z" fill="#fff" fill-opacity="0.96"/>
   <path d="M25.4 24.6c1.9-2.7 5-4.3 8.5-4.3h4.9a2.2 2.2 0 0 1 2.2 2.2v12.2c0 1.2-1 2.2-2.2 2.2h-5c-3.4 0-6.5 1.6-8.4 4.3z" fill="#fff" fill-opacity="0.96"/>
-  <path d="M16.5 10.9c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5" stroke="#fff" stroke-width="3.4" stroke-linecap="round" fill="none"/>
-  <circle cx="24" cy="11.4" r="3.3" fill="#fff"/>
+  <path d="M27.8 14.6A5.7 5.7 0 0 0 29.4 9.5A6.4 6.4 0 0 0 25.3 5.1A7.2 7.2 0 0 0 18.8 6.5A7.9 7.9 0 0 0 16.4 13.6A8.6 8.6 0 0 0 21.8 19.7" stroke="#fff" stroke-width="2.9" stroke-linecap="round" fill="none"/>
+  <circle cx="24" cy="11.4" r="2.5" fill="#fff"/>
 </g>`;
 
 /**
- * The same idea redrawn for the tab: heavier boards, a wider gutter, and **no
- * arc**.
+ * The same idea redrawn for the tab: heavier boards, a wider gutter, and the
+ * coil replaced by a filled form.
  *
- * The arms in the full mark clear the boards by 1.9 of the 48 units the drawing
- * is authored in. At 16px those units are three to the pixel, so the channel is
- * two thirds of a pixel wide and closes: the arc fuses with the book and the
- * disc fuses with the arc, and what is left is a pale blob. Downscaling is not
- * the problem and no amount of anti-aliasing fixes it; the shape is simply
- * finer than the medium.
+ * The coil in the full mark is a 2.9-unit stroke in a 48-unit box. At 16px
+ * those units are three to the pixel, so the stroke is under a pixel and the
+ * turn it makes is finer still: the curve fuses into itself, the counter fills
+ * in, and what is left is a pale blob. Downscaling is not the problem and no
+ * amount of anti-aliasing fixes it; the shape is simply finer than the medium.
  *
- * So the favicon keeps the two shapes that survive: a solid disc over an open
- * book, which is the same reading (someone with a book) in the two marks a
- * 16px slot can hold. The ancestor of this file needed a separate cut for
- * exactly the same reason, and having to make one is a property of favicons
- * rather than a fault in the mark.
+ * A **filled** shape survives where a stroked one cannot, so the favicon keeps
+ * the same reading in a form that has area: a comma — a disc with a tail
+ * turning off it — which is the coil said in one gesture instead of one turn.
+ * Having to make a separate cut is a property of favicons rather than a fault
+ * in the mark; the file this was forked from needed one for the same reason.
  */
 const markSmall = `<g>
   <path d="M22.2 27c-2.1-2.9-5.4-4.6-9.1-4.6H7.8A1.8 1.8 0 0 0 6 24.2v13c0 1 .8 1.8 1.8 1.8h5.3c3.7 0 7 1.7 9.1 4.6z" fill="#fff"/>
   <path d="M25.8 27c2.1-2.9 5.4-4.6 9.1-4.6h5.3c1 0 1.8.8 1.8 1.8v13c0 1-.8 1.8-1.8 1.8h-5.3c-3.7 0-7 1.7-9.1 4.6z" fill="#fff"/>
-  <circle cx="24" cy="12.6" r="6.2" fill="#fff"/>
+  <path d="M30.2 12.6A6.2 6.2 0 1 0 21.6 18.3C24.6 19.8 28.6 17.9 30.2 12.6Z" fill="#fff"/>
 </g>`;
 
 const png = (svg, size) =>

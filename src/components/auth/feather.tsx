@@ -38,37 +38,51 @@
  * elements rather than four copies of two hundred paths.
  */
 
-/** The shaft, quill end first. Move these four points and the feather changes. */
+/** The core, base end first. Move these four points and the villus changes. */
 const RACHIS = [
-  [304, 30],
-  [206, 50],
-  [96, 170],
-  [22, 116],
+  [278, 150],
+  [206, 84],
+  [126, 80],
+  [56, 110],
 ] as const;
 
 /**
  * Density is the whole illusion.
  *
- * The first attempt at this drew 58 barbs a side and the result was a comb: at
- * that spacing you see the individual hairs and the gaps between them, and a
- * feather is the one object where seeing the parts destroys the whole. Down is
- * what a few hundred hairs look like when they are too close together to count.
+ * The feather this was retuned from drew 150 a side, because down is what a few
+ * hundred hairs look like when they are too close together to count, and a
+ * feather is the one object where seeing the parts destroys the whole.
+ *
+ * A villus is the opposite case. Its border *is* countable — that is what a
+ * brush border is — so the density comes down until the individual microvilli
+ * resolve at the edge. Too few and it reads as a comb; too many and it closes
+ * into the smooth outline of a leaf, which is where this landed first.
  * These are defined once in a `<symbol>` and referenced, so the cost of the
  * extra paths is paid once for the page rather than once per feather.
  */
-const BARB_COUNT = 150;
+const BARB_COUNT = 112;
 
-/** How much of the shaft, from the quill end, is bare. */
-const BARE = 0.2;
+/**
+ * How much of the core, from the base, is bare.
+ *
+ * Almost none, where the feather this was retuned from had a fifth of its
+ * shaft bare. That bare quill was most of what identified a feather; a villus
+ * is covered from its base, and leaving a gap there makes it read as a stem
+ * with a flower on the end.
+ */
+const BARE = 0.04;
 
 /**
  * How far the inner side reaches, against the outer.
  *
- * Low, and that is the shape: a down feather hangs, so its barbs are much
- * longer on the upper side of the curve than on the under side, and what you
- * recognise is the crescent that makes. Both sides equal gives a leaf.
+ * Nearly equal, and that is the shape. A down feather hangs, so its barbs are
+ * far longer on the upper side of the curve than the under, and the crescent
+ * that makes is what you recognise. A villus is a *finger*: it is fringed all
+ * the way round and the fringe is the same depth on both sides, so this goes
+ * to 0.86 rather than 0.32. Not 1.0 — a shade of asymmetry keeps the object
+ * looking lit from one side rather than flat.
  */
-const INNER = 0.32;
+const INNER = 0.86;
 
 function bezier(t: number, i: 0 | 1): number {
   const u = 1 - t;
@@ -106,12 +120,16 @@ function jitter(i: number): number {
  * thing that cannot be softened by drawing more hairs on top of it.
  */
 function envelope(t: number): number {
-  // The first fifth of the shaft carries nothing. That bare curved quill is
-  // most of what identifies the object: without it the fringe closes into a
-  // symmetrical teardrop, which is a paisley, not a feather.
   const u = (t - BARE) / (1 - BARE);
   if (u <= 0) return 0;
-  return Math.sin(Math.PI * Math.pow(u, 1.2)) ** 0.92;
+  // Rises fast, holds, then rounds off over the last quarter. A feather's
+  // envelope is a single hump peaking about 60% along, which gives a shape
+  // that is widest in the middle and tapers both ways; a villus is a
+  // parallel-sided finger with a domed cap, so the profile has to be flat
+  // through the middle and do all its work at the two ends.
+  const rise = Math.min(1, u / 0.14);
+  const cap = Math.pow(1 - Math.pow(u, 4), 0.42);
+  return rise * cap;
 }
 
 interface Barb {
@@ -145,13 +163,15 @@ function barbs(side: 1 | -1, reach: number, seed: number): Barb[] {
     // as a torn edge rather than as a soft one; what softens the edge is the
     // hairs being many and thin, not their lengths disagreeing.
     const len =
-      108 * envelope(t) * reach * (side === 1 ? 1 : INNER) *
+      64 * envelope(t) * reach * (side === 1 ? 1 : INNER) *
       (0.93 + 0.14 * jitter(i * 3 + seed));
     if (len < 1.4) continue;
 
-    // Off the normal, leaned toward the tip. Outer barbs lean harder, which is
-    // what curls the fringe round the end of the shaft.
-    const lean = side === 1 ? 0.66 : 0.46;
+    // Off the normal, barely leaned. A feather's barbs rake hard toward the
+    // tip — at right angles they read as a comb — but microvilli *are* a comb:
+    // they stand off the surface, and leaning them is what would make this
+    // look like a feather again.
+    const lean = side === 1 ? 0.16 : 0.12;
     const nx = (-uy * side) * Math.cos(lean) + ux * Math.sin(lean);
     const ny = (ux * side) * Math.cos(lean) + uy * Math.sin(lean);
 
@@ -160,7 +180,7 @@ function barbs(side: 1 | -1, reach: number, seed: number): Barb[] {
     // Bowed, not straight: a hair under its own weight is a curve. The amount
     // varies per barb, because a hundred and fifty identical arcs interfere
     // into visible concentric rings.
-    const bow = len * (0.11 + 0.13 * jitter(i * 7 + seed)) * side;
+    const bow = len * (0.06 + 0.08 * jitter(i * 7 + seed)) * side;
     const cx = x + nx * len * 0.5 - uy * bow;
     const cy = y + ny * len * 0.5 + ux * bow;
 
@@ -185,7 +205,7 @@ function edge(side: 1 | -1, reach: number): string {
     const mag = Math.hypot(tx, ty) || 1;
     const ux = tx / mag;
     const uy = ty / mag;
-    const len = 108 * envelope(t) * reach * (side === 1 ? 1 : INNER);
+    const len = 64 * envelope(t) * reach * (side === 1 ? 1 : INNER);
     const lean = side === 1 ? 0.66 : 0.46;
     const nx = -uy * side * Math.cos(lean) + ux * Math.sin(lean);
     const ny = ux * side * Math.cos(lean) + uy * Math.sin(lean);
@@ -217,7 +237,7 @@ const CORE = fill(0.68);
 
 const SHAFT = `M${RACHIS[0][0]} ${RACHIS[0][1]} C${RACHIS[1][0]} ${RACHIS[1][1]} ${RACHIS[2][0]} ${RACHIS[2][1]} ${RACHIS[3][0]} ${RACHIS[3][1]}`;
 
-export const FEATHER_SYMBOL_ID = "mbb-feather";
+export const FEATHER_SYMBOL_ID = "gbb-villus";
 /** The symbol's own box, so instances can size themselves by width alone. */
 export const FEATHER_RATIO = 320 / 200;
 

@@ -29,27 +29,32 @@ const sizes = {
 } as const;
 
 /**
- * The mark, as geometry rather than as an image: an open book with a newborn
- * cradled in the gutter.
+ * The mark, as geometry rather than as an image: an open book with a coil
+ * turning out of the gutter.
  *
- * Not the ancestor's mark recoloured. That one was an open book with **three**
- * page-leaves fanning out of the fold, and the three leaves *were* the "3" of
- * Cef 3: carried across to a maternity library they would be three leaves that
- * mean nothing, which is the most common way a rebrand goes visibly wrong.
+ * Not the ancestor's mark recoloured, and the reason is written into the file
+ * it was inherited from. That drawing had **three** page-leaves fanning out of
+ * the fold, and the three leaves *were* the "3" of Cef 3; carried across to a
+ * maternity library they would have been three leaves that mean nothing, which
+ * is the most common way a rebrand goes visibly wrong. The same trap is set
+ * again here: the maternity mark put an arc with a disc inside it in the
+ * gutter, read as an arm around a newborn, and that shape happens to also read
+ * as a wall around a lumen. Keeping it would have been defensible and wrong —
+ * two sibling libraries with one drawing in two colours.
  *
- * So: the two page boards stay, because they are what makes the tile say
- * "library" at 16px without help from the wordmark beside it, and they are
- * re-cut with a rounder outer corner so the silhouette reads soft rather than
- * technical. In the gutter, where the leaves were, a single thick arc opens
- * upward with a small disc resting inside it. An arm around a baby; equally a
- * page curling out of the fold. Two shapes instead of five, which is also why
- * this one survives the favicon: the outer leaves of the old mark dropped below
- * a pixel at 16px and needed a whole separate cut to stay legible.
+ * So the boards stay, because they are what makes the tile say "library" at
+ * 16px without help from the wordmark beside it, and the gutter is re-cut. In
+ * it, one continuous curve that opens as it turns: a hollow viscus seen in
+ * section, and equally a page curling out of the fold. It is deliberately not
+ * closed — a ring reads as a letter O at small sizes — and it is one shape
+ * rather than a diagram of a gut, because at the sizes this is used a diagram
+ * is a smudge.
  *
  * That disc is load-bearing beyond the logo. `components/intro-curtain.tsx`
  * zooms the page through it (the counter of the mark becomes the aperture the
- * site opens behind), so its centre is at (24, 25.5) in this 48-unit box and
- * moving it means moving the intro's `transform-origin` to match.
+ * site opens behind), so its centre at (24, 11.4) in this 48-unit box is the
+ * same point as `transform-origin: 50% 24%` in `globals.css`. Moving it means
+ * moving that too; there is no way to derive one from the other in CSS.
  *
  * Every path is white on the tile's own gradient, so this one drawing serves
  * light mode, dark mode, the favicon and the touch icon without a second copy.
@@ -80,26 +85,25 @@ export function BrandArt({ className }: { className?: string }) {
         fillOpacity="0.96"
       />
 
-      {/* The cradle. An open arc rather than a closed bowl: a ring would read
-          as a letter O at small sizes, and the gap at the top is what makes the
-          disc look held rather than enclosed. Round caps because the whole
-          point of this shape is that it is not sharp.
+      {/* The coil. One turn that starts tight beside the counter and widens as
+          it goes, ending free. The widening is the whole shape: a constant
+          radius would be a ring, and a ring at this size is the letter O.
 
-          The arc bottom sits at y≈18.4 and the boards begin at y≈20.3. That
-          1.9-unit channel is deliberate and it is the tightest measurement in
-          the drawing: any less and the arms fuse with the book at 24px. It
-          still closes at 16px, where 48 units are three to the pixel, which is
-          what `markSmall` in `scripts/build-icons.mjs` is for. */}
+          Its tail ends at y≈19.7 and the boards begin at y≈20.3. That channel
+          is the tightest measurement in the drawing, and it still closes at
+          16px, where 48 units are three to the pixel — which is what
+          `markSmall` in `scripts/build-icons.mjs` is for. */}
       <path
-        d="M16.5 10.9c0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5"
+        d="M27.8 14.6A5.7 5.7 0 0 0 29.4 9.5A6.4 6.4 0 0 0 25.3 5.1A7.2 7.2 0 0 0 18.8 6.5A7.9 7.9 0 0 0 16.4 13.6A8.6 8.6 0 0 0 21.8 19.7"
         stroke="#fff"
-        strokeWidth="3.4"
+        strokeWidth="2.9"
         strokeLinecap="round"
         fill="none"
       />
 
-      {/* The counter. The intro curtain flies the page through this. */}
-      <circle cx="24" cy="11.4" r="3.3" fill="#fff" />
+      {/* The counter, and the lumen. The intro curtain flies the page through
+          this. */}
+      <circle cx="24" cy="11.4" r="2.5" fill="#fff" />
     </svg>
   );
 }
