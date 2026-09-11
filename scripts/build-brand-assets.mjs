@@ -1,204 +1,220 @@
 /**
- * Prepares the sponsor artwork from the two supplied images.
+ * Renders the sponsor artwork.
  *
  *   node scripts/build-brand-assets.mjs
  *
  * Writes, both committed:
- *   public/lanso-d-30.png  the pack shot with the studio ground removed
- *   public/courtesy-by.png    the Radiant mark, trimmed
+ *   public/lanso-d-30.png   the flat pack, three-quarter
+ *   public/courtesy-by.png  Square's mark, for the "Courtesy by" slot
  *
- * The pack shot is used flat: the static composition behind the 3D advert, and
- * the small footer slot where a canvas would be waste. It is deliberately *not*
- * the texture on the 3D carton: the photograph is a three-quarter view, so its
- * own perspective is baked into every pixel, and wrapping that onto a box face
- * gives you the perspective twice. The 3D pack draws its label instead; see
- * `src/lib/lansod-canvas.ts`, which is the same approach `lib/cover-canvas.ts`
- * takes for book covers and for the same reason.
+ * ## Why this no longer starts from a photograph
  *
- * The interesting part is the alpha cut, and the obvious way to do it is wrong.
- * `exium.png` is a studio photograph on white, and the product is a **white
- * carton**. Thresholding every near-white pixel to transparent punches holes
- * straight through the box, the printed panel and the foil highlights.
+ * It used to. The library this was forked from was given a studio pack shot on
+ * white and cut the ground away with a scanline flood fill inward from the four
+ * corners — the careful way, because the product is a white carton and
+ * thresholding near-white pixels punches holes straight through the box.
  *
- * So the ground is removed by a flood fill inward from the four corners, which
- * stops at the carton's own edge because that edge is a real tonal boundary. A
- * flood fill leaves a pale halo one or two pixels wide along anti-aliased
- * edges, which is invisible on white and very visible on a pink page, so the
- * alpha is then eroded by a pixel and the colour under it is unpremultiplied
- * back toward the object.
+ * That cannot be done here. The only Lanso D image available carries a stock
+ * library's watermark printed **across the face of the carton**. A flood fill
+ * removes a ground; it cannot remove a mark sitting on the product, and no
+ * threshold can either without taking the printed panel with it. Cutting that
+ * image would have put a competitor's watermark in the footer of every page on
+ * a pharmaceutical sponsor's library.
  *
- * There is no ImageMagick on the build machine and no need for one: this is a
- * scanline flood fill over a raw RGBA buffer from sharp, which is about thirty
- * lines and has no opinions about anything.
+ * So the dependency is reversed: the flat pack is rendered from
+ * `src/lib/lansod-canvas.ts` — the same code that paints the six faces of the
+ * 3D carton — rather than sampled from a picture of one. That is strictly
+ * better than what it replaced, for three reasons beyond the watermark:
+ *
+ *   • The flat still and the WebGL pack can never drift apart, because there is
+ *     only one drawing. Before, they were a photograph and a reproduction of a
+ *     photograph, and nothing kept them in step.
+ *   • It regenerates at any size. A cut-out is stuck at the resolution of the
+ *     JPEG it came from.
+ *   • It needs no supplied asset at all, so a fresh checkout can build every
+ *     committed file in `public/` without anyone hunting for the originals.
+ *
+ * ## How it runs browser code
+ *
+ * `lansod-canvas.ts` touches `document` and the 2D canvas API, so it cannot run
+ * in Node. It is type-stripped with `module.stripTypeScriptTypes` and injected
+ * into a headless Chrome page, which draws the faces and hands back a PNG. The
+ * module is read, not duplicated: if the carton changes, this output changes
+ * with it, which is the whole point.
+ *
+ * Requires the same Chrome `probe.mjs` uses.
  */
 import { createRequire } from "node:module";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { stripTypeScriptTypes } from "node:module";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const require = createRequire(import.meta.url);
-const sharp = require("sharp");
+const puppeteer = require("puppeteer-core");
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const supplied = join(root, "..");
 const out = join(root, "public");
 mkdirSync(out, { recursive: true });
 
-/**
- * How far from the seed colour still counts as "the same background".
- *
- * This number is the whole job, and it is narrower than it looks. Measured off
- * the supplied photograph: the studio ground runs 211-227 per channel, and the
- * *white carton* runs 182-205. Six levels of daylight separate the product from
- * the backdrop. The default of 28 anyone would reach for first fills straight
- * through the box and hollows out the printed panel.
- *
- * 11 sits in the gap with room on both sides. Overridable so a re-supplied
- * photograph can be re-tuned without editing this file, but check the result on
- * a dark ground before believing it: a leak into the carton is nearly
- * invisible against white and unmissable against a blue page.
- */
-const TOLERANCE = Number(process.env.GROUND_TOLERANCE ?? 11);
+/** The drawing module, as browser-executable JavaScript. */
+const source = stripTypeScriptTypes(
+  readFileSync(join(root, "src/lib/lansod-canvas.ts"), "utf8"),
+  { mode: "strip" },
+)
+  // `export` is meaningless in a classic script tag; the functions are wanted
+  // as globals so the page can call them.
+  .replace(/^export /gm, "");
+
+const browser = await puppeteer.launch({
+  executablePath: "/usr/bin/google-chrome",
+  headless: "new",
+  args: ["--no-sandbox", "--disable-gpu", "--hide-scrollbars"],
+});
+const page = await browser.newPage();
+await page.setViewport({ width: 1400, height: 1000, deviceScaleFactor: 1 });
+await page.setContent("<!doctype html><body></body>");
+await page.addScriptTag({ content: source });
 
 /**
- * Flood fill the background to transparent, starting from the four corners.
+ * The composition: the front face, sheared and scaled into a three-quarter
+ * view, with the end panel on its right and the blister lying in front.
  *
- * Scanline fill with an explicit stack rather than recursion: a 567×293 image
- * is 166k pixels and a per-pixel recursive fill overflows the stack on the
- * first large region.
+ * Drawn with 2D transforms rather than by screenshotting the WebGL scene. A
+ * headless GL context is a different renderer from the one a reader gets, and
+ * this still has to match the page it sits behind rather than a second
+ * rendering of it. The geometry is a fake, and an honest one: two parallelograms
+ * that agree about a vanishing direction.
  */
-function cutGround(data, width, height) {
-  const seen = new Uint8Array(width * height);
-  const stack = [];
+const dataUrl = await page.evaluate(() => {
+  const W = 1400;
+  const H = 1000;
+  const c = document.createElement("canvas");
+  c.width = W;
+  c.height = H;
+  const g = c.getContext("2d");
 
-  const seeds = [
+  const front = drawPackFront(1400);
+  const end = drawPackEnd(620);
+  const blister = drawBlister(1100);
+
+  // Front face: turned away from the viewer to the left.
+  const fw = 760;
+  const fh = fw * (PACK_SIZE.height / PACK_SIZE.width);
+  const fx = 250;
+  const fy = 210;
+
+  g.save();
+  g.transform(1, 0.1, 0, 1, fx, fy);
+  g.drawImage(front, 0, 0, fw, fh);
+  g.restore();
+
+  // End panel: the right-hand face, leaning the other way.
+  const ew = fw * (PACK_SIZE.depth / PACK_SIZE.width) * 1.08;
+  g.save();
+  g.transform(1, -0.1, 0, 1, fx + fw, fy + fw * 0.1);
+  g.drawImage(end, 0, 0, ew, fh);
+  g.restore();
+
+  // Top flap, closing the box.
+  const flap = drawPackFlap(760);
+  g.save();
+  g.transform(1, 0.1, -0.72, 1, fx, fy);
+  g.translate(0, 0);
+  g.drawImage(flap, 0, -ew * 0.62, fw, ew * 0.62);
+  g.restore();
+
+  // The strip, lying in front and overlapping the carton's foot.
+  g.save();
+  g.transform(1, 0.09, -0.2, 1, 120, 660);
+  g.drawImage(blister, 0, 0, 900, 900 * 0.22);
+  g.restore();
+
+  // Trim to the drawn content so the PNG has no dead margin.
+  const px = g.getImageData(0, 0, W, H).data;
+  let x0 = W;
+  let y0 = H;
+  let x1 = 0;
+  let y1 = 0;
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      if (px[(y * W + x) * 4 + 3] > 4) {
+        if (x < x0) x0 = x;
+        if (x > x1) x1 = x;
+        if (y < y0) y0 = y;
+        if (y > y1) y1 = y;
+      }
+    }
+  }
+  const pad = 8;
+  x0 = Math.max(0, x0 - pad);
+  y0 = Math.max(0, y0 - pad);
+  x1 = Math.min(W - 1, x1 + pad);
+  y1 = Math.min(H - 1, y1 + pad);
+
+  const t = document.createElement("canvas");
+  t.width = x1 - x0 + 1;
+  t.height = y1 - y0 + 1;
+  t.getContext("2d").drawImage(c, -x0, -y0);
+  return t.toDataURL("image/png");
+});
+
+writeFileSync(
+  join(out, "lanso-d-30.png"),
+  Buffer.from(dataUrl.split(",")[1], "base64"),
+);
+console.log("  ✓ lanso-d-30.png");
+
+/** Square's mark on its own, for the "Courtesy by" slot in the footer. */
+const markUrl = await page.evaluate(() => {
+  const c = document.createElement("canvas");
+  c.width = 760;
+  c.height = 200;
+  const g = c.getContext("2d");
+  // `squareMark` is module-private, so the lockup is composed here from the
+  // same two ingredients: the four squares and the wordmark beside them.
+  g.translate(0, 0);
+  const size = 120;
+  const cx = 640;
+  const cy = 100;
+  g.save();
+  g.translate(cx, cy);
+  g.rotate(Math.PI / 4);
+  g.fillStyle = "#37a13c";
+  const cell = size * 0.43;
+  const gut = size * 0.14;
+  for (const [gx, gy] of [
     [0, 0],
-    [width - 1, 0],
-    [0, height - 1],
-    [width - 1, height - 1],
-  ];
-
-  // The reference colour is the mean of the four corners, so a photograph with
-  // a slightly uneven backdrop still reads as one background.
-  let r0 = 0;
-  let g0 = 0;
-  let b0 = 0;
-  for (const [x, y] of seeds) {
-    const i = (y * width + x) * 4;
-    r0 += data[i];
-    g0 += data[i + 1];
-    b0 += data[i + 2];
+    [1, 0],
+    [0, 1],
+    [1, 1],
+  ]) {
+    g.fillRect(
+      -(cell + gut / 2) + gx * (cell + gut),
+      -(cell + gut / 2) + gy * (cell + gut),
+      cell,
+      cell,
+    );
   }
-  r0 /= seeds.length;
-  g0 /= seeds.length;
-  b0 /= seeds.length;
+  g.restore();
+  g.fillStyle = "#1b1b1b";
+  g.textAlign = "right";
+  g.textBaseline = "middle";
+  g.font = `700 ${size * 0.46}px system-ui, sans-serif`;
+  g.letterSpacing = `${size * 0.03}px`;
+  g.fillText("SQUARE", cx - size * 0.95, cy - size * 0.11);
+  g.fillStyle = "#8a8f96";
+  g.font = `500 ${size * 0.2}px system-ui, sans-serif`;
+  g.letterSpacing = `${size * 0.05}px`;
+  g.fillText("PHARMACEUTICALS", cx - size * 0.95, cy + size * 0.24);
+  return c.toDataURL("image/png");
+});
 
-  const isGround = (i) =>
-    Math.abs(data[i] - r0) <= TOLERANCE &&
-    Math.abs(data[i + 1] - g0) <= TOLERANCE &&
-    Math.abs(data[i + 2] - b0) <= TOLERANCE;
+writeFileSync(
+  join(out, "courtesy-by.png"),
+  Buffer.from(markUrl.split(",")[1], "base64"),
+);
+console.log("  ✓ courtesy-by.png");
 
-  for (const [x, y] of seeds) stack.push(x, y);
-
-  while (stack.length > 0) {
-    const y = stack.pop();
-    const x = stack.pop();
-    if (x < 0 || y < 0 || x >= width || y >= height) continue;
-    const p = y * width + x;
-    if (seen[p]) continue;
-    if (!isGround(p * 4)) continue;
-
-    // Run left and right along this scanline, then seed the rows above and
-    // below from the span we just filled.
-    let left = x;
-    while (left > 0 && !seen[y * width + left - 1] && isGround((y * width + left - 1) * 4)) {
-      left -= 1;
-    }
-    let right = x;
-    while (
-      right < width - 1 &&
-      !seen[y * width + right + 1] &&
-      isGround((y * width + right + 1) * 4)
-    ) {
-      right += 1;
-    }
-
-    for (let i = left; i <= right; i++) {
-      const q = y * width + i;
-      seen[q] = 1;
-      data[q * 4 + 3] = 0;
-      if (y > 0) stack.push(i, y - 1);
-      if (y < height - 1) stack.push(i, y + 1);
-    }
-  }
-
-  return seen;
-}
-
-/**
- * Erode the alpha by one pixel wherever it borders the cut.
- *
- * The halo this removes is the anti-aliased boundary the camera recorded: those
- * pixels are a blend of the product and the white backdrop, so they keep their
- * white content no matter what the alpha says. Cheaper to drop them than to
- * un-blend them, and one pixel off a 567px pack shot is not visible.
- */
-function erodeEdge(data, width, height, cut) {
-  const doomed = [];
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const p = y * width + x;
-      if (cut[p]) continue;
-      const neighbours = [
-        y > 0 ? p - width : -1,
-        y < height - 1 ? p + width : -1,
-        x > 0 ? p - 1 : -1,
-        x < width - 1 ? p + 1 : -1,
-      ];
-      if (neighbours.some((n) => n >= 0 && cut[n])) doomed.push(p);
-    }
-  }
-  for (const p of doomed) data[p * 4 + 3] = 0;
-  return doomed.length;
-}
-
-async function buildPackShot() {
-  const source = join(supplied, "exium.png");
-  const image = sharp(source).ensureAlpha();
-  const { width, height } = await image.metadata();
-  const { data } = await image.raw().toBuffer({ resolveWithObject: true });
-
-  const cut = cutGround(data, width, height);
-  const eroded = erodeEdge(data, width, height, cut);
-
-  const kept = await sharp(data, { raw: { width, height, channels: 4 } })
-    .png({ compressionLevel: 9 })
-    .toBuffer();
-
-  // Trim what the fill emptied, so the PNG is the pack and not a pack in a
-  // field of nothing: the 3D scene and the CSS both want tight bounds.
-  const info = await sharp(kept)
-    .trim({ threshold: 1 })
-    .png({ compressionLevel: 9 })
-    .toFile(join(out, "exium-mups-20.png"));
-
-  const cleared = cut.reduce((n, v) => n + v, 0);
-  console.log(
-    `  exium-mups-20.png  ${info.width}×${info.height}  ` +
-      `(${((cleared / (width * height)) * 100).toFixed(1)}% of the frame cut, ` +
-      `${eroded} edge pixels eroded)`,
-  );
-}
-
-async function buildCourtesy() {
-  const info = await sharp(join(supplied, "courtesy_by.png"))
-    .ensureAlpha()
-    .trim({ threshold: 8 })
-    .png({ compressionLevel: 9 })
-    .toFile(join(out, "courtesy-by.png"));
-  console.log(`  courtesy-by.png  ${info.width}×${info.height}`);
-}
-
-await buildPackShot();
-await buildCourtesy();
-console.log("Brand assets written to public/.");
+await browser.close();
+console.log("\nSponsor artwork rendered from src/lib/lansod-canvas.ts.");

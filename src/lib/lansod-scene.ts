@@ -105,15 +105,21 @@ export function createLansodScene(options: LansodSceneOptions): LansodScene {
 
   /* --- Light ------------------------------------------------------- *
    * A softbox above and slightly front, one hard key from the upper
-   * right to throw the shadow and rake the swash, and a rim in the
-   * brand's light-emitting pink from behind left. The rim is the only
+   * right to throw the shadow and rake the edge band, and a rim in the
+   * brand's light-emitting sky from behind left. The rim is the only
    * place the site's own colour touches the product: enough to seat it
    * on the page, not enough to recolour someone's packaging.
+   *
+   * Everything here came down when the carton went from cream board to
+   * true white. A key that rakes a warm off-white stock beautifully
+   * blows a white one out under ACES, and what is lost is exactly the
+   * small print and the grey strength — the parts of a pack that have to
+   * survive for it to look like a pack rather than a white brick.
    * ---------------------------------------------------------------- */
-  const ambient = new THREE.HemisphereLight(0xffffff, 0xa8b6c4, 1.32);
+  const ambient = new THREE.HemisphereLight(0xffffff, 0xa8b6c4, 1.05);
   scene.add(ambient);
 
-  const key = new THREE.DirectionalLight(0xf4f8ff, 1.9);
+  const key = new THREE.DirectionalLight(0xf4f8ff, 1.35);
   key.position.set(2.4, 3.4, 2.8);
   key.castShadow = true;
   key.shadow.mapSize.set(1024, 1024);
@@ -127,12 +133,15 @@ export function createLansodScene(options: LansodSceneOptions): LansodScene {
   key.shadow.camera.bottom = -2.5;
   scene.add(key);
 
-  const fill = new THREE.DirectionalLight(0xffffff, 0.5);
+  const fill = new THREE.DirectionalLight(0xffffff, 0.36);
   fill.position.set(-2.6, 1.1, 2.2);
   scene.add(fill);
 
-  const rim = new THREE.PointLight(readAccent(), 9, 8, 2);
-  rim.position.set(-2.1, 0.7, -1.9);
+  // A sky-blue rim on a *white* face has nothing to be brighter than, so it is
+  // moved behind the pack to rim the silhouette against the dark studio ground
+  // instead, and raised to cover the shorter arc it now lights.
+  const rim = new THREE.PointLight(readAccent(), 14, 9, 2);
+  rim.position.set(-1.9, 0.55, -2.6);
   scene.add(rim);
 
   /* --- The carton -------------------------------------------------- *
@@ -174,14 +183,23 @@ export function createLansodScene(options: LansodSceneOptions): LansodScene {
   carton.receiveShadow = true;
 
   /* --- The blister ------------------------------------------------- *
-   * A thin slab leaning against the carton, foil side to camera. Its
+   * A thin slab lying in front of the carton, foil side to camera. Its
    * own material is the metallic one in the scene, and a metal with no
    * environment to reflect renders black, so it gets a small
    * procedural environment rather than `metalness: 1` and a surprise.
+   *
+   * The slab's aspect is taken from `drawBlister`'s own rather than set
+   * here: a strip of five capsules in one row is long and thin, where
+   * the ten-tablet strip this replaced was nearly square. Left at the
+   * old proportions the slab stands up over the carton's face and hides
+   * the wordmark, which is the one thing the advert exists to show.
    * ---------------------------------------------------------------- */
+  const BLISTER_W = W * 0.86;
+  /** Matches the 0.22 aspect `drawBlister` draws its canvas at. */
+  const BLISTER_H = BLISTER_W * 0.22;
   const blisterTexture = track(textureFrom(drawBlister(1024), anisotropy));
   const blister = new THREE.Mesh(
-    track(new THREE.BoxGeometry(W * 0.82, H * 0.62, D * 0.1)),
+    track(new THREE.BoxGeometry(BLISTER_W, BLISTER_H, D * 0.08)),
     track(
       new THREE.MeshPhysicalMaterial({
         map: blisterTexture,
@@ -226,9 +244,11 @@ export function createLansodScene(options: LansodSceneOptions): LansodScene {
 
   /** Everything that turns together. */
   const rig = new THREE.Group();
-  carton.position.set(0, H * 0.06, 0);
-  blister.position.set(W * 0.06, -H * 0.24, D * 0.62);
-  blister.rotation.set(-0.36, 0.02, 0.015);
+  carton.position.set(0, H * 0.1, 0);
+  // Clear of the front face, not against it: down past the carton's foot and
+  // well forward of it, tilted back so the foil catches the key.
+  blister.position.set(-W * 0.06, -H * 0.46, D * 0.95);
+  blister.rotation.set(-0.62, 0.03, 0.02);
   rig.add(carton, blister);
   scene.add(rig);
 
