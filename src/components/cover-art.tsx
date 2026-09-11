@@ -93,7 +93,7 @@ export function CoverArt({
       : "text-[clamp(0.4rem,2.9cqw,0.62rem)]";
 
   // On a dark cover the accent has to lift off the stock, not sink into it.
-  const accent = t.light ? t.mid : "#ff7a3d";
+  const accent = t.light ? t.mid : "#67e8f9";
 
   return (
     <div

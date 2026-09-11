@@ -155,7 +155,15 @@ const PLUMES: readonly Plume[] = [
     tilt: "42deg",
     soft: "54px",
     dim: 0.54,
-    tint: "var(--brand-3)",
+    /* `--brand-3` — the violet at the deep end of the wordmark gradient — was
+       the tint here, and it is the one plume that had to change with the
+       palette rather than follow it. Violet reads as depth across the 200px of
+       a wordmark; spread over 48vmax of a blue page it reads as a magenta
+       stain, which is the single thing on this screen that would say the room
+       is not blue. The accent gives the same recession without leaving the
+       axis: it is the darkest, most saturated blue in the set, so it still
+       sits behind the two sky plumes in front of it. */
+    tint: "var(--accent)",
     dx: "9%",
     dy: "-7%",
     spin: "-11deg",

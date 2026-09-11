@@ -11,7 +11,7 @@
  * The page wanted motion behind it. A stock clip of a nursery would be a
  * second photograph competing with the one already there, would need its own
  * licence recorded, and would cost megabytes. What the page actually needs is
- * *light that moves*: a defocused field of blush and plum that drifts across
+ * *light that moves*: a defocused field of sky and azure that drifts across
  * the plate so the still underneath stops reading as a still. That is a dozen
  * blurred discs, which is arithmetic, so it is drawn here instead of filmed.
  *
@@ -74,20 +74,20 @@ const OUT_H = 540;
  *
  * `rgb` are the palette's own three pinks plus one near-white, at the
  * intensity they are wanted *on the page*: this is a screen blend over
- * somebody's photograph, so a saturated pink at full strength would flatten
- * the picture into a pink rectangle. Nothing here goes above 40%.
+ * somebody's photograph, so a saturated blue at full strength would flatten
+ * the picture into a blue rectangle. Nothing here goes above 40%.
  */
 const BLOBS = [
-  { x: 0.16, y: 0.28, r: 0.22, ax: 0.10, ay: 0.06, k: 1, phase: 0.00, rgb: [249, 168, 212], gain: 0.15 },
-  { x: 0.80, y: 0.22, r: 0.19, ax: 0.08, ay: 0.07, k: 1, phase: 0.42, rgb: [251, 113, 133], gain: 0.11 },
-  { x: 0.54, y: 0.78, r: 0.24, ax: 0.07, ay: 0.05, k: 1, phase: 0.71, rgb: [162,  28, 175], gain: 0.15 },
-  { x: 0.92, y: 0.68, r: 0.15, ax: 0.09, ay: 0.08, k: 2, phase: 0.18, rgb: [249, 168, 212], gain: 0.08 },
-  { x: 0.06, y: 0.82, r: 0.13, ax: 0.06, ay: 0.07, k: 2, phase: 0.55, rgb: [253, 238, 244], gain: 0.05 },
-  { x: 0.34, y: 0.08, r: 0.11, ax: 0.12, ay: 0.05, k: 2, phase: 0.90, rgb: [251, 207, 232], gain: 0.06 },
-  { x: 0.66, y: 0.46, r: 0.08, ax: 0.15, ay: 0.10, k: 3, phase: 0.31, rgb: [253, 238, 244], gain: 0.05 },
-  { x: 0.24, y: 0.58, r: 0.07, ax: 0.12, ay: 0.13, k: 3, phase: 0.64, rgb: [249, 168, 212], gain: 0.04 },
-  { x: 0.44, y: 0.34, r: 0.06, ax: 0.17, ay: 0.12, k: 4, phase: 0.12, rgb: [251, 207, 232], gain: 0.04 },
-  { x: 0.72, y: 0.90, r: 0.09, ax: 0.14, ay: 0.06, k: 4, phase: 0.77, rgb: [162,  28, 175], gain: 0.06 },
+  { x: 0.16, y: 0.28, r: 0.22, ax: 0.10, ay: 0.06, k: 1, phase: 0.00, rgb: [125, 211, 252], gain: 0.15 },
+  { x: 0.80, y: 0.22, r: 0.19, ax: 0.08, ay: 0.07, k: 1, phase: 0.42, rgb: [ 56, 189, 248], gain: 0.11 },
+  { x: 0.54, y: 0.78, r: 0.24, ax: 0.07, ay: 0.05, k: 1, phase: 0.71, rgb: [109,  40, 217], gain: 0.15 },
+  { x: 0.92, y: 0.68, r: 0.15, ax: 0.09, ay: 0.08, k: 2, phase: 0.18, rgb: [125, 211, 252], gain: 0.08 },
+  { x: 0.06, y: 0.82, r: 0.13, ax: 0.06, ay: 0.07, k: 2, phase: 0.55, rgb: [234, 245, 255], gain: 0.05 },
+  { x: 0.34, y: 0.08, r: 0.11, ax: 0.12, ay: 0.05, k: 2, phase: 0.90, rgb: [186, 230, 253], gain: 0.06 },
+  { x: 0.66, y: 0.46, r: 0.08, ax: 0.15, ay: 0.10, k: 3, phase: 0.31, rgb: [234, 245, 255], gain: 0.05 },
+  { x: 0.24, y: 0.58, r: 0.07, ax: 0.12, ay: 0.13, k: 3, phase: 0.64, rgb: [125, 211, 252], gain: 0.04 },
+  { x: 0.44, y: 0.34, r: 0.06, ax: 0.17, ay: 0.12, k: 4, phase: 0.12, rgb: [186, 230, 253], gain: 0.04 },
+  { x: 0.72, y: 0.90, r: 0.09, ax: 0.14, ay: 0.06, k: 4, phase: 0.77, rgb: [109,  40, 217], gain: 0.06 },
 ];
 
 const TAU = Math.PI * 2;

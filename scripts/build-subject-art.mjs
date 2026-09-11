@@ -16,7 +16,7 @@
  *
  * **They still have to look like the same set as the photographs.** So the
  * treatment is deliberately identical: the composition is drawn in greyscale,
- * blurred, and then mapped through the *same* plum-to-blush duotone ramp
+ * blurred, and then mapped through the *same* navy-to-sky duotone ramp
  * (`SHADOW` → `HIGHLIGHT`) that the chapter art uses. A subject plate and a
  * chapter background sitting on the same page are two images from one palette,
  * which is the only reason a drawn panel can sit next to a photographed one
@@ -50,8 +50,8 @@ const HEIGHT = 900;
  * and importing it would run its download. Two constants that must agree are
  * cheaper to keep in step than a shared module neither script wants.
  */
-const SHADOW = { r: 0x4c, g: 0x1d, b: 0x33 };
-const HIGHLIGHT = { r: 0xfb, g: 0xe4, b: 0xec };
+const SHADOW = { r: 0x12, g: 0x29, b: 0x4a };
+const HIGHLIGHT = { r: 0xe2, g: 0xee, b: 0xfb };
 const DUOTONE = {
   slope: ["r", "g", "b"].map((c) => (HIGHLIGHT[c] - SHADOW[c]) / 255),
   intercept: ["r", "g", "b"].map((c) => SHADOW[c]),
@@ -235,7 +235,7 @@ function ground(next) {
  * The plate, in greyscale.
  *
  * Mid-grey base rather than black or white: the duotone maps 0→ink and
- * 255→blush, so a plate drawn around the middle of the range lands in the
+ * 255→sky, so a plate drawn around the middle of the range lands in the
  * middle of the palette, where a heading can sit on it in either theme.
  */
 function svg(slug, next) {

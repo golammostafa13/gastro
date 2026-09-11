@@ -69,7 +69,7 @@ function textureFrom(canvas: HTMLCanvasElement, anisotropy: number) {
 function readAccent(): THREE.Color {
   const root = getComputedStyle(document.documentElement);
   const value = root.getPropertyValue("--accent-lit").trim();
-  return new THREE.Color(value || "#f9a8d4");
+  return new THREE.Color(value || "#7dd3fc");
 }
 
 export function createLansodScene(options: LansodSceneOptions): LansodScene {
@@ -110,10 +110,10 @@ export function createLansodScene(options: LansodSceneOptions): LansodScene {
    * place the site's own colour touches the product: enough to seat it
    * on the page, not enough to recolour someone's packaging.
    * ---------------------------------------------------------------- */
-  const ambient = new THREE.HemisphereLight(0xffffff, 0xb9a3ad, 1.35);
+  const ambient = new THREE.HemisphereLight(0xffffff, 0xa8b6c4, 1.32);
   scene.add(ambient);
 
-  const key = new THREE.DirectionalLight(0xfff6ee, 2.1);
+  const key = new THREE.DirectionalLight(0xf4f8ff, 1.9);
   key.position.set(2.4, 3.4, 2.8);
   key.castShadow = true;
   key.shadow.mapSize.set(1024, 1024);

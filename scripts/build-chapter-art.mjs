@@ -17,7 +17,7 @@
  * **The treatment matters more than the photographs.** Six stock images of
  * varying quality, dropped in at full colour, would read as six stock images.
  * Each one here is collapsed to luminance and then mapped through the site's own
- * plum-to-blush ramp as a two-colour duotone, so they arrive as one set in one
+ * navy-to-sky ramp as a two-colour duotone, so they arrive as one set in one
  * palette: the photograph supplies the composition and every tone comes from the
  * design. It is also why the licensing risk is low and the weight is ~50 KB each.
  *
@@ -129,7 +129,7 @@ const WIDTH = 1920;
 const HEIGHT = 1080;
 
 /**
- * The duotone ramp: the site's own ink and blush, as a per-channel straight
+ * The duotone ramp: the site's own ink and sky, as a per-channel straight
  * line. Black in the photograph becomes `SHADOW`, white becomes `HIGHLIGHT`,
  * and everything between interpolates, which is what makes six unrelated
  * photographs read as one set rather than six.
@@ -139,8 +139,8 @@ const HEIGHT = 1080;
  * Neither end is pure black or pure white: a duotone that bottoms out at #000
  * reads as a hole punched in the page rather than as a photograph behind it.
  */
-const SHADOW = { r: 0x4c, g: 0x1d, b: 0x33 };
-const HIGHLIGHT = { r: 0xfb, g: 0xe4, b: 0xec };
+const SHADOW = { r: 0x12, g: 0x29, b: 0x4a };
+const HIGHLIGHT = { r: 0xe2, g: 0xee, b: 0xfb };
 const DUOTONE = {
   slope: ["r", "g", "b"].map((c) => (HIGHLIGHT[c] - SHADOW[c]) / 255),
   intercept: ["r", "g", "b"].map((c) => SHADOW[c]),

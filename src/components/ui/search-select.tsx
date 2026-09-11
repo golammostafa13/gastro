@@ -285,7 +285,7 @@ export function SearchSelect({
           }}
           onKeyDown={onKeyDown}
           className={cn(
-            "h-12 w-full rounded-xl border bg-bg pr-20 text-[0.95rem] text-ink shadow-[inset_0_1px_2px_rgba(94,24,60,0.06)] placeholder:text-ink-faint focus:outline-none",
+            "h-12 w-full rounded-xl border bg-bg pr-20 text-[0.95rem] text-ink shadow-[inset_0_1px_2px_rgba(11,34,66,0.06)] placeholder:text-ink-faint focus:outline-none",
             open ? "border-accent pl-11" : "border-line pl-4",
             disabled && "cursor-not-allowed opacity-60",
             bnClass,

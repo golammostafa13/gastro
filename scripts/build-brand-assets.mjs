@@ -56,7 +56,7 @@ mkdirSync(out, { recursive: true });
  * 11 sits in the gap with room on both sides. Overridable so a re-supplied
  * photograph can be re-tuned without editing this file, but check the result on
  * a dark ground before believing it: a leak into the carton is nearly
- * invisible against white and unmissable against plum.
+ * invisible against white and unmissable against a blue page.
  */
 const TOLERANCE = Number(process.env.GROUND_TOLERANCE ?? 11);
 

@@ -168,7 +168,7 @@ export function drawCoverFace(
   const displayTitle = bookTitle(book, lang);
   // Whether the *rendered* string is Bengali, not whether the reader is.
   const isBn = displayTitle === book.titleBn;
-  const accent = t.light ? t.mid : "#ff7a3d";
+  const accent = t.light ? t.mid : "#67e8f9";
 
   ctx.fillStyle = t.paper;
   ctx.fillRect(0, 0, w, h);
@@ -308,7 +308,7 @@ export function drawCoverBack(book: CoverBook, width = 256): HTMLCanvasElement {
   const h = Math.round(width / COVER_RATIO);
   const { canvas, ctx } = ctxOf(w, h);
   const t = coverTheme(book);
-  const accent = t.light ? t.mid : "#ff7a3d";
+  const accent = t.light ? t.mid : "#67e8f9";
 
   ctx.fillStyle = t.paper;
   ctx.fillRect(0, 0, w, h);
@@ -376,14 +376,14 @@ export function drawSpine(
  */
 export function drawPageEdge(size = 512): HTMLCanvasElement {
   const { canvas, ctx } = ctxOf(size, size);
-  ctx.fillStyle = "#efe7d8";
+  ctx.fillStyle = "#eef1f6";
   ctx.fillRect(0, 0, size, size);
   for (let x = 0; x < size; x += 2) {
     // Deterministic, not random: the same edge every reload, and identical
     // between two volumes lit from different sides.
     const n = (Math.sin(x * 12.9898) * 43758.5453) % 1;
     ctx.globalAlpha = 0.06 + Math.abs(n) * 0.14;
-    ctx.fillStyle = n > 0 ? "#b9a988" : "#fffaf0";
+    ctx.fillStyle = n > 0 ? "#bcc6d2" : "#fbfdff";
     ctx.fillRect(x, 0, 1, size);
   }
   ctx.globalAlpha = 1;

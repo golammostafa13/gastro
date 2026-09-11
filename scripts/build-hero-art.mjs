@@ -15,7 +15,7 @@
  * The treatment is deliberately *not* the one in `build-chapter-art.mjs`. Those
  * plates sit behind body copy at low contrast and are blurred so they cannot
  * compete with it. These are the subject: darker, richer, no blur, and mapped
- * to a much deeper end of the plum ramp so light type sits over them the way it
+ * to a much deeper end of the navy ramp so light type sits over them the way it
  * does over a cinema frame. Same photographs, opposite job.
  *
  * Sources come from the cache `build-chapter-art.mjs` fills, so this does not
@@ -55,11 +55,11 @@ const HEIGHT = 1350;
 
 /**
  * The cinema ramp. Far deeper than the chapter one: black goes to a near-black
- * plum rather than to the body-text colour, and white stops well short of the
+ * navy rather than to the body-text colour, and white stops well short of the
  * page so the plate never has a blown-out area for type to disappear into.
  */
-const SHADOW = { r: 0x1e, g: 0x08, b: 0x13 };
-const HIGHLIGHT = { r: 0xf2, g: 0xbf, b: 0xd3 };
+const SHADOW = { r: 0x06, g: 0x14, b: 0x26 };
+const HIGHLIGHT = { r: 0xb9, g: 0xde, b: 0xf5 };
 const DUOTONE = {
   slope: ["r", "g", "b"].map((c) => (HIGHLIGHT[c] - SHADOW[c]) / 255),
   intercept: ["r", "g", "b"].map((c) => SHADOW[c]),

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 export function fieldClass(error?: string, className?: string) {
   return cn(
-    "h-12 w-full rounded-xl border bg-bg px-4 text-[0.95rem] text-ink shadow-[inset_0_1px_2px_rgba(94,24,60,0.06)] placeholder:text-ink-faint focus:outline-none",
+    "h-12 w-full rounded-xl border bg-bg px-4 text-[0.95rem] text-ink shadow-[inset_0_1px_2px_rgba(11,34,66,0.06)] placeholder:text-ink-faint focus:outline-none",
     error
       ? "border-danger focus:border-danger"
       : "border-line focus:border-accent",
