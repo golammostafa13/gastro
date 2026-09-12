@@ -3482,13 +3482,22 @@ html.lenis body {
    the reason this is one keyframe and a delay instead of four
    hand-authored sequences.
 --------------------------------------------------------------- */
-/* The scoped dark palette, shared by the two dark bands on the site: this
-   one and the catalogue's room (`.cine`, further down). Same token names, so
-   children of either stay theme-agnostic, and one rule rather than two so
-   they cannot drift apart into two different darks. */
+/* The scoped dark palette, shared by every dark room on the site: this one,
+   the catalogue's (`.cine`, further down), and the door. Same token names, so
+   children of any of them stay theme-agnostic, and one rule rather than three
+   so they cannot drift apart into three different darks.
+
+   The door is the newest of the three and the one that needs the *whole* dark
+   theme rather than these seven tokens — it has a card, fields and a primary
+   pill on it — so it carries `dark` on its own element as well (see the auth
+   layout) and this block deepens what that gives it. The order is what makes
+   that work: `.dark` is declared at the top of this file, these values below
+   it, and both match the same element, so the room wins on source order
+   without a single `!important` or a raised specificity.  */
 .cinema,
 .cine,
-.tome__plate {
+.tome__plate,
+.door {
   --bg: #06101d;
   --bg-deep: #030a14;
   --ink: #eaf5ff;
@@ -6753,13 +6762,41 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
    form on blush paper. Every other landing on the site opens on a
    cinema band; the door has to read as the same production.
 
-   It cannot do that the same way. The hero has four photographs of
-   mothers to be cinematic *with*, and the one thing that must not
-   compete for attention on this page is the one password field.
-   What is left, and what this section is, is **light**: a room lit
-   by drifting plumes of the brand pink, and one object standing in
-   it. No photograph, no video, no canvas — six spans and a stack of
-   gradients, animated on the compositor.
+   It cannot do that the same way. The catalogue's band has
+   photographs to be cinematic *with*, and the one thing that must
+   not compete for attention on this page is the one password field.
+   What is left, and what this section is, is **light**: a dark room
+   lit by drifting plumes of the brand jade, and one object standing
+   in it. No photograph, no video, no canvas — six spans and a stack
+   of gradients, animated on the compositor.
+
+   ## One ground
+
+   Both halves start from the same colour and differ only in the
+   light that falls on them.
+
+   They did not. The panel was porcelain and the stage was near
+   black for as long as the door followed the page's own palette,
+   and what a reader saw down the middle of the window was not a
+   seam but a horizon: two pages taped together, one of which
+   happened to have a body on it. The stage cannot come up to meet
+   the panel — the film standing in it is a radiograph, emission
+   drawn against black, and emissive art has no reading at all on
+   paper — so the panel goes down to meet the stage. `--bg-deep`
+   under both; the pools of light on either side keyed to the same
+   corner, so the one at the top of the window crosses the middle
+   instead of stopping at it; and a hairline where the halves meet
+   rather than a change of ground.
+
+   That is a palette decision and not a per-component one. The door
+   carries `dark` on its own element (see the auth layout) on top of
+   the deepening this file gives it alongside `.cinema` and `.cine`,
+   so the pane, the fields, the primary pill and the sponsor card
+   all read the dark theme's own tokens, and not one of them knows
+   it is standing in a lit room in the middle of a pale site. No
+   component overrides a colour per theme here, which is the rule
+   the rest of the stylesheet keeps: the door simply *is* the dark
+   theme, wherever the reader has set the rest of the library.
 
    Three layers, and the order is the whole design:
 
@@ -6781,114 +6818,154 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
   position: relative;
   isolation: isolate;
 
-  /* How hard the room is lit. The one per-theme number in this section, and
-     it is not a colour: the plumes are the same three brand tokens in both
-     themes, and the token swap at the top of the file already takes them from
-     pink-300 up to pink-200 for the dark ground. What the swap cannot express
-     is that the *same* plume is a soft wash on pale paper and the brightest
-     thing on screen against near-black plum. So: one scalar, two values,
-     rather than a per-theme override on each of eight layers. */
-  --door-glow: 1;
+  /* The ground, and it is the one ground — see "One ground" above. Written as
+     `background-color` rather than the `background` shorthand on purpose:
+     `.paper-grain` sits on this same element and owns the image layer, and the
+     shorthand would reset it out from under the grain. */
+  background-color: var(--bg-deep);
+  color: var(--ink);
 
-  /* How far the film is let through, and it is now all the way. An earlier cut
-     of this page ran its anatomy full-bleed behind the form at 0.3, where it
-     had to stay faint enough that a field label never lost its contrast against
-     it — a number set by the form rather than by the object. On its own half of
-     the door there is no type over it and the constraint is gone. Still a token
-     rather than a literal `1`, because it is what `data-live` fades up to and
-     because the next film dropped into this alcove may be brighter than this
-     one and want holding back.
+  /* A dark island in a site that may well be light, so the surfaces the
+     browser paints for itself have to be told which room they are in. The
+     panel's scrollbar on a long register is the visible one. The one that
+     matters is Chrome's autofill: left to its own reading of the page it drops
+     a pale field over the dark one, on the single input this page cannot
+     afford to have go unreadable. */
+  color-scheme: dark;
 
-     Under it, the ground that film stands on. Deep in *both* themes, which is
-     the one place this page stops following the palette, and the reason is the
-     footage: it is a radiograph, drawn as emission against black, and emissive
-     art has no reading on paper. Over the pale ground this half used to have, a
-     body rendered at a tenth of full brightness is a smudge and a glowing colon
-     is a yellow stain. Derived from `--ink` rather than written as a literal,
-     so it is the same navy the type on the other half is cut from, and so it
-     moves if the palette moves. */
+  /* How hard the room is lit. One value now, where there were two: the door is
+     the same dark room whichever way the rest of the library is set, so there
+     is no longer a second ground for these layers to be measured against.
+     Still a scalar rather than eight hand-edited gradients, because "a third
+     brighter" is one number and re-authoring eight stacks is not. */
+  --door-glow: 0.86;
+
+  /* How far the film is let through, and it is all the way. An earlier cut of
+     this page ran its anatomy full-bleed behind the form at 0.3, where it had
+     to stay faint enough that a field label never lost its contrast against it
+     — a number set by the form rather than by the object. On its own half of
+     the door there is no type over it and the constraint is gone. Still a
+     token rather than a literal `1`, because it is what `data-live` fades up
+     to and because the next film dropped into this alcove may be brighter than
+     this one and want holding back. */
   --anatomy-veil: 1;
-  --stage-deep: color-mix(in oklab, var(--ink) 82%, #000);
 
-  /* How opaque the card is over the light behind it. The brief asked for a card
-     you can see through, and this is the whole of that. It survived the split:
-     there is no organ behind the pane any more, but the plumes are still there,
-     and a card that lets the light through is what keeps it an object standing
-     in the room rather than a panel laid over a picture of one. The blur does
-     the rest — see `.door__pane`. */
-  --pane-veil: 0.86;
+  /* How opaque the card is over the light behind it. The brief asked for a
+     card you can see through, and this is the whole of that. It survived the
+     split and it survives the dark ground: there is no organ behind the pane
+     any more, but the plumes are still there, and a card that lets the light
+     through is what keeps it an object standing in the room rather than a
+     panel laid over a picture of one. The blur does the rest — see
+     `.door__pane`. */
+  --pane-veil: 0.82;
 }
 
-.dark .door {
-  --door-glow: 0.6;
-  --pane-veil: 0.82;
-  /* The dark theme already has a colour for the bottom of the room, and it is
-     within a few counts of the film's own field. */
-  --stage-deep: var(--bg-deep);
+/* The grain. `.paper-grain` publishes a dark dot for a pale page and a light
+   one under `.dark`, and that second rule is written as a descendant — it
+   cannot see an element that is *itself* the dark one, which the door is. So
+   the door states its own, at equal specificity and later in the file, which
+   is all it takes to win. The dot itself is the stock's tooth: on a ground
+   this deep it is the difference between a printed black and a switched-off
+   screen. */
+.door.paper-grain {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.035) 1px,
+    transparent 1px
+  );
 }
 
 /* ── The room ─────────────────────────────────────────────────── */
 
-/* The light, and it belongs to the panel rather than to the whole door. Half a
-   window of drifting plumes behind the type, and the stage beside it lit by its
-   own ground — see `.door__stage`. Running one field across both halves was the
-   first cut of the split and it flattened the seam: two grounds under one
-   continuous wash read as a single pane with a canvas dropped into the middle
-   of it, which is the thing the split exists to stop being. */
+/* The light, and it is the whole window's.
+
+   It was the panel's for a while, on the argument that light should be where
+   the type is, and the stage next door was lit by a ground of its own. What
+   that produced was a division no amount of matching the two grounds could
+   take away: a field of light that stops dead at the middle of the window
+   draws that middle, and a reader reads the stop as an edge between two pages
+   whether or not the colour under it changes.
+
+   So there is one field, under both halves, and the alcove has no ground left
+   of its own to be a rectangle — see `.door__stage-ground`, which is now a
+   halo and nothing else. The stop that used to fall at the seam falls off the
+   sides of the window instead, where a falloff belongs.
+
+   Clipped here rather than on `.door`: the register is the tallest form on the
+   site and `overflow: hidden` on the page element would cut its last field off
+   on a short window. This box has nothing in it but light. */
 .door__flow {
   position: absolute;
   inset: 0;
   z-index: 0;
-  /* Clipped here rather than on `.door`. The register is the tallest form on
-     the site and `overflow: hidden` on the page element would cut its last
-     field off on a short window; this box is only as tall as the page and has
-     nothing in it but light. */
   overflow: hidden;
   pointer-events: none;
   /* One camera, shared with `__grid` below. `--z` on a plume is then a real
      distance: the far ones are smaller *because they are further away*, and a
-     plume that moves toward the viewer grows on the way. */
+     plume that moves toward the viewer grows on the way.
+
+     The origin follows the card, which the full-bleed move put at about three
+     quarters across the window rather than at 62% of the panel. */
   perspective: 1000px;
-  perspective-origin: 62% 38%;
+  perspective-origin: 74% 38%;
 }
 
-/* The room with nothing moving in it: three pools of light, keyed high-left
-   the way every other 3D block on this site is lit, warmed at the foot so the
-   card is not standing on nothing.
+/* The room with nothing moving in it: four pools of light across the whole
+   window, keyed high the way every other 3D block on this site is lit, warmed
+   at the foot so the card is not standing on nothing.
 
-   `inset: -14%` so every falloff finishes off-screen. A radial gradient that
-   ends inside the viewport has a visible edge, and one visible edge is enough
-   to make the whole field read as a graphic rather than as light. */
+   Re-aimed when the field stopped being the panel's and became the door's.
+   Every percentage here is now a fraction of the *window*, so the numbers that
+   put a pool "just left of the card" or "at the top of the panel" all meant
+   something else the moment the box doubled in width. The plot that replaced
+   them has one rule in it: no falloff may finish anywhere near the middle of
+   the screen. A pool that fades out at 50% draws the line the ground was made
+   continuous to remove.
+
+   `inset: -14%` so every falloff finishes off-screen instead. A radial
+   gradient that ends inside the viewport has a visible edge, and one visible
+   edge is enough to make the whole field read as a graphic rather than as
+   light. */
 .door__wash {
   position: absolute;
   inset: -14%;
   opacity: var(--door-glow);
   background:
-    /* The soft box, and the layer that makes this a lit room rather than a
-       pink page. Listed first, so it sits over the pools: light on a pale
-       palette does not come from darkening the edges — there is nothing dark
-       in the ramp to darken them with — it comes from lifting the middle, and
-       the pink then reads as the falloff around it. It is also what buys the
-       tagline and the lead their contrast back. */
+    /* The soft box: the lift the card and its type stand on, centred on the
+       card, which is at about three quarters of the window. Listed first, so
+       it sits over the pools. It used to be `--surface` at 74%, which was the
+       right number for porcelain — on a pale palette there is nothing dark in
+       the ramp to vignette with, so light has to come from lifting the middle.
+       On this ground the same mix is a grey panel with an edge on it, and the
+       number comes down: enough to seat the card, not enough to draw a box
+       behind it. Wide and soft enough that its near side is still fading at
+       the middle of the screen rather than stopping there. */
     radial-gradient(
-      76% 62% at 44% 46%,
-      color-mix(in oklab, var(--surface) 74%, transparent) 0%,
-      transparent 62%
-    ),
-    radial-gradient(
-      48% 56% at 14% 2%,
-      color-mix(in oklab, var(--accent-lit) 30%, transparent) 0%,
-      transparent 68%
-    ),
-    radial-gradient(
-      44% 52% at 92% 94%,
-      color-mix(in oklab, var(--brand-2) 17%, transparent) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      66% 44% at 52% 108%,
-      color-mix(in oklab, var(--brand-1) 14%, transparent) 0%,
+      64% 76% at 76% 48%,
+      color-mix(in oklab, var(--surface) 52%, transparent) 0%,
       transparent 72%
+    ),
+    /* The key, and the layer the whole arrangement is answerable to. One pool,
+       hung off the top of the window and centred a little left of the middle,
+       so the brightest thing in the room sits *across* the join rather than on
+       one side of it. This was two pools once — one at the top of each half,
+       matched as closely as two gradients can be — and two lights an inch
+       apart still read as two lights. */
+    radial-gradient(
+      62% 54% at 44% -8%,
+      color-mix(in oklab, var(--accent-lit) 22%, transparent) 0%,
+      transparent 72%
+    ),
+    /* The foot, in the two greens, low and wide. Both run under the middle of
+       the window for the same reason the key runs over it. */
+    radial-gradient(
+      54% 46% at 88% 96%,
+      color-mix(in oklab, var(--brand-2) 16%, transparent) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      74% 42% at 34% 106%,
+      color-mix(in oklab, var(--brand-1) 15%, transparent) 0%,
+      transparent 74%
     );
 }
 
@@ -6976,16 +7053,18 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
   overflow: hidden;
   height: clamp(16rem, 44vh, 24rem);
 
-  /* Below `lg` only. The stage is a dark band and the panel above it is paper,
-     so the edge they share runs across the whole width — and a full-width
-     straight edge between a light thing and a dark thing is a horizon, which
-     makes the band a second page rather than the bottom of this one. Fading
-     the stage out over its first eighth lets the paper come down into it.
+  /* Below `lg` only, and it does less work than it used to. This was a
+     horizon once: a dark band under a paper panel, with a full-width straight
+     edge between them that made the band read as a second page. The grounds
+     are the same colour now and that edge is gone on its own — what is left to
+     fade is the *film*, whose top is a cut through a rib cage arriving without
+     warning a few pixels under the sponsor card. So the fade is shorter than
+     it was, because it is introducing a body rather than hiding a join.
 
      A mask rather than a gradient laid on top, because the thing that has to
      fade is the ground *and* the film standing on it; an overlay would have to
      be above the canvas and would dim the body wherever it reached. */
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 26%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 18%);
 }
 
 @media (min-width: 1024px) {
@@ -6997,69 +7076,47 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
   }
 }
 
-/* The ground: the dark room the film is held up to the light in.
+/* The halo behind the figure, and that is the whole of what is left here.
 
-   It used to be a pale recess a shade deeper than the panel beside it, and it
-   went dark when the procedural tract gave way to the radiograph — see
-   `--stage-deep` above for why an emissive render cannot stand on paper. What
-   survives of the old rule is its shape, because the shape was never about the
-   value: a base, a halo behind the figure's shoulders, and two brand-coloured
-   washes keyed high-right and low-left, which is how every 3D block on this
-   site is lit.
+   This was the alcove's floor: a base colour with three washes stacked on it,
+   holding a lit recess for the body to stand in. The base is gone and the last
+   wash with it, because a floor is a rectangle — an opaque box the width of
+   one half of the window, which is precisely the divider this arrangement is
+   trying not to have. Whatever colour it was given, matched to the panel's
+   ground or not, it had an edge down the middle of the screen and the eye
+   finds an edge before it finds a colour.
 
-   `--brand-3` for the halo rather than `--surface`, because on a dark ground
-   what lifts a figure off the back wall is a colour and not a lightness — and
-   blue is the colour the film's own ambient light already is, so the two meet
-   instead of arguing. Each wash is mixed toward `transparent` rather than given
-   an opacity, so they stack straight onto the base. */
+   So the body stands on the door's own ground now, and what remains is the one
+   layer that was never about the rectangle: a soft halo behind the figure's
+   shoulders, wide enough that its falloff finishes inside the half and is
+   therefore invisible as a shape. Nothing here reaches the inner edge.
+
+   `--brand-3` rather than a lightness, because on a dark ground what lifts a
+   figure off the back wall is a colour — and blue is the colour the film's own
+   ambient already is, so the two meet instead of arguing. Mixed toward
+   `transparent` rather than given an opacity, so it stacks straight onto
+   whatever the light behind it has left there. */
 .door__stage-ground {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(
-      66% 50% at 50% 38%,
-      color-mix(in oklab, var(--brand-3) 24%, transparent) 0%,
-      transparent 72%
-    ),
-    radial-gradient(
-      92% 70% at 84% 8%,
-      color-mix(in oklab, var(--accent-lit) 14%, transparent) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      80% 64% at 12% 96%,
-      color-mix(in oklab, var(--brand-2) 12%, transparent) 0%,
-      transparent 74%
-    ),
-    var(--stage-deep);
+  background: radial-gradient(
+    58% 46% at 50% 40%,
+    color-mix(in oklab, var(--brand-3) 20%, transparent) 0%,
+    transparent 74%
+  );
 }
 
-/* The seam. One hairline down the inner edge rather than a border on the
-   element: a full border draws the stage as a card, and the two halves are one
-   room seen twice. `inset-inline-end`, because the stage is the left half and
-   the edge it shares with the panel is its trailing one — and spelled logically
-   rather than as `right` so it follows the writing direction.
+/* There is no seam, and there is nothing here where one used to be.
 
-   Inside the query, because there is only a seam while there are two halves.
-   Below `lg` the stage is a full-width band and this rule drew a hairline down
-   its right-hand edge, against nothing — the fade on `.door__stage` above is
-   what draws that edge instead. */
-@media (min-width: 1024px) {
-  .door__stage::before {
-    content: "";
-    position: absolute;
-    inset-block: 0;
-    inset-inline-end: 0;
-    width: 1px;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      color-mix(in oklab, var(--line) 90%, transparent) 22%,
-      color-mix(in oklab, var(--line) 90%, transparent) 78%,
-      transparent 100%
-    );
-  }
-}
+   A hairline ran down the inner edge of the stage for as long as the two
+   halves had two grounds: it was the good version of that arrangement — an
+   architectural reveal rather than a border, which would have drawn the stage
+   as a card — and it went the moment the grounds became one. A line down the
+   middle of a continuous ground has nothing to separate; all it can do is
+   report that the page was built in two pieces.
+
+   What marks the middle of the window now is the body standing near it and the
+   light crossing it, which is what marks the middle of a room. */
 
 /* The pool the body stands over. Not a shadow — the film was rendered against
    a backdrop and the key has just taken the backdrop away, so there is no
@@ -7432,5 +7489,38 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
     background: var(--surface);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+  }
+}
+
+/* The dark room does not go through a printer, and this is the one obligation
+   that came with making the door dark in both themes rather than in one.
+   A printer drops background colours and keeps foreground ones, so a page that
+   is pale ink on a ground the paper will not carry prints as white on white —
+   the whole form, gone, on the single page of this site anyone has a reason to
+   print (a librarian handing the address and the word to a reader who is not
+   in front of a screen).
+
+   So the palette goes back to the page's own for print, and only the tokens
+   that end up as printed ink are worth naming: the light itself is already
+   `display: none` above. `color-scheme` with it, or the form controls print
+   with a dark chrome around them.
+
+   Not in the block above. Forced colours substitutes its own palette for every
+   one of these and needs none of it; print is the case that needs all of it. */
+@media print {
+  .door {
+    --bg: #ffffff;
+    --bg-deep: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #ffffff;
+    --ink: #12294a;
+    --ink-mute: #456381;
+    --ink-faint: #7d97b0;
+    --line: #cfdff0;
+    --line-soft: #e4edf8;
+    --accent: #08674b;
+    --accent-ink: #ffffff;
+    --card-lip: transparent;
+    color-scheme: light;
   }
 }

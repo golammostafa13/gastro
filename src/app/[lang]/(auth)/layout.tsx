@@ -46,6 +46,30 @@ import { getDictionary, hasLocale } from "@/lib/i18n";
  * handout should land on the fields, not scroll past a gut to reach them —
  * the brand wordmark at the top already says which library this is, in words.
  *
+ * ── One room ─────────────────────────────────────────────────────────
+ *
+ * Both halves stand on the same ground, and `dark` on the element below is how.
+ *
+ * The stage has no choice about being dark: the film in it is a radiograph,
+ * emission drawn against black, and there is no opacity at which that reads on
+ * paper. For a while the panel beside it stayed porcelain anyway, and the
+ * result was not a split screen but a horizon — a pale page and a dark page
+ * meeting down the middle of the window, with the seam doing the work of a
+ * fold. So the panel came down to meet the stage instead.
+ *
+ * That is done with the theme class rather than with a private set of colours,
+ * because this page has a card, two fields, a primary pill, a language switch
+ * and a sponsor's advert on it, and every one of them already knows how to be
+ * dark. `dark` here hands them the answer they were built with; the stylesheet
+ * deepens the ground a little further (the door joins `.cinema` and `.cine` in
+ * the scoped palette) and lights it. Nothing on this page overrides a colour
+ * per theme, which is the rule the rest of the site keeps: the door *is* the
+ * dark theme, wherever the reader has set the library behind it.
+ *
+ * It follows that the door does not change with the theme toggle — and it
+ * should not. A room is a room at both times of day; what the toggle sets is
+ * the library on the other side of it.
+ *
  * ── One window ───────────────────────────────────────────────────────
  *
  * At `lg` the door is exactly `100dvh` and does not scroll; the panel scrolls
@@ -57,10 +81,17 @@ import { getDictionary, hasLocale } from "@/lib/i18n";
  * which is the one place this arrangement gives way, and it gives way on the
  * half that can afford it.
  *
- * `DoorFlow` lives on the panel rather than the whole door, so the light is
- * where the type is. It is absolutely positioned inside its own clipped box
- * (see the stylesheet) rather than clipping this element, so a long register
- * form on a short window still scrolls.
+ * `DoorFlow` lies under the whole door rather than under the panel, and that
+ * is the second half of "One room" above. It was the panel's for a while, on
+ * the argument that light should be where the type is; what that actually did
+ * was stop the light dead at the middle of the window, which drew the division
+ * the shared ground had just taken away. One field across both halves, and the
+ * seam is nothing at all.
+ *
+ * It is absolutely positioned inside its own clipped box (see the stylesheet)
+ * rather than clipping this element, so a long register form on a short window
+ * still scrolls. It also no longer scrolls with the panel, which is right: the
+ * room stays where it is while the reader moves down the form.
  */
 export default async function AuthLayout(props: LayoutProps<"/[lang]">) {
   const { lang } = await props.params;
@@ -68,12 +99,42 @@ export default async function AuthLayout(props: LayoutProps<"/[lang]">) {
   const dict = getDictionary(lang);
 
   return (
-    <div className="door paper-grain relative min-h-dvh lg:grid lg:h-dvh lg:min-h-0 lg:grid-cols-2 lg:overflow-hidden">
-      <div className="door__panel relative flex min-h-dvh flex-col lg:order-2 lg:h-dvh lg:min-h-0 lg:overflow-y-auto">
-        <DoorFlow />
+    /* `dark` is not a variant of this page, it is what this page is — see
+       "One room" above. It sits beside `door` rather than on a wrapper because
+       Tailwind's dark variant is `&:where(.dark, .dark *)`: on the element
+       itself, every `dark:` utility inside the door resolves too, not only the
+       tokens. */
+    <div className="door dark paper-grain relative min-h-dvh lg:grid lg:h-dvh lg:min-h-0 lg:grid-cols-2 lg:overflow-hidden">
+      <DoorFlow />
 
-        <header className="relative z-10 flex w-full items-center justify-between gap-2 px-5 py-6 sm:gap-4 lg:px-10">
-          <div className="min-w-0 shrink">
+      <div className="door__panel relative flex min-h-dvh flex-col lg:order-2 lg:h-dvh lg:min-h-0 lg:overflow-y-auto">
+        {/* The masthead, and the wordmark changes corner rather than changing
+            element: one `<Brand />` in the DOM, moved by breakpoint.
+
+            Below `lg` it is an ordinary flex item at the head of this row,
+            which is also the top-left of the page, because the panel *is* the
+            page at those widths. It has to stay in the row there: the name is
+            twenty-six characters, the switch is beside it, and only a flex
+            item can shrink out of a collision on a 360px phone.
+
+            At `lg` it leaves the row for the window's own top-left corner,
+            over the film — out of the flow, so it costs the panel no height
+            and the card stays centred. The panel's leading edge is the middle
+            of the screen at that width, and a wordmark parked there names the
+            form rather than the site.
+
+            `fixed` rather than `absolute`, and only because `absolute` cannot
+            do it: the panel is the nearest positioned ancestor and its left
+            edge is the very middle this is trying to get away from. At `lg`
+            the door is exactly `100dvh` and does not scroll — see "One window"
+            — so a fixed element and an absolute one are in the same place, and
+            nothing here scrolls out from under it.
+
+            `min-h-9` holds the row at the wordmark's own height whether or not
+            the wordmark is in it, so the card below is centred against the same
+            space at both widths and the switch stays on the mark's line. */}
+        <header className="relative z-10 flex min-h-9 w-full items-center justify-between gap-2 px-5 py-6 sm:gap-4 lg:justify-end lg:px-10">
+          <div className="min-w-0 shrink lg:fixed lg:left-10 lg:top-6 lg:z-20 lg:flex lg:h-9 lg:shrink-0 lg:items-center">
             <Brand />
           </div>
 

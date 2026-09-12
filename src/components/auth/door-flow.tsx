@@ -7,11 +7,18 @@
  * production, and the way to do that without a photograph is light.
  *
  * This is the light and nothing else: six soft ribbons of the brand jade at
- * four depths, which are the room the type stands in. It covers the **panel**
- * — the half of the door with the copy, the card and the sponsor on it — and
- * not the whole window. The other half is lit by its own ground; see
- * `.door__stage` in the stylesheet and the note in the auth layout on why the
- * two halves do not share one wash.
+ * four depths, which are the room the type stands in. It covers the **whole
+ * window**, both halves, and that is the answer to the only thing that was
+ * wrong with the split.
+ *
+ * It covered the panel alone for a while, and the stage beside it was lit by a
+ * ground of its own. Two grounds, however carefully matched, are two grounds:
+ * the light stopped at the middle of the window, the alcove's floor was an
+ * opaque rectangle ending at the same place, and what a reader saw down the
+ * centre of the page was a division. Neither half was improved by it. One
+ * field, laid under everything, and the halves are what the light does rather
+ * than where it ends — see `.door__stage-ground`, which is now a halo behind
+ * the figure and nothing else, and the note in the auth layout.
  *
  * There used to be objects in this field: first a drifting villus drawn as SVG,
  * then the gastrointestinal tract in WebGL at a third of its opacity. Both were
@@ -84,69 +91,83 @@ interface Plume {
  * card bevel below). `fill` warms the foot of the page so the card is not
  * standing on nothing, and the two `far` plumes exist to be out of focus — a
  * field where everything is equally sharp has no depth in it.
+ *
+ * Every `x` and `w` below was re-read when the field went full-bleed: they are
+ * fractions of the window now and they used to be fractions of one half of it,
+ * so a plume that sat behind the card is at the middle of the screen if it is
+ * left where it was. The plot was re-laid rather than rescaled, to one rule —
+ * **no plume may come to rest with an edge near the centre line**. They start
+ * off the sides, they travel across the middle, and the two that live near it
+ * (`sweep`, `far-1`) are the softest and dimmest in the set, which is what
+ * makes them atmosphere over the join rather than objects beside it.
  */
 const PLUMES: readonly Plume[] = [
   {
     id: "key",
-    x: "-14%",
-    y: "-22%",
-    w: "66vmax",
-    h: "20vmax",
+    x: "-18%",
+    y: "-24%",
+    w: "58vmax",
+    h: "19vmax",
     z: "0px",
-    tilt: "-16deg",
-    soft: "32px",
-    dim: 0.92,
+    tilt: "-14deg",
+    soft: "34px",
+    dim: 0.9,
     tint: "var(--accent-lit)",
-    dx: "5%",
+    dx: "7%",
     dy: "6%",
     spin: "6deg",
     dur: "53s",
     delay: "0s",
   },
   {
+    /* The one that crosses the middle, and the reason it is allowed to: it is
+       wide, soft, well back, and it is never still. A reader cannot take a
+       moving blur as an edge. */
     id: "sweep",
-    x: "36%",
-    y: "-30%",
-    w: "72vmax",
-    h: "17vmax",
-    z: "-140px",
-    tilt: "24deg",
-    soft: "40px",
-    dim: 0.72,
+    x: "22%",
+    y: "-32%",
+    w: "70vmax",
+    h: "16vmax",
+    z: "-180px",
+    tilt: "20deg",
+    soft: "46px",
+    dim: 0.6,
     tint: "var(--brand-2)",
-    dx: "-7%",
-    dy: "9%",
+    dx: "-6%",
+    dy: "10%",
     spin: "-8deg",
     dur: "67s",
     delay: "-11s",
   },
   {
     id: "fill",
-    x: "-6%",
-    y: "62%",
-    w: "76vmax",
-    h: "22vmax",
+    x: "-10%",
+    y: "64%",
+    w: "66vmax",
+    h: "21vmax",
     z: "-60px",
     tilt: "8deg",
-    soft: "38px",
-    dim: 0.74,
+    soft: "40px",
+    dim: 0.72,
     tint: "var(--brand-1)",
-    dx: "6%",
+    dx: "8%",
     dy: "-5%",
     spin: "5deg",
     dur: "59s",
     delay: "-23s",
   },
   {
+    /* Behind the card, on the outer side of it, so the pane has something to
+       be lit *by* from the direction its own specular says it is. */
     id: "rim",
-    x: "58%",
-    y: "44%",
-    w: "54vmax",
+    x: "66%",
+    y: "40%",
+    w: "50vmax",
     h: "15vmax",
     z: "60px",
     tilt: "-30deg",
-    soft: "28px",
-    dim: 0.62,
+    soft: "30px",
+    dim: 0.6,
     tint: "var(--accent-lit)",
     dx: "-5%",
     dy: "-8%",
@@ -156,18 +177,18 @@ const PLUMES: readonly Plume[] = [
   },
   {
     id: "far-1",
-    x: "12%",
-    y: "20%",
-    w: "48vmax",
+    x: "30%",
+    y: "26%",
+    w: "52vmax",
     h: "12vmax",
-    z: "-320px",
-    tilt: "42deg",
-    soft: "54px",
-    dim: 0.54,
+    z: "-340px",
+    tilt: "38deg",
+    soft: "58px",
+    dim: 0.44,
     /* `--brand-3` — the violet at the deep end of the wordmark gradient — was
        the tint here, and it is the one plume that had to change with the
        palette rather than follow it. Violet reads as depth across the 200px of
-       a wordmark; spread over 48vmax of a blue page it reads as a magenta
+       a wordmark; spread over half a window of blue it reads as a magenta
        stain, which is the single thing on this screen that would say the room
        is not blue. The accent gives the same recession without leaving the
        axis: it is the darkest, most saturated blue in the set, so it still
@@ -181,13 +202,13 @@ const PLUMES: readonly Plume[] = [
   },
   {
     id: "far-2",
-    x: "70%",
-    y: "-6%",
-    w: "52vmax",
+    x: "78%",
+    y: "-10%",
+    w: "48vmax",
     h: "13vmax",
     z: "-260px",
     tilt: "-48deg",
-    soft: "48px",
+    soft: "50px",
     dim: 0.5,
     tint: "var(--accent-lit)",
     dx: "-8%",
@@ -230,9 +251,12 @@ export function DoorFlow() {
         />
       ))}
 
-      {/* A dither over the top. Six overlapping gradients this large band
-          visibly on an 8-bit display, and a barely-visible noise is the
-          cheapest fix there is. Same trick as the hero's second scrim. */}
+      {/* A dither over the top, and it matters more at this size than it did
+          at half of it. Six overlapping gradients this large band visibly on
+          an 8-bit display, and a band that crosses the middle of the window is
+          exactly the artefact this arrangement cannot have. A barely-visible
+          noise is the cheapest fix there is; same trick as the hero's second
+          scrim. */}
       <div className="door__dither" />
     </div>
   );
