@@ -6790,16 +6790,25 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
      rather than a per-theme override on each of eight layers. */
   --door-glow: 1;
 
-  /* How far the film is let through, and it is nearly all the way. An earlier
-     cut of this page ran its anatomy full-bleed behind the form at 0.3, where
-     it had to stay faint enough that a field label never lost its contrast
-     against it — a number set by the form rather than by the object. On its own
-     half of the door there is no type over it and the constraint is gone; what
-     is left of the veil is the small amount of the stage's own ground that
-     shows through, so the body sits *in* the alcove rather than in front of
-     it. One scalar rather than a per-theme opacity on the canvas, for the same
-     reason `--door-glow` is one: the two themes want different amounts of it. */
-  --anatomy-veil: 0.94;
+  /* How far the film is let through, and it is now all the way. An earlier cut
+     of this page ran its anatomy full-bleed behind the form at 0.3, where it
+     had to stay faint enough that a field label never lost its contrast against
+     it — a number set by the form rather than by the object. On its own half of
+     the door there is no type over it and the constraint is gone. Still a token
+     rather than a literal `1`, because it is what `data-live` fades up to and
+     because the next film dropped into this alcove may be brighter than this
+     one and want holding back.
+
+     Under it, the ground that film stands on. Deep in *both* themes, which is
+     the one place this page stops following the palette, and the reason is the
+     footage: it is a radiograph, drawn as emission against black, and emissive
+     art has no reading on paper. Over the pale ground this half used to have, a
+     body rendered at a tenth of full brightness is a smudge and a glowing colon
+     is a yellow stain. Derived from `--ink` rather than written as a literal,
+     so it is the same navy the type on the other half is cut from, and so it
+     moves if the palette moves. */
+  --anatomy-veil: 1;
+  --stage-deep: color-mix(in oklab, var(--ink) 82%, #000);
 
   /* How opaque the card is over the light behind it. The brief asked for a card
      you can see through, and this is the whole of that. It survived the split:
@@ -6812,8 +6821,10 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
 
 .dark .door {
   --door-glow: 0.6;
-  --anatomy-veil: 1;
   --pane-veil: 0.82;
+  /* The dark theme already has a colour for the bottom of the room, and it is
+     within a few counts of the film's own field. */
+  --stage-deep: var(--bg-deep);
 }
 
 /* ── The room ─────────────────────────────────────────────────── */
@@ -6964,62 +6975,90 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
   position: relative;
   overflow: hidden;
   height: clamp(16rem, 44vh, 24rem);
+
+  /* Below `lg` only. The stage is a dark band and the panel above it is paper,
+     so the edge they share runs across the whole width — and a full-width
+     straight edge between a light thing and a dark thing is a horizon, which
+     makes the band a second page rather than the bottom of this one. Fading
+     the stage out over its first eighth lets the paper come down into it.
+
+     A mask rather than a gradient laid on top, because the thing that has to
+     fade is the ground *and* the film standing on it; an overlay would have to
+     be above the canvas and would dim the body wherever it reached. */
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 26%);
 }
 
 @media (min-width: 1024px) {
   .door__stage {
     height: 100%;
+    /* At `lg` the shared edge is vertical and a hairline draws it — see the
+       seam below. Nothing to fade. */
+    mask-image: none;
   }
 }
 
-/* The ground. Deeper than the panel's, because an alcove is a recess: the light
-   in it comes from the pool below and the key light in the film itself, not
-   from the paper. Keyed off `--bg-deep` and the brand tokens rather than literals, so it
-   follows the palette into the dark theme without a second rule. */
+/* The ground: the dark room the film is held up to the light in.
+
+   It used to be a pale recess a shade deeper than the panel beside it, and it
+   went dark when the procedural tract gave way to the radiograph — see
+   `--stage-deep` above for why an emissive render cannot stand on paper. What
+   survives of the old rule is its shape, because the shape was never about the
+   value: a base, a halo behind the figure's shoulders, and two brand-coloured
+   washes keyed high-right and low-left, which is how every 3D block on this
+   site is lit.
+
+   `--brand-3` for the halo rather than `--surface`, because on a dark ground
+   what lifts a figure off the back wall is a colour and not a lightness — and
+   blue is the colour the film's own ambient light already is, so the two meet
+   instead of arguing. Each wash is mixed toward `transparent` rather than given
+   an opacity, so they stack straight onto the base. */
 .door__stage-ground {
   position: absolute;
   inset: 0;
   background:
     radial-gradient(
-      68% 52% at 50% 42%,
-      color-mix(in oklab, var(--surface) 62%, transparent) 0%,
+      66% 50% at 50% 38%,
+      color-mix(in oklab, var(--brand-3) 24%, transparent) 0%,
       transparent 72%
     ),
     radial-gradient(
       92% 70% at 84% 8%,
-      color-mix(in oklab, var(--accent-lit) 26%, transparent) 0%,
+      color-mix(in oklab, var(--accent-lit) 14%, transparent) 0%,
       transparent 70%
     ),
     radial-gradient(
       80% 64% at 12% 96%,
-      color-mix(in oklab, var(--brand-2) 20%, transparent) 0%,
+      color-mix(in oklab, var(--brand-2) 12%, transparent) 0%,
       transparent 74%
     ),
-    linear-gradient(
-      168deg,
-      color-mix(in oklab, var(--bg-deep) 72%, transparent) 0%,
-      color-mix(in oklab, var(--bg-deep) 30%, transparent) 100%
-    );
+    var(--stage-deep);
 }
 
 /* The seam. One hairline down the inner edge rather than a border on the
    element: a full border draws the stage as a card, and the two halves are one
    room seen twice. `inset-inline-end`, because the stage is the left half and
    the edge it shares with the panel is its trailing one — and spelled logically
-   rather than as `right` so it follows the writing direction. */
-.door__stage::before {
-  content: "";
-  position: absolute;
-  inset-block: 0;
-  inset-inline-end: 0;
-  width: 1px;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    color-mix(in oklab, var(--line) 90%, transparent) 22%,
-    color-mix(in oklab, var(--line) 90%, transparent) 78%,
-    transparent 100%
-  );
+   rather than as `right` so it follows the writing direction.
+
+   Inside the query, because there is only a seam while there are two halves.
+   Below `lg` the stage is a full-width band and this rule drew a hairline down
+   its right-hand edge, against nothing — the fade on `.door__stage` above is
+   what draws that edge instead. */
+@media (min-width: 1024px) {
+  .door__stage::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in oklab, var(--line) 90%, transparent) 22%,
+      color-mix(in oklab, var(--line) 90%, transparent) 78%,
+      transparent 100%
+    );
+  }
 }
 
 /* The pool the body stands over. Not a shadow — the film was rendered against

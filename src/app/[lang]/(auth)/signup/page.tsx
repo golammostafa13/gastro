@@ -65,7 +65,7 @@ export default async function RegisterPage(props: PageProps<"/[lang]/signup">) {
         <RegisterForm lang={lang} />
       </AuthCard>
 
-      <AuthSponsor lang={lang} />
+      {/* <AuthSponsor lang={lang} /> */}
     </AuthLayoutGrid>
   );
 }
