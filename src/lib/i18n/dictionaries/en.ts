@@ -332,7 +332,7 @@ export const en = {
     eyebrow: "About",
     title: "A library should be open to everyone.",
     lead: "{name} exists for one reason: a catalogue of {books} books should be as easy to reach as a search box. No paywall. No adverts. No ten-step download that ends in one.",
-    body: "Every title here can be read directly in your browser, or downloaded and kept. The collection spans Bengali and English: literature, poetry, history, science, and books for children.",
+    body: "Every title here can be read directly in your browser, or downloaded and kept. The collection is the working reference of a gastroenterology service: the textbooks consulted at a bedside, the question-and-answer volumes read before an examination, and the monographs on the liver, the biliary tree, endoscopy and the gut in childhood.",
     props: [
       {
         title: "Built to stay up",
@@ -361,10 +361,14 @@ export const en = {
     lead: "We read everything that comes in. If you have a title you think belongs in the collection, or a file that will not open, this is the place.",
     email: "Email",
     phone: "Phone",
-    readingRoom: "Reading room",
-    address: "12 Bangla Bazar Road, Dhaka 1100",
+    /* Was a street address under a "Reading room" label, inherited from a
+       general-library project. There is no room: this library is a website
+       and a print run, and an address nobody can visit is a small piece of
+       fiction that costs more than it buys. The sponsor is the true answer to
+       "where does this come from". */
+    sponsorLabel: "Sponsored by",
     formName: "Your name",
-    formNamePlaceholder: "Apu Roy",
+    formNamePlaceholder: "Your name",
     formEmail: "Email",
     formSubject: "What is this about?",
     subjectSuggestion: "Suggesting a book",

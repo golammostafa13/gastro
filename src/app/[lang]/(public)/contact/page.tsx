@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Mail, MapPin } from "lucide-react";
+import { Mail, Building2 } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { getDictionary, hasLocale, localePath } from "@/lib/i18n";
 import { textClass } from "@/lib/i18n/content";
@@ -65,9 +65,9 @@ export default async function ContactPage(props: PageProps<"/[lang]/contact">) {
             {[
               { Icon: Mail, label: dict.contact.email, value: site.email },
               {
-                Icon: MapPin,
-                label: dict.contact.readingRoom,
-                value: dict.contact.address,
+                Icon: Building2,
+                label: dict.contact.sponsorLabel,
+                value: dict.sponsor.company,
               },
             ].map(({ Icon, label, value }) => (
               <div key={label} className="flex items-start gap-4">
