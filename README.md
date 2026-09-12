@@ -185,7 +185,7 @@ except Redis.
 | `ADMIN_PASSWORD` | the reader password plus one character; printed nowhere |
 | `ADMIN_EMAILS` | the administrators, comma-separated |
 | `AUTH_SECRET` | `openssl rand -base64 48` — **not** the development value |
-| `BOOKS_RELEASE_BASE` | `https://github.com/<owner>/<repo>/releases/download/v1.0-books` |
+| `BOOKS_RELEASE_BASE` | `https://github.com/golammostafa13/gastro/releases/download/v1.0-books` |
 | `KV_PREFIX` | `gbb` |
 | `UPSTASH_REDIS_REST_URL` / `_TOKEN` | from the Upstash console |
 
