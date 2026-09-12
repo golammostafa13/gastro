@@ -1,5 +1,3 @@
-import { Feather, FeatherDefs } from "@/components/auth/feather";
-
 /**
  * The light behind the door.
  *
@@ -8,12 +6,21 @@ import { Feather, FeatherDefs } from "@/components/auth/feather";
  * rest of the site opens on a cinema band; the door should read as the same
  * production, and the way to do that without a photograph is light.
  *
- * Two layers, and they are doing different jobs. The **plumes** are the light:
- * six soft ribbons of the brand pink at four depths, which are the room. The
- * **feathers** are the objects in it — see `feather.tsx` for how one is drawn.
- * The light was here first and on its own it was not enough: a wash cannot be
- * watched, and the whole middle of this page is blank space with nothing in it
- * to look at.
+ * This is the light and nothing else: six soft ribbons of the brand jade at
+ * four depths, which are the room the type stands in. It covers the **panel**
+ * — the half of the door with the copy, the card and the sponsor on it — and
+ * not the whole window. The other half is lit by its own ground; see
+ * `.door__stage` in the stylesheet and the note in the auth layout on why the
+ * two halves do not share one wash.
+ *
+ * There used to be objects in this field: first a drifting villus drawn as SVG,
+ * then the gastrointestinal tract in WebGL at a third of its opacity. Both were
+ * here for the same reason — a wash cannot be watched, and the middle of this
+ * page was blank space with nothing in it to look at — and both are gone from
+ * this file because the answer turned out to be a bigger one than a background.
+ * The tract has half the window now (`DoorStage`), which is what let it stop
+ * being a watermark and start being the subject. What is left here is what was
+ * always doing the work: the light.
  *
  * Three things make the plumes read as a lit room rather than as coloured blobs:
  *
@@ -31,13 +38,15 @@ import { Feather, FeatherDefs } from "@/components/auth/feather";
  * Server Component, no canvas, no image: the whole field is six spans and a
  * gradient, and it ships nothing to the client but markup. Same argument as
  * `hero-cinematic` — a WebGL aurora would cost a bundle and a main-thread
- * budget to say something CSS can say on the compositor.
+ * budget to say something the compositor can say for free. The one canvas at
+ * this door is next door, and it earns its place by drawing the thing CSS
+ * cannot: an object with a recognisable silhouette, seen from a moving angle.
  *
  * `aria-hidden`, and `pointer-events: none` in the stylesheet: there is exactly
- * one thing to do on this page and a plume must never be able to swallow the
- * click meant for the password field. (That bug already exists once on this
- * page in the shape of the intro curtain, which is a fixed overlay by design;
- * it does not need a second cause.)
+ * one thing to do on this half of the door and a plume must never be able to
+ * swallow the click meant for the password field. (That bug already exists once
+ * on this page in the shape of the intro curtain, which is a fixed overlay by
+ * design; it does not need a second cause.)
  */
 
 interface Plume {
@@ -56,7 +65,7 @@ interface Plume {
   soft: string;
   /** Resting opacity, before the per-theme glow scalar. */
   dim: number;
-  /** Which pink. Three tokens rather than one, so the field has warmth in it. */
+  /** Which green. Three tokens rather than one, so the field has range in it. */
   tint: string;
   /** Travel and spin at the far end of the drift. */
   dx: string;
@@ -189,30 +198,6 @@ const PLUMES: readonly Plume[] = [
   },
 ];
 
-/**
- * Where the feathers sit, and this list is mostly a map of where the page is
- * empty. The door is a two-column layout with copy hard left and the card hard
- * right, so the band between them is dead space at every width above `lg` —
- * that is where three of these go. The fourth sits under the card, in the strip
- * below the fold that the register form grows into.
- *
- * `--w` is the only size: the instance keeps the symbol's aspect ratio, so a
- * feather cannot be squashed by a bad height.
- *
- * `small: false` drops an instance below `lg`, where the card is the whole page
- * and there is no blank space left to put anything in. The two that survive are
- * the ones clear of it, top and bottom.
- */
-const FEATHERS = [
-  { id: "high", x: "38%", y: "4%", w: "17rem", tilt: "-8deg", dim: 0.9, dur: "23s", delay: "0s", small: true },
-  { id: "mid", x: "47%", y: "40%", w: "12rem", tilt: "166deg", dim: 0.62, dur: "31s", delay: "-9s", small: false },
-  // Right of 34%: the sponsor's pack sits in the left column down to about a
-  // third of the way across, and a feather over its logo is a feather over
-  // somebody's trademark.
-  { id: "low", x: "37%", y: "74%", w: "14rem", tilt: "22deg", dim: 0.74, dur: "27s", delay: "-16s", small: true },
-  { id: "under", x: "68%", y: "86%", w: "9.5rem", tilt: "-34deg", dim: 0.5, dur: "35s", delay: "-4s", small: false },
-] as const;
-
 export function DoorFlow() {
   return (
     <div className="door__flow" aria-hidden="true">
@@ -240,26 +225,6 @@ export function DoorFlow() {
               "--spin": f.spin,
               "--dur": f.dur,
               "--delay": f.delay,
-            } as React.CSSProperties
-          }
-        />
-      ))}
-
-      <FeatherDefs />
-
-      {FEATHERS.map((f) => (
-        <Feather
-          key={f.id}
-          style={
-            {
-              "--x": f.x,
-              "--y": f.y,
-              "--w": f.w,
-              "--tilt": f.tilt,
-              "--dim": f.dim,
-              "--dur": f.dur,
-              "--delay": f.delay,
-              "--small": f.small ? "block" : "none",
             } as React.CSSProperties
           }
         />

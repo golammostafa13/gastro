@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { AuthAside, AuthCard, AuthLayoutGrid } from "@/components/auth/auth-aside";
+import {
+  AuthAside,
+  AuthCard,
+  AuthLayoutGrid,
+  AuthSponsor,
+} from "@/components/auth/auth-aside";
 import { RegisterForm } from "@/components/auth/register-form";
 import { getDictionary, hasLocale, localePath } from "@/lib/i18n";
 import { textClass } from "@/lib/i18n/content";
@@ -39,7 +44,7 @@ export default async function RegisterPage(props: PageProps<"/[lang]/signup">) {
 
   return (
     <AuthLayoutGrid>
-      <AuthAside lang={lang} lead={dict.auth.sideLeadSignUp} />
+      <AuthAside lang={lang} />
 
       <AuthCard
         lang={lang}
@@ -59,6 +64,8 @@ export default async function RegisterPage(props: PageProps<"/[lang]/signup">) {
       >
         <RegisterForm lang={lang} />
       </AuthCard>
+
+      <AuthSponsor lang={lang} />
     </AuthLayoutGrid>
   );
 }

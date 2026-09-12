@@ -153,10 +153,17 @@ const HEIGHT = 1080;
  * and everything between interpolates, which is what makes six unrelated
  * photographs read as one set rather than six.
  *
- * `SHADOW` is `--ink` (#4c1d33) and `HIGHLIGHT` sits just above `--accent-soft`,
- * so a background never goes darker than the body text or lighter than the page.
+ * `SHADOW` is `--ink` (#12294a) and `HIGHLIGHT` sits just above the page's
+ * palest blue, so a background never goes darker than the body text or
+ * lighter than the page.
+ *
  * Neither end is pure black or pure white: a duotone that bottoms out at #000
  * reads as a hole punched in the page rather than as a photograph behind it.
+ *
+ * Both ends are blue on purpose. Green is the palette's acting colour and these
+ * plates are the furthest thing on the page from a control — they are the room
+ * the chapters stand in — so the duotone is drawn entirely from the grounding
+ * hue and never touches the accent.
  */
 const SHADOW = { r: 0x12, g: 0x29, b: 0x4a };
 const HIGHLIGHT = { r: 0xe2, g: 0xee, b: 0xfb };

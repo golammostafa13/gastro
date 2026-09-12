@@ -29,7 +29,7 @@
      Every pale blue ground fights the impression of paper that the blush one
      got for free, which is what `.paper-grain` is for. */
   --bg: #eef3fa;
-  --bg-deep: #d9e6f5;
+  --bg-deep: #d5e4f4;
   --surface: #f7fbff;
   --surface-2: #ffffff;
 
@@ -51,10 +51,10 @@
      all the way to pink-700 to scrape 5.3:1, which is why that accent looks
      slightly starved. Blue gives a more saturated colour *and* more contrast,
      and the headroom is what pays for `--accent-hover` at 9.8:1. */
-  --accent: #0f52ba;
-  --accent-hover: #0b3f93;
+  --accent: #08674b;
+  --accent-hover: #064e3b;
   --accent-ink: #ffffff;
-  --accent-soft: #dbeafe;
+  --accent-soft: #d3efdf;
 
   /* The sky, and the token that does the most work in the set: the colour for
      things that *emit* rather than fill. The rim light on the Lanso D pack
@@ -75,9 +75,9 @@
      do more of its work in lightness and chroma: blue's readable range is only
      about 190°–265° before it turns cyan at one end or purple at the other,
      where warm hues have room to wander. */
-  --brand-1: #38bdf8;
-  --brand-2: #2563eb;
-  --brand-3: #6d28d9;
+  --brand-1: #059669;
+  --brand-2: #0d9488;
+  --brand-3: #1d4ed8;
 
   /* Card stock. The catalogue tile is a slab of paper that ramps through a sky
      tint into a saturated foot, so the volume stands in colour and the one
@@ -86,7 +86,7 @@
      per-theme override in every card rule. */
   --card-top: #fdfeff;
   --card-mid: #dbe9f8;
-  --card-foot: #0f52ba;
+  --card-foot: #08674b;
   --card-lip: rgba(255, 255, 255, 0.72);
   --well-lift: rgba(255, 255, 255, 0.55);
 
@@ -108,9 +108,9 @@
      "danger" gets better for free. The pink system's #be123c was a rose, one
      step from its own accent, so a destructive button and a primary button
      were nearly the same colour. Red against blue cannot be confused. */
-  --ok: #1a7f37;
-  --ok-soft: #d8f0de;
-  --warn: #b45309;
+  --ok: #08674b;
+  --ok-soft: #d3efdf;
+  --warn: #9a4506;
   --warn-soft: #fdecd3;
   --danger: #b91c1c;
   --danger-soft: #fbe0e0;
@@ -132,11 +132,11 @@
      the button sitting above the page and is most of why a flat fill looks
      modern rather than 2010s. Tight top layer for the edge, wide negative-spread
      layer for the bloom. */
-  --shadow-accent: 0 1px 2px rgba(15, 82, 186, 0.26),
-    0 6px 14px -4px rgba(15, 82, 186, 0.4), 0 14px 30px -10px rgba(15, 82, 186, 0.5);
-  --shadow-accent-lg: 0 1px 2px rgba(15, 82, 186, 0.28),
-    0 10px 22px -6px rgba(15, 82, 186, 0.45),
-    0 22px 44px -12px rgba(15, 82, 186, 0.55);
+  --shadow-accent: 0 1px 2px rgba(8, 103, 75, 0.26),
+    0 6px 14px -4px rgba(8, 103, 75, 0.4), 0 14px 30px -10px rgba(8, 103, 75, 0.5);
+  --shadow-accent-lg: 0 1px 2px rgba(8, 103, 75, 0.28),
+    0 10px 22px -6px rgba(8, 103, 75, 0.45),
+    0 22px 44px -12px rgba(8, 103, 75, 0.55);
 
   --radius: 0.875rem;
 
@@ -171,10 +171,10 @@
 }
 
 .dark {
-  --bg: #0c1727;
-  --bg-deep: #070f1b;
-  --surface: #122234;
-  --surface-2: #182c42;
+  --bg: #0b1623;
+  --bg-deep: #060e19;
+  --surface: #112031;
+  --surface-2: #17293d;
 
   /* Sky-100, not white. The colour that is a light source in light mode is the
      *ink* here, which is the hinge the whole two-blue system turns on: even
@@ -189,33 +189,33 @@
      to sky-300, the pill takes deep navy ink back instead of white — 9.7:1 —
      which is what makes it read as lit rather than as a darker patch of page.
      This is where the sky stops being an effect and becomes the control. */
-  --accent: #7dd3fc;
-  --accent-hover: #bae6fd;
-  --accent-ink: #04223c;
-  --accent-soft: #12314a;
+  --accent: #34d399;
+  --accent-hover: #6ee7b7;
+  --accent-ink: #03251b;
+  --accent-soft: #0e3a2c;
 
   /* Already bright enough to light with; lifted one more step so the rim still
      separates from the pills that are now the same sky. */
-  --accent-lit: #bae6fd;
+  --accent-lit: #7dd3fc;
 
   /* Lifted, not just reused: the same three hues at this luminance would sink
      into the dark ground and the gradient would read as one flat colour. */
-  --brand-1: #7dd3fc;
-  --brand-2: #60a5fa;
-  --brand-3: #a78bfa;
+  --brand-1: #6ee7b7;
+  --brand-2: #2dd4bf;
+  --brand-3: #60a5fa;
 
   /* Same slab in a dimmer room. The foot keeps its full chroma (that block of
      colour is the card's one bright object and the ground its button reads
      against), while the stock above it goes to abyss navy. White on the foot is
      4.9:1, so a label printed straight onto it still passes. */
-  --card-top: #102032;
+  --card-top: #0f1e2f;
   --card-mid: #1a3350;
-  --card-foot: #1d6fd4;
+  --card-foot: #0f7f5e;
   --card-lip: rgba(255, 255, 255, 0.05);
   --well-lift: rgba(255, 255, 255, 0.05);
 
-  --ok: #6ee7a7;
-  --ok-soft: #10301f;
+  --ok: #34d399;
+  --ok-soft: #0e3a2c;
   --warn: #fbbf24;
   --warn-soft: #3a2d12;
   --danger: #fca5a5;
@@ -231,11 +231,11 @@
   /* Same idea, more bloom and less edge: on a dark ground the glow is the only
      part of a shadow that is visible at all. */
   --shadow-accent: 0 1px 2px rgba(0, 0, 0, 0.5),
-    0 8px 20px -6px rgba(125, 211, 252, 0.42),
-    0 16px 34px -12px rgba(125, 211, 252, 0.32);
+    0 8px 20px -6px rgba(52, 211, 153, 0.42),
+    0 16px 34px -12px rgba(52, 211, 153, 0.32);
   --shadow-accent-lg: 0 1px 2px rgba(0, 0, 0, 0.5),
-    0 12px 26px -6px rgba(125, 211, 252, 0.48),
-    0 26px 50px -14px rgba(125, 211, 252, 0.38);
+    0 12px 26px -6px rgba(52, 211, 153, 0.48),
+    0 26px 50px -14px rgba(52, 211, 153, 0.38);
 }
 
 @theme inline {
@@ -1459,6 +1459,50 @@ body {
 
 .lansod-ad__eyebrow {
   color: var(--ink-faint);
+}
+
+/* ── The door's copy, laid on its side ─────────────────────────── */
+
+/* Same card, same canvas, turned ninety degrees. The door is one column of
+   reading order now — copy, form, sponsor — and stacked vertically the panel
+   variant's 400px put the advert below the fold on every laptop. Horizontal it
+   is about 140px, which is the difference between a sponsor a reader sees and
+   one they would have to go looking for.
+
+   Nothing is dropped to get there: the pack is still real geometry the reader
+   can turn, and the name, strength, company and the legal line are all still
+   here. What changed is the axis. */
+.lansod-ad--door {
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1.05rem;
+}
+
+.lansod-ad--door .lansod-ad__stage {
+  flex: none;
+  width: 8.5rem;
+  margin: 0;
+}
+
+.lansod-ad--door .lansod-ad__body {
+  min-width: 0;
+}
+
+.lansod-ad--door .lansod-ad__product {
+  margin-top: 0.1rem;
+  font-size: 0.98rem;
+}
+
+.lansod-ad--door .lansod-ad__company {
+  margin-top: 0.3rem;
+  padding-top: 0.35rem;
+  font-size: 0.78rem;
+}
+
+.lansod-ad--door .lansod-ad__note {
+  font-size: 0.68rem;
+  line-height: 1.4;
 }
 
 /* The stage holds the still and the canvas in one square, exactly on top of
@@ -6746,22 +6790,40 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
      rather than a per-theme override on each of eight layers. */
   --door-glow: 1;
 
-  /* The feather's own two colours. A down feather is pale — the reference for
-     this one is a white plume on grey — so both themes want the same near-white
-     pink rather than a swap: on blush paper it reads as a lighter object on the
-     page, and on the dark plum ground it reads as a lit one. `shade` is the
-     underside and the shaft, one step into the page's own pink so the object has
-     a turned-away half. */
-  --feather-lit: color-mix(in oklab, white 82%, var(--accent-lit));
-  --feather-shade: color-mix(in oklab, var(--accent-lit) 62%, var(--accent));
+  /* How far the film is let through, and it is nearly all the way. An earlier
+     cut of this page ran its anatomy full-bleed behind the form at 0.3, where
+     it had to stay faint enough that a field label never lost its contrast
+     against it — a number set by the form rather than by the object. On its own
+     half of the door there is no type over it and the constraint is gone; what
+     is left of the veil is the small amount of the stage's own ground that
+     shows through, so the body sits *in* the alcove rather than in front of
+     it. One scalar rather than a per-theme opacity on the canvas, for the same
+     reason `--door-glow` is one: the two themes want different amounts of it. */
+  --anatomy-veil: 0.94;
+
+  /* How opaque the card is over the light behind it. The brief asked for a card
+     you can see through, and this is the whole of that. It survived the split:
+     there is no organ behind the pane any more, but the plumes are still there,
+     and a card that lets the light through is what keeps it an object standing
+     in the room rather than a panel laid over a picture of one. The blur does
+     the rest — see `.door__pane`. */
+  --pane-veil: 0.86;
 }
 
 .dark .door {
   --door-glow: 0.6;
+  --anatomy-veil: 1;
+  --pane-veil: 0.82;
 }
 
 /* ── The room ─────────────────────────────────────────────────── */
 
+/* The light, and it belongs to the panel rather than to the whole door. Half a
+   window of drifting plumes behind the type, and the stage beside it lit by its
+   own ground — see `.door__stage`. Running one field across both halves was the
+   first cut of the split and it flattened the seam: two grounds under one
+   continuous wash read as a single pane with a canvas dropped into the middle
+   of it, which is the thing the split exists to stop being. */
 .door__flow {
   position: absolute;
   inset: 0;
@@ -6881,85 +6943,172 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
   }
 }
 
-/* ── The feathers ─────────────────────────────────────────────── */
+/* ── The stage ────────────────────────────────────────────────── */
 
-/* One drifting feather. Sized by width alone — `aspect-ratio` from the
-   symbol's own box, so an instance cannot be squashed — and positioned from the
-   top-left of the flow, which is the page.
+/* The library's half of the door: an alcove with its own ground, a pool of
+   light on the floor of it, and an abdomen standing in the middle.
 
-   `--dim` is the depth cue and it is doing two jobs at once: the far feathers
-   are fainter *and*, through the drop-shadow below, they cast less. A feather
-   that is only smaller reads as a small feather up close.
+   The full height of the window at `lg`, and it never moves: the door itself is
+   `100dvh` and does not scroll, so a reader filling in the register — the
+   tallest form on the site — scrolls the *panel*, inside itself, past a tract
+   that is always whole. This used to be `sticky`, which solved the same problem
+   less well: sticky keeps an element in view while the page scrolls past it,
+   and what it cannot do is stop the page from scrolling in the first place.
 
-   The shadow is what stops it looking like a decal. It is the page's own plum
-   at very low alpha rather than black: a grey shadow on a blush ground reads as
-   dirt, which is the same reasoning as `--shadow-accent` at the top of this
-   file. */
-.door__feather {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--w);
-  aspect-ratio: 320 / 200;
-  opacity: var(--dim);
-  transform: rotate(var(--tilt));
-  filter: drop-shadow(0 14px 18px rgba(11, 34, 66, 0.1));
-  animation: door-feather-float var(--dur) var(--ease-in-out) var(--delay)
-    infinite;
-  will-change: transform;
+   Below `lg` it is a band under the form rather than a half, and the height is
+   clamped rather than a viewport fraction: `vh` alone gives a 5rem letterbox on
+   a landscape phone and half a screen on a tall one, and the film is a 9:16
+   portrait that the cover fit crops to whatever shape this box is — a letterbox
+   would leave a reader looking at one loop of jejunum. */
+.door__stage {
+  position: relative;
+  overflow: hidden;
+  height: clamp(16rem, 44vh, 24rem);
 }
 
-.door__feather svg {
+@media (min-width: 1024px) {
+  .door__stage {
+    height: 100%;
+  }
+}
+
+/* The ground. Deeper than the panel's, because an alcove is a recess: the light
+   in it comes from the pool below and the key light in the film itself, not
+   from the paper. Keyed off `--bg-deep` and the brand tokens rather than literals, so it
+   follows the palette into the dark theme without a second rule. */
+.door__stage-ground {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      68% 52% at 50% 42%,
+      color-mix(in oklab, var(--surface) 62%, transparent) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      92% 70% at 84% 8%,
+      color-mix(in oklab, var(--accent-lit) 26%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      80% 64% at 12% 96%,
+      color-mix(in oklab, var(--brand-2) 20%, transparent) 0%,
+      transparent 74%
+    ),
+    linear-gradient(
+      168deg,
+      color-mix(in oklab, var(--bg-deep) 72%, transparent) 0%,
+      color-mix(in oklab, var(--bg-deep) 30%, transparent) 100%
+    );
+}
+
+/* The seam. One hairline down the inner edge rather than a border on the
+   element: a full border draws the stage as a card, and the two halves are one
+   room seen twice. `inset-inline-end`, because the stage is the left half and
+   the edge it shares with the panel is its trailing one — and spelled logically
+   rather than as `right` so it follows the writing direction. */
+.door__stage::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in oklab, var(--line) 90%, transparent) 22%,
+    color-mix(in oklab, var(--line) 90%, transparent) 78%,
+    transparent 100%
+  );
+}
+
+/* The pool the body stands over. Not a shadow — the film was rendered against
+   a backdrop and the key has just taken the backdrop away, so there is no
+   shadow left to inherit — but the light the alcove puts back on its own floor,
+   which is what stops a keyed object looking cut out and laid on top. Same
+   argument as `.door__card::after` on the other half. */
+.door__stage-pool {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: 62%;
+  height: 16%;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--accent) 34%, transparent) 0%,
+    transparent 76%
+  );
+  filter: blur(34px);
+  opacity: calc(0.8 * var(--door-glow));
+}
+
+/* The abdomen itself, filling the alcove.
+
+   `pointer-events: none`, and the film binds no pointer handler either. It
+   plays; it is not a control. There is no scrubber, no play button and nothing
+   to drag: the brief asked for something that reads as an animation rather
+   than as a video, and that is a list of absences more than it is a style.
+   This pane accepted a drag for one revision, back when it held a procedural
+   tract, and the reasoning for taking it back out still holds — a gesture a
+   reader has to discover is a gesture most readers never discover, and a login
+   page has no attention to spare for teaching one.
+
+   The fade is on the container rather than the canvas, so it composites once.
+   `data-live` flips when the first keyed frame is on screen: no flash of an
+   unkeyed navy rectangle on a slow machine, and nothing at all if the chunk
+   never arrives — what is left then is a lit alcove, which is still a composed
+   pane rather than a hole. */
+.door__anatomy {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity calc(var(--dur-block) * 1.6) var(--ease-out);
+}
+
+.door__anatomy[data-live="true"] {
+  opacity: var(--anatomy-veil);
+}
+
+/* The film element is the *source*, never the picture: it is decoded into a
+   texture and the canvas beside it draws the keyed result (`lib/anatomy-key`).
+   It has to stay in the layout all the same — a browser is within its rights
+   to stop decoding a `display: none` video, and that would stop the canvas
+   too — so it is parked at a pixel with no opacity. Not `visibility: hidden`
+   for the same reason as not `display: none`. */
+.door__anatomy video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.door__anatomy canvas {
   display: block;
   width: 100%;
   height: 100%;
-  overflow: visible;
+
+  /* A wide radial falloff, so the body goes to nothing at the corners of its
+     box and the crop the cover fit makes — a rib cut off at the top, legs cut
+     off at the foot — is a fade rather than a cut edge. The key has already
+     taken the studio's backdrop off; this is what stops the *frame* reading as
+     a rectangle of picture dropped into the alcove. */
+  mask-image: radial-gradient(86% 82% at 50% 50%, #000 0%, transparent 88%);
 }
 
-/* The float, and it has to be worth watching, because that is the whole reason
-   these are here. Four things move at once and none of them is a bob:
-
-     • it rises and falls, but by different amounts each half of the cycle, so
-       the top of the arc is never in the same place twice within one loop;
-     • it drifts sideways, out of phase with the rise, which turns the path from
-       a line into a slow figure of eight;
-     • it rocks a few degrees about the tilt it was placed at;
-     • it turns on its own long axis (`rotateY`), which is the one that reads as
-       a real object rather than a sprite: the feather narrows as it turns edge
-       on and fills out again as it comes back.
-
-   `perspective()` is in the transform rather than on the parent because the
-   parent is the light field's camera and a feather turning in *that* camera
-   would swing across the page as well as rotate. This is the one place on this
-   page that legitimately wants a private camera.
-
-   The pose at 100% is the pose at 0%, so the global reduced-motion kill-switch
-   leaves each feather exactly where it was placed. */
-@keyframes door-feather-float {
-  0%,
-  100% {
-    transform: perspective(900px) translate3d(0, 0, 0) rotate(var(--tilt))
-      rotateY(0deg);
-  }
-  28% {
-    transform: perspective(900px) translate3d(1.6%, -5.2%, 0)
-      rotate(calc(var(--tilt) + 3.4deg)) rotateY(24deg);
-  }
-  52% {
-    transform: perspective(900px) translate3d(-1.2%, -7.4%, 0)
-      rotate(calc(var(--tilt) - 2.2deg)) rotateY(-6deg);
-  }
-  76% {
-    transform: perspective(900px) translate3d(-2.4%, -2.8%, 0)
-      rotate(calc(var(--tilt) - 4.6deg)) rotateY(-22deg);
-  }
-}
-
-/* Below `lg` the card is the whole page and there is no blank space left to put
-   an object in; only the two instances clear of it, top and bottom, stay. */
-@media (max-width: 1023px) {
-  .door__feather {
-    display: var(--small, block);
+/* The reader who turns reduced motion on with the page already open. Script
+   asks the same question before the film is ever fetched — see `AnatomyFilm` —
+   so this is the second of two answers, not the only one. What is left is the
+   lit alcove and its pool: the stage keeps its ground whether or not anything
+   ever stands in it. */
+@media (prefers-reduced-motion: reduce) {
+  .door__anatomy {
+    display: none;
   }
 }
 
@@ -6989,7 +7138,10 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
   position: relative;
   z-index: 1;
   perspective: 1600px;
-  perspective-origin: 68% 42%;
+  /* Origin toward the card, which the split moved from the right of the page to
+     the left of its own half. A vanishing point left behind at 68% would tip
+     the pane away from the key light instead of into it. */
+  perspective-origin: 34% 42%;
 }
 
 /* ── The object ───────────────────────────────────────────────── */
@@ -7052,6 +7204,44 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
    page is the light behind it, and light cannot swallow a click. */
 .door__pane {
   position: relative;
+
+  /* See-through, which is what the brief asked for: the card is an object
+     standing in a lit room, and a solid panel is a card laid over a picture of
+     one. The background moved here off the `bg-surface` utility it used to
+     carry, because it is no longer one value — it is a veil plus the blur
+     behind it, and the two only work as a pair.
+
+     The blur is the part that makes this legible rather than merely
+     fashionable. `--pane-veil` alone at 0.86 lets the plumes through as soft
+     moving shapes directly under the text, and anything moving under a password
+     a reader is copying off a printed page is the exact failure this page
+     cannot have. `blur(22px)` destroys the detail and keeps the colour, so what
+     remains behind the type is a still wash that happens to be tinted by
+     whatever is behind it. `saturate` puts back what the blur takes out.
+
+     Contrast is not left to chance. `--ink` on `--surface` is 14.0:1; at the
+     veil above, over the brightest part of the lit field, the measured floor is
+     ~11:1 in both themes — far past AA for body text, with the labels, hints
+     and placeholder greys all keeping their own ratios. The input fields stay
+     fully opaque (`bg-bg`, see `fieldClass`), and that is deliberate: a card you
+     can see through is atmosphere, a text field you can see through is an
+     obstacle. */
+  background: color-mix(
+    in oklab,
+    var(--surface) calc(var(--pane-veil) * 100%),
+    transparent
+  );
+  backdrop-filter: blur(22px) saturate(1.35);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
+}
+
+/* No backdrop filter, no transparency. Without the blur there is nothing
+   standing between the type and the drift behind it, and a solid card is a
+   complete door — it is what this page was. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .door__pane {
+    background: var(--surface);
+  }
 }
 
 /* The bevel: a hairline of highlight along the top and down the left, gone by
@@ -7171,22 +7361,37 @@ body:has(.cinema, .cine, .tome__plate) .topbar:not([data-lifted]):not([data-open
 
 /* ── Accessibility ────────────────────────────────────────────── */
 
-/* Nothing needs a reduced-motion rule of its own here, and that is by
+/* Almost nothing needs a reduced-motion rule of its own here, and that is by
    construction rather than by luck. `door-plume-drift` returns to its own opening
    pose, so the global kill-switch above leaves the room lit exactly as authored
    instead of frozen mid-drift; and every other animation in this section is an
-   entry with `both`, which collapses to its end state. There is nothing else
-   moving on this page. */
+   entry with `both`, which collapses to its end state.
+
+   The film is the exception, and it has to be one: it is a decoder and a draw
+   loop rather than a CSS animation, so collapsing a duration does nothing to
+   it. It is answered twice — `AnatomyFilm` asks the media query before it
+   fetches a single byte, and `.door__anatomy` above hides it for the reader who
+   changes the setting with the page already open. */
 
 @media (forced-colors: active), print {
   /* The whole field goes: a forced-colours palette has nowhere to put six
-     plumes of pink or four pale feathers, and a printed sign-in page does not
-     want them either. What is left underneath is the form, which is the page
-     either way. */
+     plumes of jade, and a printed sign-in page does not want half a window of
+     moving viscera either — the stage goes whole, since a forced-colours
+     palette would render its ground as a flat block and its canvas as a hole.
+     The pane goes back to a solid surface in the same breath: a translucent
+     card over a forced-colours background is a card with no background at all.
+     What is left underneath is the form, which is the page either way. */
   .door__flow,
+  .door__stage,
   .door__card::after,
   .door__pane::before,
   .door__pane::after {
     display: none;
+  }
+
+  .door__pane {
+    background: var(--surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }

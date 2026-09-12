@@ -58,10 +58,15 @@ export function LansodAd({
 }: {
   copy: LansodAdCopy;
   /**
-   * `panel`: the tall card for a sidebar or the sign-in aside.
+   * `panel`: the tall card for a sidebar.
+   * `door`: the wide, short version for the sign-in column — still turnable,
+   *   because it is the one place a reader has nothing else to do. It exists
+   *   because the door became a single column of reading order, where the tall
+   *   panel's 400px pushed the advert under the fold on any laptop; laid on its
+   *   side the same content is about 140px and sits under the form in view.
    * `strip`: the wide, short version for the footer, still image only.
    */
-  variant?: "panel" | "strip";
+  variant?: "panel" | "door" | "strip";
   className?: string;
   bnClass?: string;
 }) {
@@ -130,6 +135,47 @@ export function LansodAd({
     observer.observe(root, { attributes: true, attributeFilter: ["class"] });
     return () => observer.disconnect();
   }, [live]);
+
+  if (variant === "door") {
+    return (
+      <aside
+        aria-label={copy.courtesy}
+        data-live={live ? "true" : "false"}
+        className={cn("lansod-ad lansod-ad--door", className)}
+      >
+        <div ref={stageRef} className="lansod-ad__stage">
+          <Image
+            src="/lanso-d-30.png"
+            alt={copy.alt}
+            width={508}
+            height={239}
+            priority={false}
+            className="lansod-ad__still"
+          />
+          <canvas
+            ref={canvasRef}
+            className="lansod-ad__canvas"
+            aria-hidden="true"
+          />
+        </div>
+
+        <div className="lansod-ad__body">
+          <p
+            className={cn(
+              "lansod-ad__eyebrow text-[0.62rem] font-semibold uppercase tracking-[0.2em]",
+              bnClass,
+            )}
+          >
+            {copy.courtesy}
+          </p>
+          <p className={cn("lansod-ad__product", bnClass)}>{copy.product}</p>
+          <p className={cn("lansod-ad__generic", bnClass)}>{copy.generic}</p>
+          <p className={cn("lansod-ad__company", bnClass)}>{copy.company}</p>
+          <p className={cn("lansod-ad__note", bnClass)}>{copy.note}</p>
+        </div>
+      </aside>
+    );
+  }
 
   if (variant === "strip") {
     return (

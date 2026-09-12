@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowRight } from "lucide-react";
-import { AuthAside, AuthCard, AuthLayoutGrid } from "@/components/auth/auth-aside";
+import {
+  AuthAside,
+  AuthCard,
+  AuthLayoutGrid,
+  AuthSponsor,
+} from "@/components/auth/auth-aside";
 import { DoorForm } from "@/components/auth/door-form";
 import { IntroCurtain } from "@/components/intro-curtain";
 import { isEmailShaped, normaliseEmail } from "@/lib/auth/config";
@@ -71,7 +76,7 @@ export default async function SignInPage(props: PageProps<"/[lang]/signin">) {
       />
 
       <AuthLayoutGrid>
-        <AuthAside lang={lang} lead={dict.auth.sideLead} />
+        <AuthAside lang={lang} />
 
         <AuthCard
           lang={lang}
@@ -103,6 +108,8 @@ export default async function SignInPage(props: PageProps<"/[lang]/signin">) {
 
           <DoorForm lang={lang} next={next} email={prefill} />
         </AuthCard>
+
+        <AuthSponsor lang={lang} />
       </AuthLayoutGrid>
     </>
   );

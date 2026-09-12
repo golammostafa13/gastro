@@ -1,9 +1,9 @@
 /**
  * Cover colour system.
  *
- * The identity is a three-colour world: blush ground, plum ink, one deep
- * pink. A cover generator that reads `coverHue` straight out of the data
- * produces full-spectrum candy covers (mint, violet, lime), which is the
+ * The identity is a three-colour world: porcelain ground, midnight-navy ink,
+ * one deep jade. A cover generator that reads `coverHue` straight out of the
+ * data produces full-spectrum candy covers (mint, violet, lime), which is the
  * fastest way to break that world.
  *
  * So `coverHue` stops being a hue and becomes a *seed*: it selects one of a
@@ -35,19 +35,28 @@ export interface CoverTheme {
 }
 
 /**
- * Eight schemes. Two are the identity itself (porcelain + navy, and its
- * inverse); the rest are neighbours in the same cool family (sky, sapphire,
- * steel, indigo, verdigris) plus one desaturated sand so a shelf of them has
- * some warm relief and does not read as a single blue block.
+ * Eight schemes, spanning the identity's two hues. Two are the identity
+ * itself (porcelain + navy, and its inverse); three more sit on the blue side
+ * (sky, sapphire, steel); two on the green (jade, verdigris); and one
+ * desaturated sand gives a shelf some warm relief so it does not read as a
+ * single cool block.
  *
- * Sand does exactly the job the warm system's sage did, in the opposite
- * direction: it is the one scheme off the axis, and it is the reason a full
- * shelf reads as a library rather than as a colour swatch. Verdigris is the
- * *near* relief — on the blue axis but far enough down it, and desaturated
- * enough, that two adjacent spines never read as the same book. Teal is barred
- * as a semantic colour in `globals.css` because it would be mistaken for the
- * accent; on a spine, where nothing is being signalled, that same nearness is
- * what makes it read as a sibling rather than an intruder.
+ * The split is deliberate and it is not even: blue outnumbers green four to
+ * two, because on a spine green is the rarer, more emphatic stock and a shelf
+ * that is half green stops reading as a library. Green earns its place here
+ * the way it does everywhere else in the system — by being the thing you
+ * notice — and that only works while it stays outnumbered.
+ *
+ * Sand is the one scheme off both axes, and it is the reason a full shelf
+ * reads as a library rather than as a colour swatch. Verdigris is the bridge:
+ * the exact blue-green hinge the wordmark's middle stop sits on, desaturated
+ * far enough that it never competes with the jade beside it.
+ *
+ * Note what changed when the accent went green. `mid` on the identity scheme
+ * is the accent itself, so scheme 0 now carries a jade rule on navy-on-
+ * porcelain — the palette's whole argument on one cover. And indigo is gone:
+ * it was a neighbour of the old violet brand stop, and with that stop retired
+ * to blue it had nothing left to be a neighbour of.
  *
  * Note what changed about this file's job. In the library this is forked from,
  * most books had no jacket and this palette *was* the face of the card. Here
@@ -58,12 +67,13 @@ export interface CoverTheme {
  * because their job is to sit *beside* photographs rather than replace them.
  */
 const themes: readonly CoverTheme[] = [
-  // Porcelain stock, navy type, the accent as a rule. The identity, verbatim.
+  // Porcelain stock, navy type, the accent as a rule. The identity, verbatim:
+  // blue grounds the cover, green is the one mark that acts on it.
   {
     name: "Porcelain & navy",
     paper: "#e4edf7",
     ink: "#0e2440",
-    mid: "#0f52ba",
+    mid: "#08674b",
     deep: "#12294a",
     spine: "#12294a",
     spineInk: "#e7f0fb",
@@ -113,18 +123,20 @@ const themes: readonly CoverTheme[] = [
     spineInk: "#eef1f5",
     light: true,
   },
-  // Indigo: deep, near-ink, for the heavier titles.
+  // Jade: the accent as stock. The green counterpart to Sapphire, and the
+  // only scheme whose spine is the colour of the site's own buttons.
   {
-    name: "Indigo",
-    paper: "#dfdcee",
-    ink: "#1b1836",
-    mid: "#5b55a8",
-    deep: "#2f2a63",
-    spine: "#2f2a63",
-    spineInk: "#eceafa",
+    name: "Jade",
+    paper: "#d8ece1",
+    ink: "#0c2a1f",
+    mid: "#0b7a56",
+    deep: "#0c4733",
+    spine: "#0c4733",
+    spineInk: "#e6f5ee",
     light: true,
   },
-  // Verdigris: the near relief. Low chroma so it cannot be read as `--ok`.
+  // Verdigris: the bridge between the two hues. Low chroma so that beside the
+  // Jade scheme it reads as the quieter sibling rather than a second green.
   {
     name: "Verdigris",
     paper: "#d9e8e6",
@@ -201,7 +213,7 @@ const marks: readonly { bg: string; fg: string }[] = [
   { bg: "#d7e9f6", fg: "#14496b" },
   { bg: "#dde6f6", fg: "#1c3a7a" },
   { bg: "#e3e7ec", fg: "#37424f" },
-  { bg: "#e0ddee", fg: "#2f2a63" },
+  { bg: "#d6ecdf", fg: "#0c3b2b" },
   { bg: "#dbe8e6", fg: "#1e4b47" },
   { bg: "#ece5d9", fg: "#4d4130" },
 ];

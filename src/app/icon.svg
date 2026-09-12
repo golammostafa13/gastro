@@ -2,7 +2,8 @@
   <!--
     The tab icon: the same drawing as `components/brand.tsx`, with the tile's
     gradient baked in. A favicon cannot read the theme tokens, so the three
-    brand hues are written out at their light-mode values: the tile is a
+    brand hues are written out at their light-mode values — emerald, teal,
+    sapphire, the palette's green-into-blue journey at 48px: the tile is a
     saturated object either way, and it has to hold on whatever colour the
     browser paints its own chrome. `favicon.ico` beside this file carries a
     bolder cut of the same mark for the 16px slot, where the coil closes up
@@ -10,9 +11,9 @@
   -->
   <defs>
     <linearGradient id="tile" x1="4" y1="0" x2="44" y2="48" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#38bdf8"/>
-      <stop offset="0.55" stop-color="#2563eb"/>
-      <stop offset="1" stop-color="#6d28d9"/>
+      <stop offset="0" stop-color="#059669"/>
+      <stop offset="0.55" stop-color="#0d9488"/>
+      <stop offset="1" stop-color="#1d4ed8"/>
     </linearGradient>
   </defs>
 

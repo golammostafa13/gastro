@@ -28,7 +28,7 @@ const appDir = join(dirname(fileURLToPath(import.meta.url)), "..", "src", "app")
 /** The tile, as in globals.css `.brand-mark`: light-mode brand tokens. */
 const tile = (inner, rx) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
   <defs><linearGradient id="t" x1="4" y1="0" x2="44" y2="48" gradientUnits="userSpaceOnUse">
-    <stop offset="0" stop-color="#38bdf8"/><stop offset="0.55" stop-color="#2563eb"/><stop offset="1" stop-color="#6d28d9"/>
+    <stop offset="0" stop-color="#059669"/><stop offset="0.55" stop-color="#0d9488"/><stop offset="1" stop-color="#1d4ed8"/>
   </linearGradient></defs>
   <rect width="48" height="48" rx="${rx}" fill="url(#t)"/>${inner}</svg>`;
 
